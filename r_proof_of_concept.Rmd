@@ -1,0 +1,107 @@
+---
+title: "Things You Can Do With R"
+author: "Alexander Poon"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+    ioslides_presentation:
+        incremental: true
+        widescreen: true
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## R
+
+* A programming language
+* Free and open source
+* Lots of resources on the web for learning and support
+
+## Why use R?
+
+* Streamline your workflow!
+* R has packages for every stage of the data science process:
+    + Reading in data
+    + Manipulating/cleaning data
+    + Modeling
+    + **Visualizations**
+    + **Creating documents, presentations, web applications**
+
+## Documents
+
+Create Word, PDF, HTML documents with R Markdown and the `knitr` package
+
+## Documents
+
+Embed your R code within a document so that your analysis is reproducible
+
+## Documents
+
+Mass produce documents with a loop
+
+## Interactive Web Applications
+
+You can make interactive web applications with the `Shiny` package.
+
+## Presentations
+
+You can make web based (HTML) presentations (like this one!).
+
+## Presentations
+
+You can make (interactive) HTML presentations.
+
+```{r interactive, results = "asis"}
+library(googleVis)
+op <- options(gvis.plot.tag = "chart")
+
+df <- data.frame(time = 1:4, Stata = c(10, 9, 1, 1), R = c(0, 1, 9, 10))
+
+interactive.plot <- gvisLineChart(df, xvar = "time", yvar = c("Stata", "R"), options = list(title = "Alex's interest in", curveType = "function", width = 1000, height = 450, hAxis = "{title: 'time'}"))
+
+plot(interactive.plot)
+```
+
+## Presentations
+
+You can make (interactive) HTML presentations.
+
+```{r interactive2}
+library(dplyr)
+library(ggvis)
+
+shinyApp(
+
+    ui <- fluidPage(
+        selectInput("language", label = "Select a program:", choices = list("Stata", "R"), selected = "R"),
+        ggvisOutput("plot")
+    ),
+    
+    server <- function(input, output) {
+        df <- data.frame(time = 1:4, Stata = c(10, 9, 1, 1), R = c(0, 1, 9, 10))
+        
+        interactive.plot2 <- reactive({
+        
+            yvar <- prop("y", as.symbol(input$language))
+        
+            df %>%
+                ggvis(~time, yvar) %>%
+                layer_points() %>%
+                layer_lines() %>%
+                add_axis("y", title = "Interest")
+        })
+        
+        interactive.plot2 %>% bind_shiny("plot")
+    }
+)
+```
+
+## Next Steps: Learning
+
+* Resources for self-paced learning:
+    + The online book [R for data science](http://r4ds.had.co.nz/), with accompanying [slides](https://github.com/rstudio/Intro/tree/master/slides)
+    + `swirl` Package
+    + [Datacamp](https://www.datacamp.com/)
+    + [Webinars](https://www.rstudio.com/resources/webinars/) by RStudio
