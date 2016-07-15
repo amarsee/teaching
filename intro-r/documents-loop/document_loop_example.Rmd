@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 **Introduction**
 
-`r d` is a school district serving `r state_profile[state_profile$District == d, ]$Enrollment` students. Its expenditures in 2015 were `r paste0("$", sprintf("%.2f", state_profile[state_profile$District == d, ]$Per_Pupil_Expenditures))` per student.
+`r d` is a school district serving `r district_data[district_data$District == d, ]$Enrollment` students. Its expenditures in 2015 were `r paste0("$", sprintf("%.2f", district_data[district_data$District == d, ]$Per_Pupil_Expenditures))` per student.
 
 <br>
 

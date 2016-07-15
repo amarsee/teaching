@@ -10,12 +10,9 @@ runtime: shiny
 ---
 
 ```{r setup, include = FALSE}
+
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
-library(readr)
-library(dplyr)
-
-system_base <- read_csv("data/system_numeric_with_super_subgroup.csv")
 ```
 
 ## R
@@ -36,32 +33,13 @@ system_base <- read_csv("data/system_numeric_with_super_subgroup.csv")
 
 ## Documents
 
-Create Word, PDF, HTML documents with R Markdown and the `knitr` package
-
-## Documents
-
-Embed your R code within a document so that your analysis is reproducible
-
-```{r reproducible, echo = TRUE, eval = FALSE}
-
-system_base %>%
-    filter(system_name == "Davidson County") %>%
-    filter(subject == "Graduation Rate") %>%
-    filter(subgroup == "All Students") %>%
-    select(grad_rate) %>%
-    as.numeric()
-
-```
-
-`r system_base %>% filter(system_name == "Davidson County") %>% filter(subject == "Graduation Rate") %>% filter(subgroup == "All Students") %>% select(grad_rate) %>% as.numeric()` percent of students in Davidson County earned a high school diploma within four years and a summer.
-
-## Documents
-
-Mass produce documents with a loop
+* Create Word, PDF, HTML documents with R Markdown and the `knitr` package
+* Embed your R code within a document so that your analysis is reproducible
+* Mass produce documents with a loop
 
 ## Interactive Web Applications
 
-You can make interactive web applications with the `Shiny` package.
+You can make interactive web applications with the `shiny` package.
 
 ## Presentations
 
@@ -116,6 +94,12 @@ shinyApp(
 ```
 
 ## Next Steps: Learning
+
+* Internal Training Topics:
+    + Intro to R (Bob Muenchen, UT)
+    + R quickstart (Alex)
+    + Creating documents with R Markdown and `knitr` (?)
+    + Interactive web applications in `shiny` (?)
 
 * Resources for self-paced learning:
     + The online book [R for data science](http://r4ds.had.co.nz/), with accompanying [slides](https://github.com/rstudio/Intro/tree/master/slides)

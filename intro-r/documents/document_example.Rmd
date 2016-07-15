@@ -16,16 +16,16 @@ library(dplyr)
 library(ggplot2)
 
 ach_profile <- read_csv("achievement_profile_data.csv") %>%
-    filter(system_name == "State of Tennessee" | system_name == "Davidson County")
-
-ach_profile[ach_profile$system_name == "State of Tennessee", ]$system_name <- "State"
+    rename("District" = system_name) %>%
+    filter(District == "State of Tennessee" | District == "Davidson County") %>%
+    mutate(District = ifelse(District == "State of Tennessee", "State", District))
 
 ```
 <br>
 
 **Introduction**
 
-Davidson County is a school district serving `r ach_profile[ach_profile$system_name == "Davidson County", ]$Enrollment` students. Its expenditures in 2015 were `r paste0("$", sprintf("%.2f", ach_profile[ach_profile$system_name == "Davidson County", ]$Per_Pupil_Expenditures))` per student.
+Davidson County is a school district serving `r ach_profile[ach_profile$District == "Davidson County", ]$Enrollment` students. Its expenditures in 2015 were `r paste0("$", sprintf("%.2f", ach_profile[ach_profile$District == "Davidson County", ]$Per_Pupil_Expenditures))` per student.
 
 <br>
 
@@ -36,7 +36,7 @@ Here is a table with student demographic information for Davidson County:
 ```{r demographics}
 
 ach_profile %>%
-    filter(system_name == "Davidson County") %>%
+    filter(District == "Davidson County") %>%
     rename("Black/Hispanic/Native American" = Pct_BHN, "Economically Disadvantaged" = Pct_ED, "Students with Disabilities" = Pct_SWD, "English Learners" = Pct_EL) %>%
     select(one_of(c("Black/Hispanic/Native American", "Economically Disadvantaged", "Students with Disabilities", "English Learners"))) %>%
     gather("Subgroup", "Percentage of Students", 1:4) %>%
@@ -53,8 +53,7 @@ Here is a graph with some achievement data for 3-8 subjects:
 ``` {r achievement, fig.width = 4, fig.height = 3}
 
 ach_profile %>%
-    select(one_of(c("system_name", "Math", "ELA", "Science"))) %>%
-    rename("District" = system_name) %>%
+    select(one_of(c("District", "Math", "ELA", "Science"))) %>%
     gather("Subject", "Percent P/A", 2:4) %>%
     ggplot(aes(x = Subject, y = `Percent P/A`)) +
         geom_bar(color = "black", aes(fill = District), stat = "identity", width = 0.7, position = "dodge") +
@@ -72,8 +71,8 @@ Here is a graph with some achievement data for EOC subjects:
 ``` {r eoc, fig.width = 5, fig.height = 3}
 
 ach_profile %>%
-    select(one_of(c("system_name", "AlgI", "AlgII", "BioI", "Chemistry", "EngI", "EngII", "EngIII"))) %>%
-    rename("District" = system_name, "Algebra I" = AlgI, "Algebra II" = AlgII, "Biology I" = BioI, "English I" = EngI, "English II" = EngII, "English III" = EngIII) %>%
+    select(one_of(c("District", "AlgI", "AlgII", "BioI", "Chemistry", "EngI", "EngII", "EngIII"))) %>%
+    rename("Algebra I" = AlgI, "Algebra II" = AlgII, "Biology I" = BioI, "English I" = EngI, "English II" = EngII, "English III" = EngIII) %>%
     gather("Subject", "Percent P/A", 2:8) %>%
     ggplot(aes(x = Subject, y = `Percent P/A`)) +
         geom_bar(color = "black", aes(fill = District), stat = "identity", width = 0.7, position = "dodge") +
