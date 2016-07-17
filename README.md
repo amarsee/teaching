@@ -1,12 +1,12 @@
 ## teaching
 
-Materials for R trainings
+Materials for R trainings I've done.
 
-1. intro-R
+* intro-R
 
     An R proof of concept, with self-contained examples for creating MS Word documents, HTML presentations and reports, mass producing documents and presentations, and creating web applications.
 
-    If you are using R for the first time, you will need to download [R](https://mirrors.nics.utk.edu/cran/) and [RStudio](https://www.rstudio.com/products/rstudio/download2/), selecting the appropriate operating system at each step.
+    If you are using R for the first time, you will need to download [R](https://mirrors.nics.utk.edu/cran/) and [RStudio](https://www.rstudio.com/products/rstudio/download2/), selecting the appropriate operating system (Windows/Mac) at each step.
 
     Once you have installed R and RStudio, you will need to install the following R packages to run the examples:
     
