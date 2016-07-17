@@ -24,10 +24,11 @@ Here is a table with student demographic information for `r d`:
 ```{r demographics}
 
 district_data %>%
-    filter(District == d) %>%
     rename("Black/Hispanic/Native American" = Pct_BHN, "Economically Disadvantaged" = Pct_ED, "Students with Disabilities" = Pct_SWD, "English Learners" = Pct_EL) %>%
-    select(one_of(c("Black/Hispanic/Native American", "Economically Disadvantaged", "Students with Disabilities", "English Learners"))) %>%
-    gather("Subgroup", "Percentage of Students", 1:4) %>%
+    select(one_of(c("District", "Black/Hispanic/Native American", "Economically Disadvantaged", "Students with Disabilities", "English Learners"))) %>%
+    gather("Subgroup", "Percentage of Students", 2:5) %>%
+    spread("District", "Percentage of Students") %>%
+    mutate_each(funs(paste0(., "%")), -Subgroup) %>%
     knitr::kable()
 
 ```
