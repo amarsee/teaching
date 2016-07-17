@@ -1,0 +1,90 @@
+---
+title: "Davidson County District Performance"
+author: "Alexander Poon"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+    ioslides_presentation:
+        widescreen: TRUE
+---
+
+```{r setup, include = FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+library(readr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(googleVis)
+library(leaflet)
+
+ach_profile <- read_csv("achievement_profile_data.csv") %>%
+    rename("District" = system_name) %>%
+    filter(District == "State of Tennessee" | District == "Davidson County") %>%
+    mutate(District = ifelse(District == "State of Tennessee", "State", District))
+
+```
+
+## Introduction
+
+Davidson County is a school district serving `r ach_profile[ach_profile$District == "Davidson County", ]$Enrollment` students. Its expenditures in 2015 were `r paste0("$", sprintf("%.2f", ach_profile[ach_profile$District == "Davidson County", ]$Per_Pupil_Expenditures))` per student.
+
+``` {r map}
+
+leaflet() %>%
+    addTiles() %>%
+    setView(-86.767239, 36.120877, zoom = 10) %>%
+    addMarkers(-86.767239, 36.120877, popup = "Metro Nashville Public Schools")
+
+```
+
+## Demographic Information
+
+Here is a table with student demographic information for Davidson County:
+
+```{r demographics}
+
+ach_profile %>%
+    rename("Black/Hispanic/Native American" = Pct_BHN, "Economically Disadvantaged" = Pct_ED, "Students with Disabilities" = Pct_SWD, "English Learners" = Pct_EL) %>%
+    select(one_of(c("District", "Black/Hispanic/Native American", "Economically Disadvantaged", "Students with Disabilities", "English Learners"))) %>%
+    gather("Subgroup", "Percentage of Students", 2:5) %>%
+    spread("District", "Percentage of Students") %>%
+    mutate_each(funs(paste0(., "%")), -Subgroup) %>%
+    ReporteRs::vanilla.table()
+
+```
+
+## 3-8 Achievement Data
+
+Here is a graph with some achievement data for 3-8 subjects:
+
+``` {r achievement, results = "asis"}
+
+op <- options(gvis.plot.tag = "chart")
+
+ach_plot <- ach_profile %>%
+    select(one_of(c("District", "Math", "ELA", "Science"))) %>%
+    gather("Subject", "Percent P/A", 2:4) %>%
+    spread("District", "Percent P/A") %>%
+    gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in 3-8 Subjects", width = 1000, height = 550))
+
+plot(ach_plot)
+
+```
+
+## High School Achievement Data
+
+Here is a graph with some achievement data for EOC subjects:
+
+``` {r googleVis, results = "asis"}
+
+eoc_plot <- ach_profile %>%
+    select(one_of(c("District", "AlgI", "AlgII", "BioI", "Chemistry", "EngI", "EngII", "EngIII"))) %>%
+    rename("Algebra I" = AlgI, "Algebra II" = AlgII, "Biology I" = BioI, "English I" = EngI, "English II" = EngII, "English III" = EngIII) %>%
+    gather("Subject", "Percent P/A", 2:8) %>%
+    spread("District", "Percent P/A") %>%
+    gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in EOC Subjects", width = 1000, height = 550))
+
+plot(eoc_plot)
+
+```
