@@ -10,15 +10,18 @@ Materials for R trainings I've done.
 
     Once you have installed R and RStudio, you will need to install the following R packages to run the examples:
     
-    * `readr`
-    * `tidyr`
-    * `dplyr`
-    * `leaflet`
-    * `ggplot2`
-    * `ggvis`
-    * `googleVis`
-    * `shiny`
+    * [readr](https://github.com/hadley/readr), a package for reading in tabular data
+    * [tidyr](https://blog.rstudio.org/2014/07/22/introducing-tidyr/) and [dplyr](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html), packages for data wrangling
+    * [leaflet](https://rstudio.github.io/leaflet/), a package for creating interactive maps
+    * [ggplot2](http://ggplot2.org/), a package for creating graphics
+    * [ggvis](http://ggvis.rstudio.com/), a package for creating interactive graphics
+    * [googleVis](https://github.com/mages/googleVis), an R interface for the [Google Charts](https://developers.google.com/chart/) API
+    * [shiny](http://shiny.rstudio.com/), a package for creating interactive web applications
 
-    Do this by running the following code in the prompt:
+    <br>
+
+    You can do this by running the following code in the prompt:
 
     `install.packages(c("readr", "tidyr", "dplyr", "leaflet", "ggplot2", "ggvis", "googleVis", "shiny"))`
+
+    Run each example by opening its .Rproj folder.
