@@ -10,9 +10,7 @@ runtime: shiny
 ---
 
 ```{r setup, include = FALSE}
-
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-
 ```
 
 ## R
@@ -39,63 +37,17 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 ## Interactive Web Applications
 
-You can make interactive web applications with the `shiny` package.
+* Create interactive web applications with the `shiny` package.
 
 ## Presentations
 
-You can make web based (HTML) presentations (like this one!).
+* Create web based (HTML) presentations (like this one!)
+* Mass produce presentations with a loop
+* Add interactivity with `shiny` elements
 
-## Presentations
+## Learning R
 
-You can make (interactive) web based presentations.
-
-```{r interactive, results = "asis"}
-library(googleVis)
-
-op <- options(gvis.plot.tag = "chart")
-
-df <- data.frame(time = 1:4, Stata = c(10, 9, 1, 1), R = c(0, 1, 9, 10))
-
-interactive.plot <- gvisLineChart(df, xvar = "time", yvar = c("Stata", "R"), options = list(title = "Alex's interest in", curveType = "function", width = 1000, height = 450, hAxis = "{title: 'time'}"))
-
-plot(interactive.plot)
-```
-
-## Presentations
-
-```{r interactive2}
-library(dplyr)
-library(ggvis)
-
-shinyApp(
-
-    ui <- fluidPage(
-        selectInput("language", label = "Select a program:", choices = list("Stata", "R"), selected = "R"),
-        ggvisOutput("plot")
-    ),
-    
-    server <- function(input, output) {
-        df <- data.frame(time = 1:4, Stata = c(10, 9, 1, 1), R = c(0, 1, 9, 10))
-        
-        interactive.plot2 <- reactive({
-        
-            yvar <- prop("y", as.symbol(input$language))
-        
-            df %>%
-                ggvis(~time, yvar) %>%
-                layer_points() %>%
-                layer_lines() %>%
-                add_axis("y", title = "Interest")
-        })
-        
-        interactive.plot2 %>% bind_shiny("plot")
-    }
-)
-```
-
-## Next Steps: Learning
-
-* Internal Training Topics:
+* Internal Training:
     + Intro to R (Bob Muenchen, UT)
     + R quickstart (Alex)
     + Creating documents with R Markdown and `knitr` (?)
@@ -106,3 +58,15 @@ shinyApp(
     + `swirl` Package
     + [Datacamp](https://www.datacamp.com/)
     + [Webinars](https://www.rstudio.com/resources/webinars/) by RStudio
+
+* Also recommended: Version control with Git
+
+## Support/Troubleshooting
+
+* Look at the documentation
+    + Type `?[name of function]` into the console to pull up the documentation
+* Look for examples on the web
+    + Google "R [name of package and/or function]" or "R [what you want to do]"
+    + There are often more elaborate examples and vignettes on the web than in the documentation
+* Stack Overflow + Google Groups
+    + Forums with lots of answered questions, or ask your own
