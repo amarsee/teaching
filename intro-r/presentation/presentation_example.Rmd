@@ -33,7 +33,7 @@ Davidson County is a school district serving `r ach_profile[ach_profile$District
 
 leaflet() %>%
     addTiles() %>%
-    setView(-86.767239, 36.120877, zoom = 10) %>%
+    setView(-86.767239, 36.120877, zoom = 9) %>%
     addMarkers(-86.767239, 36.120877, popup = "Metro Nashville Public Schools")
 
 ```
@@ -66,7 +66,7 @@ ach_plot <- ach_profile %>%
     select(one_of(c("District", "Math", "ELA", "Science"))) %>%
     gather("Subject", "Percent P/A", 2:4) %>%
     spread("District", "Percent P/A") %>%
-    gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in 3-8 Subjects", width = 1000, height = 550))
+    gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in 3-8 Subjects", width = 1000, height = 550, vAxis = "{baseline: 0, title: 'Percent Proficient or Advanced', maxValue: 100}"))
 
 plot(ach_plot)
 
@@ -83,7 +83,7 @@ eoc_plot <- ach_profile %>%
     rename("Algebra I" = AlgI, "Algebra II" = AlgII, "Biology I" = BioI, "English I" = EngI, "English II" = EngII, "English III" = EngIII) %>%
     gather("Subject", "Percent P/A", 2:8) %>%
     spread("District", "Percent P/A") %>%
-    gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in EOC Subjects", width = 1000, height = 550))
+    gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in EOC Subjects", width = 1000, height = 550, vAxis = "{baseline: 0, title: 'Percent Proficient or Advanced', maxValue: 100}"))
 
 plot(eoc_plot)
 
