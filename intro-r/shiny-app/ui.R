@@ -5,6 +5,8 @@ shinyUI(navbarPage("Data Explorer", position = "fixed-top",
 
     tabPanel("District",
         fluidPage(
+
+            # Panel with plot container
             fluidRow(
                 br(),
                 br(),
@@ -18,6 +20,8 @@ shinyUI(navbarPage("Data Explorer", position = "fixed-top",
                     hr()
                 )
             ),
+
+            # Panel with input widgets
             fluidRow(
                 column(4, offset = 2,
                     selectInput("char", label = "Select a District Characteristic:", 

@@ -6,11 +6,12 @@ shinyServer(function(input, output, session) {
     # Adjust color, opacity of highlighted district
     df_highlight <- reactive({
 
-        # Variables to assign State different color, opacity
+        # Assign State different color, opacity
         df <- df %>%
             mutate(Region = ifelse(system_name == "State of Tennessee", "State", Region)) %>%
             mutate(opacity = ifelse(system_name == "State of Tennessee", 1, 0.4))
 
+        # Highlight selected district, fade all other points
         if (input$highlight != "State of Tennessee") {
             df[df$system_name == input$highlight, ]$opacity <- 1
             df[df$system_name != input$highlight & df$system_name != "State of Tennessee", ]$opacity <- 0.2
@@ -24,6 +25,7 @@ shinyServer(function(input, output, session) {
     # Create tooltip with district name, selected x and y variables
     tooltip_scatter <- function(x) {
         if (is.null(x)) return(NULL)
+
         row <- df[df$system_name == x$system_name, ]
 
         paste0("<b>", row$system_name, "</b><br>",
@@ -34,7 +36,7 @@ shinyServer(function(input, output, session) {
                     row[names(row) == input$outcome])
     }
 
-    # Extract district of clicked point for secondary graphs; Update highlighted district on point click
+    # Update highlighted district on point click
     click_district <- function(data, ...) {
         updateSelectInput(session, "highlight", selected = as.character(data$system_name))
     }
