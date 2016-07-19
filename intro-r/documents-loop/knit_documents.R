@@ -16,7 +16,7 @@ for (d in districts_list) {
 
     district_data <- filter(ach_profile, District == "State" | District == d)
 
-    rmarkdown::render("document_loop_example.Rmd",
+    rmarkdown::render("documents_loop_example.Rmd",
                       output_file = paste(d, "District Performance Report.docx"),
                       output_dir = "output")
 
