@@ -59,7 +59,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
     + [Datacamp](https://www.datacamp.com/)
     + [Webinars](https://www.rstudio.com/resources/webinars/) by RStudio
 
-* Also recommended: Version control with Git
+* Also recommended: Version control with Git(Hub)
 
 ## Support/Troubleshooting
 

@@ -18,10 +18,8 @@ Materials for R trainings I've done.
     * [googleVis](https://github.com/mages/googleVis), an R interface for the [Google Charts](https://developers.google.com/chart/) API
     * [shiny](http://shiny.rstudio.com/), a package for creating interactive web applications
 
-    <br>
-
     You can do this by running the following code in the prompt:
 
     `install.packages(c("readr", "tidyr", "dplyr", "leaflet", "ggplot2", "ggvis", "googleVis", "shiny"))`
 
-    Run each example by opening its .Rproj folder.
+    Run each example by opening its folder and double clicking its .Rproj file.
