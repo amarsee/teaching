@@ -22,4 +22,8 @@ Materials for R trainings I've done.
 
     `install.packages(c("readr", "tidyr", "dplyr", "leaflet", "ggplot2", "ggvis", "googleVis", "shiny"))`
 
-    Run each example by opening its folder and double clicking its .Rproj file.
+    Run each example by opening its folder and double clicking its .Rproj file. 
+    
+    * For the document, presentation and report examples, open the .Rmd file and click "Knit Word"/"Knit HTML" in RStudio to create the document.
+    * For the document and presentation loop examples, open the knit_[document/presentation].R file and click "Run" in RStudio to create the documents.
+    * For the Shiny application example, open the global.R, ui.R, and server.R files and click "Run App" in RStudio to open the application.
