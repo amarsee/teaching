@@ -50,7 +50,7 @@ ach_profile %>%
     gather("Subgroup", "Percentage of Students", 2:5) %>%
     spread("District", "Percentage of Students") %>%
     mutate_each(funs(paste0(., "%")), -Subgroup) %>%
-    ReporteRs::vanilla.table()
+    knitr::kable()
 
 ```
 
