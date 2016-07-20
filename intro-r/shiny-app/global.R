@@ -2,7 +2,6 @@ library(readr)
 library(tidyr)
 library(dplyr)
 library(ggvis)
-library(shinyURL)
 library(shiny)
 
 df <- read_csv("data/achievement_profile_data_with_CORE.csv") %>%
