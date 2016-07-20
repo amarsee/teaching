@@ -16,12 +16,11 @@ Materials for R trainings I've done.
     * [ggplot2](http://ggplot2.org), a package for creating graphics
     * [ggvis](http://ggvis.rstudio.com), a package for creating interactive graphics
     * [googleVis](https://github.com/mages/googleVis), an R interface for the [Google Charts](https://developers.google.com/chart/) API
-    * [ReporteRs](http://davidgohel.github.io/ReporteRs), a package for creating documents and nice tables
     * [shiny](http://shiny.rstudio.com), a package for creating interactive web applications
 
     You can do this by running the following code in the prompt:
-
-    `install.packages(c("readr", "tidyr", "dplyr", "leaflet", "ggplot2", "ggvis", "ggthemes", "googleVis", "ReporteRs", "shiny"))`
+I
+    `install.packages(c("readr", "tidyr", "dplyr", "leaflet", "ggplot2", "ggvis", "ggthemes", "googleVis", "shiny"))`
 
     Run each example by opening its folder and double clicking its .Rproj file. 
 
