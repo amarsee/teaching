@@ -19,7 +19,7 @@ Materials for R trainings I've done.
     * [shiny](http://shiny.rstudio.com), a package for creating interactive web applications
 
     You can do this by running the following code in the prompt:
-I
+
     `install.packages(c("readr", "tidyr", "dplyr", "leaflet", "ggplot2", "ggvis", "ggthemes", "googleVis", "shiny"))`
 
     Run each example by opening its folder and double clicking its .Rproj file. 
