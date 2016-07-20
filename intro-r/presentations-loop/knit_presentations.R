@@ -5,7 +5,7 @@ library(ggplot2)
 library(googleVis)
 library(leaflet)
 
-ach_profile <- read_csv("achievement_profile_data.csv") %>%
+ach_profile <- read_csv("achievement_profile_data_with_CORE.csv") %>%
     select(one_of(c("system_name", "Enrollment", "Per_Pupil_Expenditures", "Pct_BHN", "Pct_ED", "Pct_SWD", "Pct_EL",
                     "ELA", "Math", "Science", "AlgI", "AlgII", "BioI", "Chemistry", "EngI", "EngII", "EngIII"))) %>%
     rename("District" = system_name) %>%
