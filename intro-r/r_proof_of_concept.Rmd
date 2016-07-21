@@ -6,7 +6,6 @@ output:
     ioslides_presentation:
         incremental: true
         widescreen: true
-runtime: shiny
 ---
 
 ```{r setup, include = FALSE}

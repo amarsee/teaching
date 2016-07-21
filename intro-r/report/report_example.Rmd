@@ -1,9 +1,12 @@
 ---
 title: "Davidson County District Performance"
+author: "Alexander Poon"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: 
     html_document:
         toc: TRUE
         toc_float: TRUE
+runtime: shiny
 ---
 
 ```{r setup, include = FALSE}
@@ -22,6 +25,11 @@ ach_profile <- read_csv("achievement_profile_data_with_CORE.csv") %>%
     filter(District == "State of Tennessee" | District == "Davidson County") %>%
     mutate(District = ifelse(District == "State of Tennessee", "State", District))
 
+subgroup_data <- read_csv("subgroup_achievement.csv") %>%
+    rename("District" = system_name) %>%
+    filter(District == "State of Tennessee" | District == "Davidson County") %>%
+    mutate(District = ifelse(District == "State of Tennessee", "State", District))
+    
 ```
 
 ## Introduction
@@ -84,8 +92,39 @@ eoc_plot <- ach_profile %>%
     rename("Algebra I" = AlgI, "Algebra II" = AlgII, "Biology I" = BioI, "English I" = EngI, "English II" = EngII, "English III" = EngIII) %>%
     gather("Subject", "Percent P/A", 2:8) %>%
     spread("District", "Percent P/A") %>%
-    gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in EOC Subjects", width = 1000, height = 500))
+    gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in EOC Subjects", width = 900, height = 500))
 
 plot(eoc_plot)
+
+```
+
+## Subgroup Achievement Data
+
+Here is an interactive graph. Use the dropdown to select a subgroup.
+
+``` {r subgroups}
+
+shinyApp(
+
+    ui <- fluidPage(
+        selectInput("subgroup", label = "Select a subgroup:", choices = unique(subgroup_data$subgroup)),
+        htmlOutput("chart38")
+    ),
+
+    server <- function(input, output){
+
+    output$chart38 <- renderGvis({
+        subgroup_data %>%
+            filter(subgroup == input$subgroup) %>%
+            select(one_of(c("District", "Math", "ELA", "Science"))) %>%
+            gather("Subject", "Percent P/A", 2:4) %>%
+            spread("District", "Percent P/A") %>%
+            gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in 3-8 Subjects", width = 750, height = 500, vAxis = "{baseline: 0, maxValue: 100}"))
+        })
+    },
+
+    options = list(height = 800)
+
+)
 
 ```
