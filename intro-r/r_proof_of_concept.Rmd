@@ -2,10 +2,10 @@
 title: "Things You Can Do With R"
 author: "Alexander Poon"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
-output: 
-    ioslides_presentation:
-        incremental: true
-        widescreen: true
+output:
+    revealjs::revealjs_presentation:
+        theme: night
+        incremental: TRUE
 ---
 
 ```{r setup, include = FALSE}
