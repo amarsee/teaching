@@ -31,8 +31,8 @@ Here is a table with student demographic information for `r d`:
 ```{r demographics}
 
 district_data %>%
+    select(District, Pct_BHN, Pct_ED, Pct_SWD, Pct_EL) %>%
     rename("Black/Hispanic/Native American" = Pct_BHN, "Economically Disadvantaged" = Pct_ED, "Students with Disabilities" = Pct_SWD, "English Learners" = Pct_EL) %>%
-    select(one_of(c("District", "Black/Hispanic/Native American", "Economically Disadvantaged", "Students with Disabilities", "English Learners"))) %>%
     gather("Subgroup", "Percentage of Students", 2:5) %>%
     spread("District", "Percentage of Students") %>%
     mutate_each(funs(paste0(., "%")), -Subgroup) %>%
@@ -49,7 +49,7 @@ Here is a graph with some achievement data for 3-8 subjects:
 op <- options(gvis.plot.tag = "chart")
 
 ach_plot <- district_data %>%
-    select(one_of(c("District", "Math", "ELA", "Science"))) %>%
+    select(District, Math, ELA, Science) %>%
     gather("Subject", "Percent P/A", 2:4) %>%
     spread("District", "Percent P/A") %>%
     gvisColumnChart(xvar = "Subject", yvar = c(d, "State"), options = list(title = "Achievement in 3-8 Subjects", width = 1000, height = 550, vAxis = "{baseline: 0, title: 'Percent Proficient or Advanced', maxValue: 100}"))
@@ -65,7 +65,7 @@ Here is a graph with some achievement data for EOC subjects:
 ``` {r googleVis, results = "asis"}
 
 eoc_plot <- district_data %>%
-    select(one_of(c("District", "AlgI", "AlgII", "BioI", "Chemistry", "EngI", "EngII", "EngIII"))) %>%
+    select(District, AlgI, AlgII, BioI, Chemistry, EngI, EngII, EngIII) %>%
     rename("Algebra I" = AlgI, "Algebra II" = AlgII, "Biology I" = BioI, "English I" = EngI, "English II" = EngII, "English III" = EngIII) %>%
     gather("Subject", "Percent P/A", 2:8) %>%
     spread("District", "Percent P/A") %>%

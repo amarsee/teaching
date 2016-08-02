@@ -8,8 +8,8 @@ shinyServer(function(input, output, session) {
 
         # Assign State different color, opacity
         df <- df %>%
-            mutate(Region = ifelse(system_name == "State of Tennessee", "State", Region)) %>%
-            mutate(opacity = ifelse(system_name == "State of Tennessee", 1, 0.4))
+            mutate(Region = ifelse(system_name == "State of Tennessee", "State", Region),
+                opacity = ifelse(system_name == "State of Tennessee", 1, 0.4))
 
         # Highlight selected district, fade all other points
         if (input$highlight != "State of Tennessee") {
@@ -29,11 +29,11 @@ shinyServer(function(input, output, session) {
         row <- df[df$system_name == x$system_name, ]
 
         paste0("<b>", row$system_name, "</b><br>",
-               row$Region, "<br>",
-               names(district_char)[district_char == input$char], ": ", 
-                    row[names(row) == input$char], "<br>",
-               names(district_out)[district_out == input$outcome], ": ",
-                    row[names(row) == input$outcome])
+            row$Region, "<br>",
+            names(district_char)[district_char == input$char], ": ", 
+                row[names(row) == input$char], "<br>",
+            names(district_out)[district_out == input$outcome], ": ",
+                row[names(row) == input$outcome])
     }
 
     # Update highlighted district on point click
@@ -57,14 +57,13 @@ shinyServer(function(input, output, session) {
             y_scale <- c(0, 100)
         } else {
             y_scale <- c(min(df_highlight()[names(df_highlight()) == input$outcome]), 
-                         ceiling(max(df_highlight()[names(df_highlight()) == input$outcome])))
+                ceiling(max(df_highlight()[names(df_highlight()) == input$outcome])))
         }
 
         df_highlight() %>%
             ggvis(xvar, yvar, key := ~system_name) %>%
-            layer_points(fill = ~Region,
-                         size := 125, size.hover := 300,
-                         opacity = ~factor(opacity), opacity.hover := 0.8) %>%
+            layer_points(fill = ~Region, size := 125, size.hover := 300,
+                opacity = ~factor(opacity), opacity.hover := 0.8) %>%
             add_axis("x", title = xvar_name, grid = FALSE) %>%
             add_axis("y", title = yvar_name, grid = FALSE) %>%
             scale_numeric("y", domain = y_scale) %>%
