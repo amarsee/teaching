@@ -19,7 +19,7 @@ library(googleVis)
 library(leaflet)
 
 ach_profile <- read_csv("achievement_profile_data_with_CORE.csv") %>%
-    rename("District" = system_name) %>%
+    rename(District = system_name) %>%
     filter(District == "State of Tennessee" | District == "Davidson County") %>%
     mutate(District = ifelse(District == "State of Tennessee", "State", District))
 
@@ -46,7 +46,7 @@ Here is a table with student demographic information for Davidson County:
 
 ach_profile %>%
     select(District, Pct_BHN, Pct_ED, Pct_SWD, Pct_EL) %>%
-    rename("Black/Hispanic/Native American" = Pct_BHN, "Economically Disadvantaged" = Pct_ED, "Students with Disabilities" = Pct_SWD, "English Learners" = Pct_EL) %>%
+    rename(`Black/Hispanic/Native American` = Pct_BHN, `Economically Disadvantaged` = Pct_ED, `Students with Disabilities` = Pct_SWD, `English Learners` = Pct_EL) %>%
     gather("Subgroup", "Percentage of Students", 2:5) %>%
     spread("District", "Percentage of Students") %>%
     mutate_each(funs(paste0(., "%")), -Subgroup) %>%

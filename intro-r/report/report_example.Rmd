@@ -21,12 +21,12 @@ library(googleVis)
 library(leaflet)
 
 ach_profile <- read_csv("achievement_profile_data_with_CORE.csv") %>%
-    rename("District" = system_name) %>%
+    rename(District = system_name) %>%
     filter(District == "State of Tennessee" | District == "Davidson County") %>%
     mutate(District = ifelse(District == "State of Tennessee", "State", District))
 
 subgroup_data <- read_csv("subgroup_achievement.csv") %>%
-    rename("District" = system_name) %>%
+    rename(District = system_name) %>%
     filter(District == "State of Tennessee" | District == "Davidson County") %>%
     mutate(District = ifelse(District == "State of Tennessee", "State", District))
     
@@ -53,7 +53,7 @@ Here is a table with student demographic information for Davidson County:
 
 ach_profile %>%
     select(District, Pct_BHN, Pct_ED, Pct_SWD, Pct_EL) %>%
-    rename("Black/Hispanic/Native American" = Pct_BHN, "Economically Disadvantaged" = Pct_ED, "Students with Disabilities" = Pct_SWD, "English Learners" = Pct_EL) %>%
+    rename(`Black/Hispanic/Native American` = Pct_BHN, `Economically Disadvantaged` = Pct_ED, `Students with Disabilities` = Pct_SWD, `English Learners` = Pct_EL) %>%
     gather("Subgroup", "Percentage of Students", 2:5) %>%
     spread("District", "Percentage of Students") %>%
     mutate_each(funs(paste0(., "%")), -Subgroup) %>%
@@ -89,7 +89,7 @@ Here is a graph with some achievement data for EOC subjects:
 
 eoc_plot <- ach_profile %>%
     select(District, AlgI, AlgII, BioI, Chemistry, EngI, EngII, EngIII) %>%
-    rename("Algebra I" = AlgI, "Algebra II" = AlgII, "Biology I" = BioI, "English I" = EngI, "English II" = EngII, "English III" = EngIII) %>%
+    rename(`Algebra I` = AlgI, `Algebra II` = AlgII, `Biology I` = BioI, `English I` = EngI, `English II` = EngII, `English III` = EngIII) %>%
     gather("Subject", "Percent P/A", 2:8) %>%
     spread("District", "Percent P/A") %>%
     gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in EOC Subjects", width = 900, height = 500))

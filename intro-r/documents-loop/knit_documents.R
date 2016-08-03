@@ -6,7 +6,7 @@ library(ggplot2)
 ach_profile <- read_csv("achievement_profile_data_with_CORE.csv") %>%
     select(system_name, Enrollment, Per_Pupil_Expenditures, Pct_BHN, Pct_ED, Pct_SWD, Pct_EL,
         ELA, Math, Science, AlgI, AlgII, BioI, Chemistry, EngI, EngII, EngIII) %>%
-    rename("District" = system_name) %>%
+    rename(District = system_name) %>%
     filter(complete.cases(.)) %>%
     mutate(District = ifelse(District == "State of Tennessee", "State", District))
 
