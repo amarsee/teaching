@@ -22,12 +22,12 @@ library(leaflet)
 
 ach_profile <- read_csv("achievement_profile_data_with_CORE.csv") %>%
     rename(District = system_name) %>%
-    filter(District == "State of Tennessee" | District == "Davidson County") %>%
+    filter(District %in% c("State of Tennessee", "Davidson County")) %>%
     mutate(District = ifelse(District == "State of Tennessee", "State", District))
 
 subgroup_data <- read_csv("subgroup_achievement.csv") %>%
     rename(District = system_name) %>%
-    filter(District == "State of Tennessee" | District == "Davidson County") %>%
+    filter(District %in% c("State of Tennessee", "Davidson County")) %>%
     mutate(District = ifelse(District == "State of Tennessee", "State", District))
     
 ```

@@ -20,7 +20,7 @@ library(leaflet)
 
 ach_profile <- read_csv("achievement_profile_data_with_CORE.csv") %>%
     rename(District = system_name) %>%
-    filter(District == "State of Tennessee" | District == "Davidson County") %>%
+    filter(District %in% c("State of Tennessee", "Davidson County")) %>%
     mutate(District = ifelse(District == "State of Tennessee", "State", District))
 
 ```
@@ -80,7 +80,7 @@ Here is a graph with some achievement data for EOC subjects:
 
 eoc_plot <- ach_profile %>%
     select(District, AlgI, AlgII, BioI, Chemistry, EngI, EngII, EngIII) %>%
-    rename("Algebra I" = AlgI, "Algebra II" = AlgII, "Biology I" = BioI, "English I" = EngI, "English II" = EngII, "English III" = EngIII) %>%
+    rename(`Algebra I` = AlgI, `Algebra II` = AlgII, `Biology I` = BioI, `English I` = EngI, `English II` = EngII, `English III` = EngIII) %>%
     gather("Subject", "Percent P/A", 2:8) %>%
     spread("District", "Percent P/A") %>%
     gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in EOC Subjects", width = 1000, height = 550, vAxis = "{baseline: 0, title: 'Percent Proficient or Advanced', maxValue: 100}"))

@@ -14,10 +14,10 @@ districts_list <- unique(ach_profile$District)[-1]
 
 for (d in districts_list) {
 
-    district_data <- filter(ach_profile, District == "State" | District == d)
+    district_data <- filter(ach_profile, District %in% c("State", d))
 
     rmarkdown::render("documents_loop_example.Rmd",
-                      output_file = paste(d, "District Performance Report.docx"),
-                      output_dir = "output")
+        output_file = paste(d, "District Performance Report.docx"),
+        output_dir = "output")
 
 }
