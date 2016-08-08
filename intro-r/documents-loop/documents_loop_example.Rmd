@@ -26,8 +26,8 @@ Here is a table with student demographic information for `r d`:
 district_data %>%
     select(District, Pct_BHN, Pct_ED, Pct_SWD, Pct_EL) %>%
     rename(`Black/Hispanic/Native American` = Pct_BHN, `Economically Disadvantaged` = Pct_ED, `Students with Disabilities` = Pct_SWD, `English Learners` = Pct_EL) %>%
-    gather("Subgroup", "Percentage of Students", 2:5) %>%
-    spread("District", "Percentage of Students") %>%
+    gather(Subgroup, `Percentage of Students`, 2:5) %>%
+    spread(District, `Percentage of Students`) %>%
     mutate_each(funs(paste0(., "%")), -Subgroup) %>%
     knitr::kable()
 
@@ -43,7 +43,7 @@ Here is a graph with some achievement data for 3-8 subjects:
 
 district_data %>%
     select(District, Math, ELA, Science) %>%
-    gather("Subject", "Percent P/A", 2:4) %>%
+    gather(Subject, `Percent P/A`, 2:4) %>%
     ggplot(aes(x = Subject, y = `Percent P/A`)) +
         geom_bar(color = "black", aes(fill = District), stat = "identity", width = 0.7, position = "dodge") +
         coord_cartesian(ylim = c(0, 100)) +
@@ -62,7 +62,7 @@ Here is a graph with some achievement data for EOC subjects:
 district_data %>%
     select(District, AlgI, AlgII, BioI, Chemistry, EngI, EngII, EngIII) %>%
     rename(`Algebra I` = AlgI, `Algebra II` = AlgII, `Biology I` = BioI, `English I` = EngI, `English II` = EngII, `English III` = EngIII) %>%
-    gather("Subject", "Percent P/A", 2:8) %>%
+    gather(Subject, `Percent P/A`, 2:8) %>%
     ggplot(aes(x = Subject, y = `Percent P/A`)) +
         geom_bar(color = "black", aes(fill = District), stat = "identity", width = 0.7, position = "dodge") +
         coord_cartesian(ylim = c(0, 100)) +

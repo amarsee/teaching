@@ -1,11 +1,10 @@
 library(readr)
-library(tidyr)
 library(dplyr)
 library(ggvis)
 library(shiny)
 
 df <- read_csv("data/achievement_profile_data_with_CORE.csv") %>%
-    rename("Region" = CORE_region)
+    rename(Region = CORE_region)
 
 # District characteristics for x variable
 district_char <- c("Student Enrollment" = "Enrollment", 

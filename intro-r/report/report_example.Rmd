@@ -54,8 +54,8 @@ Here is a table with student demographic information for Davidson County:
 ach_profile %>%
     select(District, Pct_BHN, Pct_ED, Pct_SWD, Pct_EL) %>%
     rename(`Black/Hispanic/Native American` = Pct_BHN, `Economically Disadvantaged` = Pct_ED, `Students with Disabilities` = Pct_SWD, `English Learners` = Pct_EL) %>%
-    gather("Subgroup", "Percentage of Students", 2:5) %>%
-    spread("District", "Percentage of Students") %>%
+    gather(Subgroup, `Percentage of Students`, 2:5) %>%
+    spread(District, `Percentage of Students`) %>%
     mutate_each(funs(paste0(., "%")), -Subgroup) %>%
     knitr::kable()
 
@@ -73,8 +73,8 @@ op <- options(gvis.plot.tag = "chart")
 
 ach_plot <- ach_profile %>%
     select(District, Math, ELA, Science) %>%
-    gather("Subject", "Percent P/A", 2:4) %>%
-    spread("District", "Percent P/A") %>%
+    gather(Subject, `Percent P/A`, 2:4) %>%
+    spread(District, `Percent P/A`) %>%
     gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in 3-8 Subjects", width = 850, height = 500))
 
 plot(ach_plot)
@@ -90,8 +90,8 @@ Here is a graph with some achievement data for EOC subjects:
 eoc_plot <- ach_profile %>%
     select(District, AlgI, AlgII, BioI, Chemistry, EngI, EngII, EngIII) %>%
     rename(`Algebra I` = AlgI, `Algebra II` = AlgII, `Biology I` = BioI, `English I` = EngI, `English II` = EngII, `English III` = EngIII) %>%
-    gather("Subject", "Percent P/A", 2:8) %>%
-    spread("District", "Percent P/A") %>%
+    gather(Subject, `Percent P/A`, 2:8) %>%
+    spread(District, `Percent P/A`) %>%
     gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in EOC Subjects", width = 900, height = 500))
 
 plot(eoc_plot)
@@ -117,8 +117,8 @@ shinyApp(
         subgroup_data %>%
             filter(subgroup == input$subgroup) %>%
             select(District, Math, ELA, Science) %>%
-            gather("Subject", "Percent P/A", 2:4) %>%
-            spread("District", "Percent P/A") %>%
+            gather(Subject, `Percent P/A`, 2:4) %>%
+            spread(District, `Percent P/A`) %>%
             gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in 3-8 Subjects", width = 750, height = 500, vAxis = "{baseline: 0, maxValue: 100}"))
         })
     },

@@ -64,8 +64,8 @@ op <- options(gvis.plot.tag = "chart")
 
 ach_plot <- ach_profile %>%
     select(District, Math, ELA, Science) %>%
-    gather("Subject", "Percent P/A", 2:4) %>%
-    spread("District", "Percent P/A") %>%
+    gather(Subject, `Percent P/A`, 2:4) %>%
+    spread(District, `Percent P/A`) %>%
     gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in 3-8 Subjects", width = 1000, height = 550, vAxis = "{baseline: 0, title: 'Percent Proficient or Advanced', maxValue: 100}"))
 
 plot(ach_plot)
@@ -81,8 +81,8 @@ Here is a graph with some achievement data for EOC subjects:
 eoc_plot <- ach_profile %>%
     select(District, AlgI, AlgII, BioI, Chemistry, EngI, EngII, EngIII) %>%
     rename(`Algebra I` = AlgI, `Algebra II` = AlgII, `Biology I` = BioI, `English I` = EngI, `English II` = EngII, `English III` = EngIII) %>%
-    gather("Subject", "Percent P/A", 2:8) %>%
-    spread("District", "Percent P/A") %>%
+    gather(Subject, `Percent P/A`, 2:8) %>%
+    spread(District, `Percent P/A`) %>%
     gvisColumnChart(xvar = "Subject", yvar = c("Davidson County", "State"), options = list(title = "Achievement in EOC Subjects", width = 1000, height = 550, vAxis = "{baseline: 0, title: 'Percent Proficient or Advanced', maxValue: 100}"))
 
 plot(eoc_plot)
