@@ -30,10 +30,8 @@ shinyServer(function(input, output, session) {
 
         paste0("<b>", row$system_name, "</b><br>",
             row$Region, "<br>",
-            names(district_char)[district_char == input$char], ": ", 
-                row[names(row) == input$char], "<br>",
-            names(district_out)[district_out == input$outcome], ": ",
-                row[names(row) == input$outcome])
+            names(district_char)[district_char == input$char], ": ", row[names(row) == input$char], "<br>",
+            names(district_out)[district_out == input$outcome], ": ", row[names(row) == input$outcome])
     }
 
     # Update highlighted district on point click
@@ -63,12 +61,12 @@ shinyServer(function(input, output, session) {
         df_highlight() %>%
             ggvis(xvar, yvar, key := ~system_name) %>%
             layer_points(fill = ~Region, size := 125, size.hover := 300,
-                opacity = ~factor(opacity), opacity.hover := 0.8) %>%
+                opacity = ~opacity, opacity.hover := 0.8) %>%
             add_axis("x", title = xvar_name, grid = FALSE) %>%
             add_axis("y", title = yvar_name, grid = FALSE) %>%
             scale_numeric("y", domain = y_scale) %>%
             add_tooltip(tooltip_scatter, on = "hover") %>%
-            scale_nominal("opacity", range = c(min(df_highlight()$opacity), 1)) %>%
+            scale_numeric("opacity", range = c(min(df_highlight()$opacity), 1)) %>%
             scale_nominal("fill", range = c('#000000', '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf')) %>%
             set_options(width = 'auto', height = 700) %>%
             handle_click(click_district)

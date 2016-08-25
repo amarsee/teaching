@@ -47,10 +47,9 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ## Learning R
 
 * Internal Training:
-    + Intro to R (Bob Muenchen, UT)
-    + R quickstart (Alex)
-    + Creating documents with R Markdown and `knitr` (?)
-    + Interactive web applications in `shiny` (?)
+    + R quickstart
+    + Creating documents with R Markdown and `knitr`
+    + Interactive web applications in `shiny`
 
 * Resources for self-paced learning:
     + The online book [R for data science](http://r4ds.had.co.nz/), with accompanying [slides](https://github.com/rstudio/Intro/tree/master/slides)
