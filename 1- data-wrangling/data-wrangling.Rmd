@@ -147,6 +147,14 @@ Specify any argument to override the defaults. For instance, if you don't want `
 write_csv(data_frame, path = "some/file/path", na = "")
 ```
 
+## Functions
+
+If you don't specify an argument that has no default, R will return an error.
+
+``` {r, error = TRUE}
+write_csv(path = "some/file/path")
+```
+
 ## Documentation
 
 Read the documentation for a function to see what the arguments do. Type `?[name of function]` in the console to open the documentation.
@@ -1376,43 +1384,107 @@ What is the `ach_profile` data frame wide by? Long by?
 * `gather()` converts a data frame from wide to long.
 * `spread()` converts a data frame from long to wide.
 
-## Some terminology
+## Reshaping data frames
 
-`tidyr`'s functions are based on the idea of **key-value pairs**.
-
-A **key** describes what information your data contains, and the **value** is the information itself.
-
-## Some terminology
-
-Values of key variables might be spread across columns or rows:
+Suppose I want to reshape this data frame long by subject/characteristic.
 
 ![](images/viewer.png)
 
 ## Reshaping data frames
 
-`gather()` converts a data frame from wide to long:
+This is going to create a new variable with `"AlgI"`, `"AlgII"`, ..., `"Dropout"`, and a new variable with the appropriate value for each district.
 
-``` {r, eval = FALSE}
-gather(ach_profile, key = outcome, value = value, AlgI:Dropout)
+``` {r, echo = FALSE}
+ach_profile %>%
+    gather(outcome, value, AlgI:Dropout) %>%
+    select(system, system_name, outcome, value)
 ```
-
-> * The first argument to `gather()` is a data frame.
-> * The second is the name of a new variable which will take the values of the key.
-> * The third is the name of a new variable which will take the values in key-value pairs.
-> * The fourth is a set of variable names which are the values of your key.
 
 ## Reshaping data frames
 
 `gather()` converts a data frame from wide to long:
 
 ``` {r, eval = FALSE}
-gather(ach_profile, key = outcome, value = value, AlgI:Dropout)
+gather(ach_profile, outcome, value, AlgI:Dropout)
+```
+
+> * The first argument to `gather()` is a data frame.
+> * The second is the name of a new variable which will take the values of your column names.
+> * The third is the name of a new variable which will take the values of the data in your columns.
+> * The fourth is the columns you want to convert to a variable.
+
+## Reshaping data frames
+
+`gather()` converts a data frame from wide to long:
+
+``` {r, eval = FALSE}
+gather(ach_profile, outcome, value, AlgI:Dropout)
 ```
 
 ``` {r, echo = FALSE}
 ach_profile %>%
     gather(outcome, value, AlgI:Dropout) %>%
     select(system, system_name, outcome, value, CORE_region)
+```
+
+## Reshaping data frames
+
+`spread()` converts a data frame from long to wide:
+
+``` {r, echo = FALSE}
+ach_profile %>%
+    gather(outcome, value, AlgI:Dropout) %>%
+    select(system, system_name, outcome, value, CORE_region)
+```
+
+. . .
+
+Suppose I want to reshape this data frame wide by district.
+
+## Reshaping data frames
+
+First, I'll save the long version of this data frame as an R object.
+
+``` {r}
+ach_profile_long <- ach_profile %>%
+    gather(outcome, value, AlgI:Dropout) %>%
+    select(system_name, outcome, value)
+```
+
+## Reshaping data frames
+
+`spread()` converts a data frame from long to wide:
+
+``` {r, eval = FALSE}
+spread(ach_profile_long, system_name, value)
+```
+
+> * The first argument to `spread()` is a data frame.
+> * The second is the variable you want to convert your data frame wide by. The values of that variable will become column headers.
+> * The third is the values that will populate the cells in your new columns.
+
+## Reshaping data frames
+
+`spread()` converts a data frame from long to wide:
+
+``` {r, echo = FALSE}
+spread(ach_profile_long, system_name, value)
+```
+
+## Exercise 11
+
+Reshape the `tvaas` data frame long by subject, then arrange by system.
+
+![](images/tvaas2.png)
+
+## Exercise 11
+
+Reshape the `tvaas` data frame long by subject, then arrange by system.
+
+``` {r}
+tvaas %>%
+    gather(subject, score, `TVAAS Composite`:`TVAAS Numeracy`) %>%
+    arrange(system)
 ```
 
 ## Troubleshooting
