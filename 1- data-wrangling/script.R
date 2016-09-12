@@ -74,3 +74,8 @@ ach_profile <- read_csv("data/achievement_profile_data_with_CORE.csv")
 # Create a data frame with the number of districts at each TVAAS level, by CORE region.
 
 
+
+## Exercise 11
+# Reshape the `tvaas` data frame long by subject, then arrange by system.
+
+

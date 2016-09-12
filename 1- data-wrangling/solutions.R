@@ -120,3 +120,10 @@ ach_profile %>%
               Level4 = sum(Level4, na.rm = TRUE),
               Level5 = sum(Level5, na.rm = TRUE)) %>%
     ungroup()
+
+## Exercise 11
+# Reshape the tvaas data frame long by subject.
+
+tvaas %>%
+    gather(subject, score, `TVAAS Composite`:`TVAAS Numeracy`) %>%
+    arrange(system)
