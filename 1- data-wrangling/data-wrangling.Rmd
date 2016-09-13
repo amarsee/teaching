@@ -19,23 +19,33 @@ library(dplyr)
 library(ggplot2)
 ```
 
-## Table of Contents
+## Table of contents
 
-* Functions
-* Packages
-* Importing data
-* Looking at data
-* Summary statistics
-* Missingness
-* Keeping/dropping variables
-* Keeping/dropping observations
-* Creating/modifying variables
-* The pipe operator (`%>%`)
-* Aggregating
-* Operations within groups
-* Operations within rows
-* Combining data frames
-* Reshaping
+* [Functions](#/functions)
+* [Arguments](#/arguments)
+* [Documentation](#/documentation)
+* [Packages](#/packages)
+* [Importing data](#/importing-data)
+* [Looking at data](#/looking-at-data)
+* [Summary statistics](#/summary-statistics)
+* [Missingness](#/missingness)
+* [Keeping/dropping variables](#/keepingdropping-variables)
+* [Reordering variables](#/reordering-variables)
+* [Keeping/dropping observations](#/keepingdropping-observations)
+* [Creating/modifying variables](#/creating-new-variables)
+* [Creating/modifying variables conditionally](#/ifelse-with-mutate)
+* [The pipe operator](#/the-pipe-operator)
+* [Renaming variables](#/renaming-variables)
+
+## Table of contents
+
+* [Sorting](#/sorting-a-data-frame)
+* [Creating a data frame of summary statistics](#/collapsing-a-data-frame)
+* [Aggregating data by group](#/collapsing-a-data-frame-2)
+* [Add summary statistics to a data frame](#/add-summary-statistics-to-a-data-frame)
+* [Operations by row](#/operations-by-row)
+* [Combining data frames](#/combining-data-frames)
+* [Reshaping](#/reshaping-data-frames)
 
 ## Functions
 
@@ -68,7 +78,7 @@ and use them just like any other R function:
 square_me(2)
 ```
 
-## Functions
+## Arguments
 
 Call functions with or without explicitly naming arguments:
 
@@ -86,7 +96,7 @@ With naming:
 square_me(x = 3)
 ```
 
-## Functions
+## Arguments
 
 If a function takes multiple arguments, you can specify them in order without naming them:
 
@@ -104,7 +114,7 @@ power_me(2, 3)
 
 R matches the first value to the first argument `base`, and the second to the second argument `exponent`.
 
-## Functions
+## Arguments
 
 Alternatively, specify arguments in any order by naming them:
 
@@ -120,7 +130,7 @@ power_me(exponent = 3, base = 2)
 
 Naming arguments in function calls is generally good practice.
 
-## Functions
+## Arguments
 
 Most functions have lots of arguments. Many arguments have a default value so you don't have to specify them.
 
@@ -138,7 +148,7 @@ Specify any argument to override the defaults. For instance, if you don't want `
 write_csv(data_frame, path = "some/file/path", na = "")
 ```
 
-## Functions
+## Arguments
 
 If you don't specify an argument that has no default, R will return an error.
 

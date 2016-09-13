@@ -126,43 +126,36 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <h3 class="date">September 13, 2016</h3>
 </section>
 
-<section id="materials-for-today" class="slide level2">
-<h1>Materials for today</h1>
-<p>Find them at:</p>
-<ul>
-<li><a href="https://github.com/alexander-poon/teaching" class="uri">https://github.com/alexander-poon/teaching</a></li>
-<li>K:/ORP_accountability/R Training/teaching/1- data-wrangling</li>
-</ul>
-</section>
-<section id="tentative-outline-for-tdoe-r-training" class="slide level2">
-<h1>Tentative Outline for TDoE R Training</h1>
-<ul>
-<li class="fragment">Introduction to R (Today)</li>
-<li class="fragment">Graphics &amp; Documents with R Markdown (October 14th)</li>
-<li class="fragment">Interactive Web Applications with <code>Shiny</code> (November/December)</li>
-</ul>
-<div class="fragment">
-<p>+ Workshopping time (depending on demand)</p>
-</div>
-</section>
 <section id="table-of-contents" class="slide level2">
-<h1>Table of Contents</h1>
+<h1>Table of contents</h1>
 <ul>
-<li>Functions</li>
-<li>Packages</li>
-<li>Importing data</li>
-<li>Looking at data</li>
-<li>Summary statistics</li>
-<li>Missingness</li>
-<li>Keeping/dropping variables</li>
-<li>Keeping/dropping observations</li>
-<li>Creating/modifying variables</li>
-<li>The pipe operator (<code>%&gt;%</code>)</li>
-<li>Aggregating</li>
-<li>Operations within groups</li>
-<li>Operations within rows</li>
-<li>Combining data frames</li>
-<li>Reshaping</li>
+<li><a href="#//functions">Functions</a></li>
+<li><a href="#//arguments">Arguments</a></li>
+<li><a href="#//documentation">Documentation</a></li>
+<li><a href="#//packages">Packages</a></li>
+<li><a href="#//importing-data">Importing data</a></li>
+<li><a href="#//looking-at-data">Looking at data</a></li>
+<li><a href="#//summary-statistics">Summary statistics</a></li>
+<li><a href="#//missingness">Missingness</a></li>
+<li><a href="#//keepingdropping-variables">Keeping/dropping variables</a></li>
+<li><a href="#//reordering-variables">Reordering variables</a></li>
+<li><a href="#//keepingdropping-observations">Keeping/dropping observations</a></li>
+<li><a href="#//creating-new-variables">Creating/modifying variables</a></li>
+<li><a href="#//ifelse-with-mutate">Creating/modifying variables conditionally</a></li>
+<li><a href="#//the-pipe-operator">The pipe operator</a></li>
+<li><a href="#//renaming-variables">Renaming variables</a></li>
+</ul>
+</section>
+<section id="table-of-contents-1" class="slide level2">
+<h1>Table of contents</h1>
+<ul>
+<li><a href="#//sorting-a-data-frame">Sorting</a></li>
+<li><a href="#//collapsing-a-data-frame">Creating a data frame of summary statistics</a></li>
+<li><a href="#//collapsing-a-data-frame-2">Aggregating data by group</a></li>
+<li><a href="#//add-summary-statistics-to-a-data-frame">Add summary statistics to a data frame</a></li>
+<li><a href="#//operations-by-row">Operations by row</a></li>
+<li><a href="#//combining-data-frames">Combining data frames</a></li>
+<li><a href="#//reshaping-data-frames">Reshaping</a></li>
 </ul>
 </section>
 <section id="functions" class="slide level2">
@@ -190,8 +183,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>## [1] 4</code></pre>
 </div>
 </section>
-<section id="functions-3" class="slide level2">
-<h1>Functions</h1>
+<section id="arguments" class="slide level2">
+<h1>Arguments</h1>
 <p>Call functions with or without explicitly naming arguments:</p>
 <p>Without naming:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">square_me</span>(<span class="dv">2</span>)</code></pre></div>
@@ -202,8 +195,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>## [1] 9</code></pre>
 </div>
 </section>
-<section id="functions-4" class="slide level2">
-<h1>Functions</h1>
+<section id="arguments-1" class="slide level2">
+<h1>Arguments</h1>
 <p>If a function takes multiple arguments, you can specify them in order without naming them:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">power_me &lt;-<span class="st"> </span>function(base, exponent) {
     base^exponent
@@ -214,8 +207,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>R matches the first value to the first argument <code>base</code>, and the second to the second argument <code>exponent</code>.</p>
 </div>
 </section>
-<section id="functions-5" class="slide level2">
-<h1>Functions</h1>
+<section id="arguments-2" class="slide level2">
+<h1>Arguments</h1>
 <p>Alternatively, specify arguments in any order by naming them:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">power_me &lt;-<span class="st"> </span>function(base, exponent) {
     base^exponent
@@ -224,8 +217,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>## [1] 8</code></pre>
 <p>Naming arguments in function calls is generally good practice.</p>
 </section>
-<section id="functions-6" class="slide level2">
-<h1>Functions</h1>
+<section id="arguments-3" class="slide level2">
+<h1>Arguments</h1>
 <p>Most functions have lots of arguments. Many arguments have a default value so you don’t have to specify them.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(write_csv)</code></pre></div>
 <pre><code>## function (x, path, na = &quot;NA&quot;, append = FALSE, col_names = !append)</code></pre>
@@ -235,8 +228,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write_csv</span>(data_frame, <span class="dt">path =</span> <span class="st">&quot;some/file/path&quot;</span>, <span class="dt">na =</span> <span class="st">&quot;&quot;</span>)</code></pre></div>
 </div>
 </section>
-<section id="functions-7" class="slide level2">
-<h1>Functions</h1>
+<section id="arguments-4" class="slide level2">
+<h1>Arguments</h1>
 <p>If you don’t specify an argument that has no default, R will return an error.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write_csv</span>(<span class="dt">path =</span> <span class="st">&quot;some/file/path&quot;</span>)</code></pre></div>
 <pre><code>## Error in is.data.frame(x): argument &quot;x&quot; is missing, with no default</code></pre>
@@ -1419,7 +1412,8 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
            <span class="dt">Sci_avg =</span> <span class="kw">mean</span>(<span class="kw">c</span>(Science, BioI, Chemistry), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) %&gt;%
 <span class="st">    </span><span class="kw">ungroup</span>() %&gt;%
 <span class="st">    </span><span class="kw">select</span>(system, system_name, Math, AlgI, AlgII, Math_avg,
-           ELA, EngI, EngII, EngIII, Eng_avg, Science, BioI, Chemistry, Sci_avg)</code></pre></div>
+           ELA, EngI, EngII, EngIII, Eng_avg, 
+           Science, BioI, Chemistry, Sci_avg)</code></pre></div>
 </section>
 <section id="exercise-9-2" class="slide level2">
 <h1>Exercise 9</h1>
@@ -1535,7 +1529,7 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <li><code>left_join()</code> drops unmerged observations in the second data frame.</li>
 <li><code>right_join()</code> drops unmerged observations in the first data frame.</li>
 <li><code>full_join()</code> keeps all observations.</li>
-<li><code>anti_join()</code> keeps only unmerged observations.</li>
+<li><code>anti_join()</code> keeps only unmerged observations in the first data frame.</li>
 </ul>
 <p><code>ach_profile</code> has achievement and profile data for all districts and the state. <code>tvaas</code> has TVAAS data for all districts.</p>
 <p>Q: What happens if we <code>left_join()</code> the <code>ach_profile</code> and <code>tvaas</code> data frames?</p>
@@ -1548,7 +1542,7 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <li><code>left_join()</code> drops unmerged observations in the second data frame.</li>
 <li><code>right_join()</code> drops unmerged observations in the first data frame.</li>
 <li><code>full_join()</code> keeps all observations.</li>
-<li><code>anti_join()</code> keeps only unmerged observations.</li>
+<li><code>anti_join()</code> keeps only unmerged observations in the first data frame.</li>
 </ul>
 <p><code>ach_profile</code> has achievement and profile data for all districts and the state. <code>tvaas</code> has TVAAS data for all districts.</p>
 <p>Q: What happens if we <code>right_join()</code> the <code>ach_profile</code> and <code>tvaas</code> data frames?</p>
@@ -1561,7 +1555,7 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <li><code>left_join()</code> drops unmerged observations in the second data frame.</li>
 <li><code>right_join()</code> drops unmerged observations in the first data frame.</li>
 <li><code>full_join()</code> keeps all observations.</li>
-<li><code>anti_join()</code> keeps only unmerged observations.</li>
+<li><code>anti_join()</code> keeps only unmerged observations in the first data frame.</li>
 </ul>
 <p><code>ach_profile</code> has achievement and profile data for all districts and the state. <code>tvaas</code> has TVAAS data for all districts.</p>
 <p>Q: What happens if we <code>full_join()</code> the <code>ach_profile</code> and <code>tvaas</code> data frames?</p>
@@ -1574,7 +1568,7 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <li><code>left_join()</code> drops unmerged observations in the second data frame.</li>
 <li><code>right_join()</code> drops unmerged observations in the first data frame.</li>
 <li><code>full_join()</code> keeps all observations.</li>
-<li><code>anti_join()</code> keeps only unmerged observations.</li>
+<li><code>anti_join()</code> keeps only unmerged observations in the first data frame.</li>
 </ul>
 <p><code>ach_profile</code> has achievement and profile data for all districts and the state. <code>tvaas</code> has TVAAS data for all districts.</p>
 <p>Q: What happens if we <code>anti_join()</code> the <code>ach_profile</code> and <code>tvaas</code> data frames?</p>
