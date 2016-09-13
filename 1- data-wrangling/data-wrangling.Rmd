@@ -16,7 +16,15 @@ options(width = 65)
 library(readr)
 library(tidyr)
 library(dplyr)
+library(ggplot2)
 ```
+
+## Materials for today
+
+Find them at:
+
+* https://github.com/alexander-poon/teaching
+* K:/ORP_accountability/R Training/teaching/1- data-wrangling
 
 ## Tentative Outline for TDoE R Training
 
@@ -248,7 +256,7 @@ ach_profile <- read_csv("data/achievement_profile_data_with_CORE.csv")
 
 Use `View()` to look at a data frame:
 
-```{r, eval = FALSE}
+``` {r, eval = FALSE}
 View(ach_profile)
 ```
 
@@ -509,7 +517,7 @@ mutate(ach_profile, Enrollment = Enrollment/1000,
 Use `ifelse()` if you want a variable to take different values under different conditions:
 
 ``` {r, eval = FALSE}
-mutate(ach_profile, 
+mutate(ach_profile,
     district_size = ifelse(Enrollment >= 10000, "Large", "Small"))
 ```
 
@@ -539,7 +547,7 @@ mutate(ach_profile, district_size = ifelse(Enrollment >= 10000, "Large", "Small"
 Use multiple `ifelse()` statements in succession if you have multiple conditions:
 
 ``` {r, eval = FALSE}
-mutate(ach_profile, 
+mutate(ach_profile,
     district_size = ifelse(Enrollment >= 10000, "Large", NA),
     district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000, 
         "Medium", district_size),
@@ -555,7 +563,7 @@ The first `ifelse()` assigns a value of `"Large"` to `district_size` if `Enrollm
 Use multiple `ifelse()` statements in succession if you have multiple conditions:
 
 ``` {r, eval = FALSE}
-mutate(ach_profile, 
+mutate(ach_profile,
     district_size = ifelse(Enrollment >= 10000, "Large", NA),
     district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000, 
         "Medium", district_size),
@@ -569,9 +577,9 @@ The second `ifelse()` assigns a value of `"Medium"` to `district_size` if `Enrol
 Use multiple `ifelse()` statements in succession if you have multiple conditions:
 
 ``` {r, eval = FALSE}
-mutate(ach_profile, 
+mutate(ach_profile,
     district_size = ifelse(Enrollment >= 10000, "Large", NA),
-    district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000, 
+    district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000,
         "Medium", district_size),
     district_size = ifelse(Enrollment < 5000, "Small", district_size))
 ```
@@ -581,15 +589,15 @@ The third `ifelse()` assigns a value of `"Small"` to `district_size` if `Enrollm
 ## `ifelse()` with `mutate()`
 
 ``` {r, eval = FALSE}
-mutate(ach_profile, 
+mutate(ach_profile,
     district_size = ifelse(Enrollment >= 10000, "Large", NA),
-    district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000, 
+    district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000,
         "Medium", district_size),
     district_size = ifelse(Enrollment < 5000, "Small", district_size))
 ```
 
 ``` {r, echo = FALSE}
-mutate(ach_profile, 
+mutate(ach_profile,
     district_size = ifelse(Enrollment >= 10000, "Large", NA),
     district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000, "Medium", district_size),
     district_size = ifelse(Enrollment < 5000, "Small", district_size)) %>%
@@ -608,10 +616,10 @@ Create a new variable called `math_achievement` with a value of:
 
 . . .
 
-``` {r eval = FALSE}
+``` {r, eval = FALSE}
 mutate(ach_profile,
     math_achievement = ifelse(Math >= 75, "High", NA),
-    math_achievement = ifelse(Math >= 50 & Math < 75, "Medium", 
+    math_achievement = ifelse(Math >= 50 & Math < 75, "Medium",
                               math_achievement),
     math_achievement = ifelse(Math < 50, "Low", math_achievement))
 ```
@@ -624,7 +632,7 @@ Create a new variable called `math_achievement` with a value of:
 * `"Medium"` if a district's Math proficiency is between 50% and 75%;
 * `"Low"` if a district's Math proficiency is below 50%.
 
-``` {r echo = FALSE}
+``` {r, echo = FALSE}
 mutate(ach_profile,
     math_achievement = ifelse(Math >= 75, "High", NA),
     math_achievement = ifelse(Math >= 50 & Math < 75, "Medium", 
@@ -638,8 +646,8 @@ mutate(ach_profile,
 Often, you will want to do several data manipulations in succession. This can be a hassle if you have to nest a bunch of function calls:
 
 ``` {r, eval = FALSE}
-mutate(select(filter(ach_profile, system_name != "State of Tennessee"), 
-    system_name, Enrollment:Per_Pupil_Expenditures), 
+mutate(select(filter(ach_profile, system_name != "State of Tennessee"),
+    system_name, Enrollment:Per_Pupil_Expenditures),
     Enrollment = log10(Enrollment))
 ```
 
@@ -649,7 +657,7 @@ Or assign each intermediate step to a variable:
 
 ``` {r, eval = FALSE}
 ach_profile2 <- filter(ach_profile, system_name != "State of Tennessee")
-ach_profile3 <- select(ach_profile2, 
+ach_profile3 <- select(ach_profile2,
                        system_name, Enrollment:Per_Pupil_Expenditures)
 ach_profile4 <- mutate(ach_profile3, Enrollment = log10(Enrollment))
 ```
@@ -658,7 +666,9 @@ ach_profile4 <- mutate(ach_profile3, Enrollment = log10(Enrollment))
 
 The pipe operator (`%>%`) provides a better alternative. It passes the result of one function as the first argument to another function.
 
-The first argument of all `dplyr` and `tidyr` functions are the data frame you want to manipulate, so piping makes for more readable code:
+. . .
+
+The first argument of all `dplyr` and `tidyr` functions is the data frame you want to manipulate, so piping makes for more readable code:
 
 ``` {r, eval = FALSE}
 ach_profile %>%
@@ -695,7 +705,7 @@ ach_profile %>%
 
 Rename variables with `rename()`:
 
-```{r, eval = FALSE}
+``` {r, eval = FALSE}
 rename(ach_profile, District = system)
 ```
 
@@ -707,7 +717,7 @@ The first argument to `select()` is a data frame, followed by pairs of names wit
 
 Rename variables with `rename()`:
 
-```{r}
+``` {r}
 rename(ach_profile, District = system)
 ```
 
@@ -715,14 +725,14 @@ rename(ach_profile, District = system)
 
 Variable names can contain spaces and other characters. Put backticks (``) around a name if it contains spaces.
 
-```{r, eval = FALSE}
+``` {r, eval = FALSE}
 rename(ach_profile, District = system, 
        `District Name` = system_name)
 ```
 
 . . .
 
-```{r, echo = FALSE}
+``` {r, echo = FALSE}
 rename(ach_profile, District = system, 
        `District Name` = system_name)
 ```
@@ -733,7 +743,7 @@ Do the following in one sequence of function calls, piped together:
 
 1. Read in the `data/tvaas.csv` file.
 2. Rename variables as follows:
-    * `District Name` to `system`.
+    * `District Number` to `system`.
     * `District-Wide: Composite` to `TVAAS Composite`.
     * `District-Wide: Literacy` to `TVAAS Literacy`.
     * `District-Wide: Numeracy` to `TVAAS Numeracy`.
@@ -764,7 +774,7 @@ tvaas <- read_csv("data/tvaas.csv") %>%
 
 Sort a data frame with `arrange()`:
 
-```{r, eval = FALSE}
+``` {r, eval = FALSE}
 arrange(ach_profile, system_name)
 ```
 
@@ -774,7 +784,7 @@ The first argument to `arrange()` is a data frame, and the second is the variabl
 
 Sort a data frame with `arrange()`:
 
-```{r}
+``` {r}
 arrange(ach_profile, system_name)
 ```
 
@@ -788,7 +798,7 @@ arrange(ach_profile, desc(system_name))
 
 ## Exercise 5
 
-Sort alphabetically by CORE region, then by Algebra I proficiency in descending order. Then, keep just the district name, Algebra I proficiency, and CORE region variables.
+Sort `ach_profile` alphabetically by CORE region, then by Algebra I proficiency in descending order. Then, keep just the district name, Algebra I proficiency, and CORE region variables.
 
 . . .
 
@@ -812,7 +822,7 @@ Collapse a data frame into summary statistics with `summarise()`:
 
 ``` {r}
 ach_profile %>%
-    summarise(mean(Math, na.rm = TRUE), 
+    summarise(mean(Math, na.rm = TRUE),
               mean(ELA, na.rm = TRUE))
 ```
 
@@ -824,7 +834,7 @@ Collapse a data frame into summary statistics with `summarise()`:
 
 ``` {r}
 ach_profile %>%
-    summarise(mean_math = mean(Math, na.rm = TRUE), 
+    summarise(mean_math = mean(Math, na.rm = TRUE),
               mean_ELA = mean(ELA, na.rm = TRUE))
 ```
 
@@ -898,8 +908,8 @@ ach_profile %>%
 
 `group_by()` affects all `dplyr` functions, e.g.:
 
-* Can't drop grouping variables with `select()`
-* `arrange()` sorts on grouping variables first
+* `select()` doesn't  drop grouping variables.
+* `arrange()` sorts on grouping variables first.
 
 ## Add summary statistics to a data frame
 
@@ -947,7 +957,7 @@ ach_profile %>%
     mutate(median_pct_ED = median(Pct_ED, na.rm = TRUE),
         median_Math = median(Math, na.rm = TRUE)) %>%
     filter(Pct_ED > median_pct_ED & Math > median_Math) %>%
-    select(system, system_name, Math, median_Math)
+    select(system_name, Math, median_Math)
 ```
 
 ## Exercise 7
@@ -1001,7 +1011,6 @@ ach_profile %>%
     ungroup() %>%
     filter(Dropout > dropout_mean) %>%
     select(system_name, CORE_region, Dropout, dropout_mean)
-    
 ```
 
 ## Operations by row
@@ -1049,7 +1058,7 @@ The solution is to use `rowwise()`:
 ``` {r, eval = FALSE}
 ach_profile %>%
     rowwise() %>%
-    mutate(Alg_average = mean(c(AlgI, AlgII), na.rm = TRUE)
+    mutate(Alg_average = mean(c(AlgI, AlgII), na.rm = TRUE))
 ```
 
 . . .
@@ -1075,7 +1084,7 @@ Similar to `group_by()`, you should apply `ungroup()` after doing operations by 
 ``` {r, eval = FALSE}
 ach_profile %>%
     rowwise() %>%
-    mutate(Alg_average = mean(c(AlgI, AlgII), na.rm = TRUE) %>%
+    mutate(Alg_average = mean(c(AlgI, AlgII), na.rm = TRUE)) %>%
     ungroup()
 ```
 
@@ -1101,7 +1110,8 @@ ach_profile %>%
     rowwise() %>%
     mutate(Math_avg = mean(c(Math, AlgI, AlgII), na.rm = TRUE),
            Eng_avg = mean(c(ELA, EngI, EngII, EngIII), na.rm = TRUE),
-           Sci_avg = mean(c(Science, BioI, Chemistry, na.rm = TRUE))) %>%
+           Sci_avg = mean(c(Science, BioI, Chemistry), na.rm = TRUE)) %>%
+    ungroup() %>%
     select(system, system_name, Math, AlgI, AlgII, Math_avg,
            ELA, EngI, EngII, EngIII, Eng_avg, Science, BioI, Chemistry, Sci_avg)
 ```
@@ -1113,7 +1123,8 @@ ach_profile %>%
     rowwise() %>%
     mutate(Math_avg = mean(c(Math, AlgI, AlgII), na.rm = TRUE),
            Eng_avg = mean(c(ELA, EngI, EngII, EngIII), na.rm = TRUE),
-           Sci_avg = mean(c(Science, BioI, Chemistry, na.rm = TRUE))) %>%
+           Sci_avg = mean(c(Science, BioI, Chemistry), na.rm = TRUE)) %>%
+    ungroup() %>%
     select(system, system_name, Math, AlgI, AlgII, Math_avg,
            ELA, EngI, EngII, EngIII, Eng_avg, Science, BioI, Chemistry, Sci_avg)
 ```
@@ -1373,7 +1384,7 @@ A data frame is **long** by a variable if values of that variable are spread acr
 
 ## Some terminology
 
-What is the `ach_profile` data frame wide by? Long by?
+Q: What is the `ach_profile` data frame wide by? Long by?
 
 ![](images/viewer.png)
 
@@ -1487,6 +1498,24 @@ tvaas %>%
     arrange(system)
 ```
 
+## Preview for next time
+
+``` {r, eval = FALSE}
+tvaas %>%
+    gather(subject, score, `TVAAS Composite`:`TVAAS Numeracy`) %>%
+    ggplot(aes(x = subject, fill = factor(score))) +
+    geom_bar()
+```
+
+## Preview for next time
+
+``` {r, echo = FALSE}
+tvaas %>%
+    gather(subject, score, `TVAAS Composite`:`TVAAS Numeracy`) %>%
+    ggplot(aes(x = subject, fill = factor(score))) +
+    geom_bar()
+```
+
 ## Troubleshooting
 
 1. Look at the documentation
@@ -1496,16 +1525,6 @@ tvaas %>%
     + There are often more elaborate examples and vignettes on the web than in the documentation
 3. Stack Overflow + Google Groups
     + Forums with lots of answered questions, or ask your own
-
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-
-. . .
-
-<small>(Ask Alex)</small>
 
 ## Resources
 
