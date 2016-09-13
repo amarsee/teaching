@@ -19,23 +19,6 @@ library(dplyr)
 library(ggplot2)
 ```
 
-## Materials for today
-
-Find them at:
-
-* https://github.com/alexander-poon/teaching
-* K:/ORP_accountability/R Training/teaching/1- data-wrangling
-
-## Tentative Outline for TDoE R Training
-
-> * Introduction to R (Today)
-> * Graphics & Documents with R Markdown (October 14th)
-> * Interactive Web Applications with `Shiny` (November/December)
-
-. . .
-
-\+ Workshopping time (depending on demand)
-
 ## Table of Contents
 
 * Functions
@@ -1113,7 +1096,8 @@ ach_profile %>%
            Sci_avg = mean(c(Science, BioI, Chemistry), na.rm = TRUE)) %>%
     ungroup() %>%
     select(system, system_name, Math, AlgI, AlgII, Math_avg,
-           ELA, EngI, EngII, EngIII, Eng_avg, Science, BioI, Chemistry, Sci_avg)
+           ELA, EngI, EngII, EngIII, Eng_avg, 
+           Science, BioI, Chemistry, Sci_avg)
 ```
 
 ## Exercise 9
@@ -1221,7 +1205,7 @@ There are five types of joins:
 * `left_join()` drops unmerged observations in the second data frame.
 * `right_join()` drops unmerged observations in the first data frame.
 * `full_join()` keeps all observations.
-* `anti_join()` keeps only unmerged observations.
+* `anti_join()` keeps only unmerged observations in the first data frame.
 
 `ach_profile` has achievement and profile data for all districts and the state. `tvaas` has TVAAS data for all districts.
 
@@ -1235,7 +1219,7 @@ There are five types of joins:
 * `left_join()` drops unmerged observations in the second data frame.
 * `right_join()` drops unmerged observations in the first data frame.
 * `full_join()` keeps all observations.
-* `anti_join()` keeps only unmerged observations.
+* `anti_join()` keeps only unmerged observations in the first data frame.
 
 `ach_profile` has achievement and profile data for all districts and the state. `tvaas` has TVAAS data for all districts.
 
@@ -1249,7 +1233,7 @@ There are five types of joins:
 * `left_join()` drops unmerged observations in the second data frame.
 * `right_join()` drops unmerged observations in the first data frame.
 * `full_join()` keeps all observations.
-* `anti_join()` keeps only unmerged observations.
+* `anti_join()` keeps only unmerged observations in the first data frame.
 
 `ach_profile` has achievement and profile data for all districts and the state. `tvaas` has TVAAS data for all districts.
 
@@ -1263,7 +1247,7 @@ There are five types of joins:
 * `left_join()` drops unmerged observations in the second data frame.
 * `right_join()` drops unmerged observations in the first data frame.
 * `full_join()` keeps all observations.
-* `anti_join()` keeps only unmerged observations.
+* `anti_join()` keeps only unmerged observations in the first data frame.
 
 `ach_profile` has achievement and profile data for all districts and the state. `tvaas` has TVAAS data for all districts.
 
