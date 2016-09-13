@@ -27,3 +27,9 @@ Materials for R trainings I've done.
     * For the document, presentation and report examples, open the .Rmd file and click "Knit Word"/"Knit HTML" in RStudio to create the document.
     * For the document and presentation loop examples, open the knit_[document/presentation].R file and click "Run" in RStudio to create the documents.
     * For the Shiny application example, open the global.R, ui.R, and server.R files and click "Run App" in RStudio to open the application.
+
+* data-wrangling
+
+    Data wrangling with `tidyr` and `dplyr`. Requires the `readr`, `tidyr`, and `dplyr` packages. You can install these with the following code:
+
+    `install.packages(c("readr", "tidyr", "dplyr"))`
