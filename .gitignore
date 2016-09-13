@@ -30,4 +30,7 @@ vignettes/*.pdf
 
 # Temporary files created by R markdown
 *.utf8.md
+
+# OS X hidden files
+*.DS_Store
 *.knit.md

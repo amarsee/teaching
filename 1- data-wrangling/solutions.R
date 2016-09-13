@@ -99,7 +99,7 @@ ach_profile %>%
     rowwise() %>%
     mutate(Math_avg = mean(c(Math, AlgI, AlgII), na.rm = TRUE),
            Eng_avg = mean(c(ELA, EngI, EngII, EngIII), na.rm = TRUE),
-           Sci_avg = mean(c(Science, BioI, Chemistry, na.rm = TRUE))) %>%
+           Sci_avg = mean(c(Science, BioI, Chemistry), na.rm = TRUE)) %>%
     select(system, system_name, Math, AlgI, AlgII, Math_avg,
            ELA, EngI, EngII, EngIII, Eng_avg, Science, BioI, Chemistry, Sci_avg)
 
