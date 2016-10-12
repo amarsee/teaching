@@ -704,7 +704,7 @@ rename(ach_profile, District = system)
 
 . . .
 
-The first argument to `select()` is a data frame, followed by pairs of names with the pattern `new_name = old_name`.
+The first argument to `rename()` is a data frame, followed by pairs of names with the pattern `new_name = old_name`.
 
 ## Renaming variables
 
@@ -818,6 +818,8 @@ ach_profile %>%
     summarise(mean(Math, na.rm = TRUE),
               mean(ELA, na.rm = TRUE))
 ```
+
+. . .
 
 The first argument is a data frame, and the second is any summary statistic(s) you want to compute, separated by a comma.
 
