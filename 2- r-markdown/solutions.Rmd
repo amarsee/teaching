@@ -1,0 +1,47 @@
+---
+output:
+    word_document:
+        reference_docx: document_template.docx
+---
+
+``` {r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+library(readr)
+library(tidyr)
+library(dplyr)
+
+ach_profile <- read_csv("data/achievement_profile_data_with_CORE.csv")
+```
+
+## Davidson County District Performance
+
+**Introduction**
+
+&nbsp;
+
+Davidson County is a school district serving `r ach_profile[ach_profile$system_name == "Davidson County", ]$Enrollment` students. Its expenditures in 2015 were $`r sprintf("%.2f", ach_profile[ach_profile$system_name == "Davidson County", ]$Per_Pupil_Expenditures)` per student.
+
+&nbsp;
+
+**Demographic Information**
+
+&nbsp;
+
+Here is a table with student demographic information for Davidson County:
+
+&nbsp;
+
+``` {r}
+
+ach_profile %>%
+    filter(system_name %in% c("Davidson County", "State of Tennessee")) %>%
+    select(system_name, Pct_BHN, Pct_ED, Pct_SWD, Pct_EL) %>%
+    rename(`Black/Hispanic/Native American` = Pct_BHN, `Economically Disadvantaged` = Pct_ED, `Students with Disabilities` = Pct_SWD, `English Learners` = Pct_EL) %>%
+    gather(Subgroup, `Percentage of Students`, 2:5) %>%
+    spread(system_name, `Percentage of Students`) %>%
+    mutate(`Davidson County` = paste0(`Davidson County`, "%"),
+        `State of Tennessee` = paste0(`State of Tennessee`, "%")) %>%
+    knitr::kable()
+
+```

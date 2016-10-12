@@ -18,6 +18,8 @@ ach_profile <- read_csv("data/achievement_profile_data_with_CORE.csv")
 
 Davidson County is a school district serving `r ` students. Its expenditures in 2015 were `r ` per student.
 
+&nbsp;
+
 **Demographic Information**
 
 Here is a table with student demographic information for Davidson County:
