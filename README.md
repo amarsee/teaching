@@ -33,3 +33,9 @@ Materials for R trainings I've done.
     Data wrangling with `tidyr` and `dplyr`. Requires the `readr`, `tidyr`, and `dplyr` packages. You can install these with the following code:
 
     `install.packages(c("readr", "tidyr", "dplyr"))`
+
+* r-markdown
+
+    Creating documents with `rmarkdown`. Requires the `rmarkdown` package:
+
+    `install.packages("rmarkdown")`
