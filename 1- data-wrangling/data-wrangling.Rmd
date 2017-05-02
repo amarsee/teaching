@@ -13,10 +13,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 options(width = 65)
 
-library(readr)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 ```
 
 ## Table of contents
@@ -33,7 +30,7 @@ library(ggplot2)
 * [Reordering variables](#/reordering-variables)
 * [Keeping/dropping observations](#/keepingdropping-observations)
 * [Creating/modifying variables](#/creating-new-variables)
-* [Creating/modifying variables conditionally](#/ifelse-with-mutate)
+* [Creating/modifying variables conditionally](#/if_else-with-mutate)
 * [The pipe operator](#/the-pipe-operator)
 * [Renaming variables](#/renaming-variables)
 
@@ -206,7 +203,7 @@ library("dplyr")
 |------------------|----------------------|------------------------------|
 |      .csv        |    `readr`           | `read_csv("path/to/file")`   |
 |      .xlsx       |    `readxl`          | `read_excel("path/to/file")` |
-|      .dta        |    `readstata13`     | `read.dta13("path/to/file")` |
+|      .dta        |    `haven`           | `read.dta("path/to/file")` |
 
 A backslash (\\) serves a special purpose in R, so use forward slashes (/) in file paths.
 
@@ -505,95 +502,95 @@ mutate(ach_profile, Enrollment = Enrollment/1000,
     Per_Pupil_Expenditures = Per_Pupil_Expenditures/1000)
 ```
 
-## `ifelse()` with `mutate()`
+## `if_else()` with `mutate()`
 
-Use `ifelse()` if you want a variable to take different values under different conditions:
+Use `if_else()` if you want a variable to take different values under different conditions:
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    district_size = ifelse(Enrollment >= 10000, "Large", "Small"))
+    district_size = if_else(Enrollment >= 10000, "Large", "Small"))
 ```
 
 &nbsp;
 
-> * The first argument to `ifelse()` is a logical condition.
+> * The first argument to `if_else()` is a logical condition.
 > * The second is the value of the new variable if the logical condition is `TRUE`.
 > * The third is the value of the variable if the logical condition is `FALSE`.
 > * If the logical condition returns `NA`, the value of the variable will be `NA`.
 
-## `ifelse()` with `mutate()`
+## `if_else()` with `mutate()`
 
-Use `ifelse()` if you want a variable to take different values under different conditions:
-
-``` {r, eval = FALSE}
-mutate(ach_profile, 
-    district_size = ifelse(Enrollment >= 10000, "Large", "Small"))
-```
-
-``` {r, echo = FALSE}
-mutate(ach_profile, district_size = ifelse(Enrollment >= 10000, "Large", "Small")) %>%
-    select(system_name, Enrollment, district_size)
-```
-
-## `ifelse()` with `mutate()`
-
-Use multiple `ifelse()` statements in succession if you have multiple conditions:
+Use `if_else()` if you want a variable to take different values under different conditions:
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    district_size = ifelse(Enrollment >= 10000, "Large", NA),
-    district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000, 
+    district_size = if_else(Enrollment >= 10000, "Large", "Small"))
+```
+
+``` {r, echo = FALSE}
+mutate(ach_profile, district_size = if_else(Enrollment >= 10000, "Large", "Small")) %>%
+    select(system_name, Enrollment, district_size)
+```
+
+## `if_else()` with `mutate()`
+
+Use multiple `if_else()` statements in succession if you have multiple conditions:
+
+``` {r, eval = FALSE}
+mutate(ach_profile,
+    district_size = if_else(Enrollment >= 10000, "Large", NA),
+    district_size = if_else(Enrollment >= 5000 & Enrollment < 10000, 
         "Medium", district_size),
-    district_size = ifelse(Enrollment < 5000, "Small", district_size))
+    district_size = if_else(Enrollment < 5000, "Small", district_size))
 ```
 
 . . .
 
-The first `ifelse()` assigns a value of `"Large"` to `district_size` if `Enrollment` is greater or equal to 10000, and `NA` otherwise.
+The first `if_else()` assigns a value of `"Large"` to `district_size` if `Enrollment` is greater or equal to 10000, and `NA` otherwise.
 
-## `ifelse()` with `mutate()`
+## `if_else()` with `mutate()`
 
-Use multiple `ifelse()` statements in succession if you have multiple conditions:
+Use multiple `if_else()` statements in succession if you have multiple conditions:
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    district_size = ifelse(Enrollment >= 10000, "Large", NA),
-    district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000, 
+    district_size = if_else(Enrollment >= 10000, "Large", NA),
+    district_size = if_else(Enrollment >= 5000 & Enrollment < 10000, 
         "Medium", district_size),
-    district_size = ifelse(Enrollment < 5000, "Small", district_size))
+    district_size = if_else(Enrollment < 5000, "Small", district_size))
 ```
 
-The second `ifelse()` assigns a value of `"Medium"` to `district_size` if `Enrollment` is between 5000 and 10000, and leaves `district_size` the same otherwise.
+The second `if_else()` assigns a value of `"Medium"` to `district_size` if `Enrollment` is between 5000 and 10000, and leaves `district_size` the same otherwise.
 
-## `ifelse()` with `mutate()`
+## `if_else()` with `mutate()`
 
-Use multiple `ifelse()` statements in succession if you have multiple conditions:
+Use multiple `if_else()` statements in succession if you have multiple conditions:
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    district_size = ifelse(Enrollment >= 10000, "Large", NA),
-    district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000,
+    district_size = if_else(Enrollment >= 10000, "Large", NA),
+    district_size = if_else(Enrollment >= 5000 & Enrollment < 10000,
         "Medium", district_size),
-    district_size = ifelse(Enrollment < 5000, "Small", district_size))
+    district_size = if_else(Enrollment < 5000, "Small", district_size))
 ```
 
-The third `ifelse()` assigns a value of `"Small"` to `district_size` if `Enrollment` is less than 5000, and leaves `district_size` the same otherwise.
+The third `if_else()` assigns a value of `"Small"` to `district_size` if `Enrollment` is less than 5000, and leaves `district_size` the same otherwise.
 
-## `ifelse()` with `mutate()`
+## `if_else()` with `mutate()`
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    district_size = ifelse(Enrollment >= 10000, "Large", NA),
-    district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000,
+    district_size = if_else(Enrollment >= 10000, "Large", NA),
+    district_size = if_else(Enrollment >= 5000 & Enrollment < 10000,
         "Medium", district_size),
-    district_size = ifelse(Enrollment < 5000, "Small", district_size))
+    district_size = if_else(Enrollment < 5000, "Small", district_size))
 ```
 
 ``` {r, echo = FALSE}
 mutate(ach_profile,
-    district_size = ifelse(Enrollment >= 10000, "Large", NA),
-    district_size = ifelse(Enrollment >= 5000 & Enrollment < 10000, "Medium", district_size),
-    district_size = ifelse(Enrollment < 5000, "Small", district_size)) %>%
+    district_size = if_else(Enrollment >= 10000, "Large", NA),
+    district_size = if_else(Enrollment >= 5000 & Enrollment < 10000, "Medium", district_size),
+    district_size = if_else(Enrollment < 5000, "Small", district_size)) %>%
     select(system_name, Enrollment, district_size)
 ```
 
@@ -611,10 +608,9 @@ Create a new variable called `math_achievement` with a value of:
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    math_achievement = ifelse(Math >= 75, "High", NA),
-    math_achievement = ifelse(Math >= 50 & Math < 75, "Medium",
-                              math_achievement),
-    math_achievement = ifelse(Math < 50, "Low", math_achievement))
+    math_achievement = if_else(Math >= 75, "High", NA),
+    math_achievement = if_else(Math >= 50 & Math < 75, "Medium", math_achievement),
+    math_achievement = if_else(Math < 50, "Low", math_achievement))
 ```
 
 ## Exercise 2
@@ -627,10 +623,9 @@ Create a new variable called `math_achievement` with a value of:
 
 ``` {r, echo = FALSE}
 mutate(ach_profile,
-    math_achievement = ifelse(Math >= 75, "High", NA),
-    math_achievement = ifelse(Math >= 50 & Math < 75, "Medium", 
-                              math_achievement),
-    math_achievement = ifelse(Math < 50, "Low", math_achievement)) %>%
+    math_achievement = if_else(Math >= 75, "High", NA),
+    math_achievement = if_else(Math >= 50 & Math < 75, "Medium", math_achievement),
+    math_achievement = if_else(Math < 50, "Low", math_achievement)) %>%
     select(system_name, Math, math_achievement)
 ```
 
@@ -646,7 +641,7 @@ mutate(select(filter(ach_profile, system_name != "State of Tennessee"),
 
 . . .
 
-Or assign each intermediate step to a variable:
+Or assign each intermediate step to a object:
 
 ``` {r, eval = FALSE}
 ach_profile2 <- filter(ach_profile, system_name != "State of Tennessee")
@@ -903,7 +898,7 @@ ach_profile %>%
 
 `group_by()` affects all `dplyr` functions, e.g.:
 
-* `select()` doesn't  drop grouping variables.
+* `select()` doesn't drop grouping variables.
 * `arrange()` sorts on grouping variables first.
 
 ## Add summary statistics to a data frame
@@ -1300,11 +1295,11 @@ Create a data frame with the number of districts at each TVAAS level, by CORE re
 ``` {r, eval = FALSE}
 ach_profile %>%
     inner_join(tvaas, by = "system") %>%
-    mutate(Level1 = ifelse(`TVAAS Composite` == 1, 1, 0),
-           Level2 = ifelse(`TVAAS Composite` == 2, 1, 0),
-           Level3 = ifelse(`TVAAS Composite` == 3, 1, 0),
-           Level4 = ifelse(`TVAAS Composite` == 4, 1, 0),
-           Level5 = ifelse(`TVAAS Composite` == 5, 1, 0)) %>%
+    mutate(Level1 = if_else(`TVAAS Composite` == 1, 1, 0),
+           Level2 = if_else(`TVAAS Composite` == 2, 1, 0),
+           Level3 = if_else(`TVAAS Composite` == 3, 1, 0),
+           Level4 = if_else(`TVAAS Composite` == 4, 1, 0),
+           Level5 = if_else(`TVAAS Composite` == 5, 1, 0)) %>%
     group_by(CORE_region) %>%
     summarise(Level1 = sum(Level1, na.rm = TRUE),
               Level2 = sum(Level2, na.rm = TRUE),
