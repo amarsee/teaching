@@ -536,6 +536,18 @@ Delete this folder with:
 3) Add one or more `commits`
 4) `push` changes to remote
 
+## Cloning a GitHub repository
+
+Create a copy of a GitHub repo in your working directory:
+
+`git clone https://github.com/some-user/repo.git`
+
+&nbsp;
+
+> * This creates a local copy of a GitHub repo, tied to that remote repository
+> * In particular, this means that you can update your local copy if the remote changes
+> * If you have write access to that remote repository, you can also `push` changes to that remote
+
 ## References
 
 * Learn the Command Line via Codecademy https://www.codecademy.com/learn/learn-the-command-line

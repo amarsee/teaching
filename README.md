@@ -1,6 +1,6 @@
 ## teaching
 
-Materials for R trainings I've done.
+Materials for trainings I've done.
 
 * R-poc
 
