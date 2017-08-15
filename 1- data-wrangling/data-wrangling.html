@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="  Alexander Poon   alex.poon@tn.gov" />
-  <meta name="dcterms.date" content="2017-05-02" />
+  <meta name="dcterms.date" content="2017-08-15" />
   <title>Data Wrangling in R</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -495,7 +495,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section>
     <h1 class="title">Data Wrangling in R</h1>
     <h2 class="author"><br> Alexander Poon <br> <a href="mailto:alex.poon@tn.gov">alex.poon@tn.gov</a></h2>
-    <h3 class="date">May 02, 2017</h3>
+    <h3 class="date">August 15, 2017</h3>
 </section>
 
 <section id="table-of-contents" class="slide level2">
@@ -513,7 +513,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li><a href="#//reordering-variables">Reordering variables</a></li>
 <li><a href="#//keepingdropping-observations">Keeping/dropping observations</a></li>
 <li><a href="#//creating-new-variables">Creating/modifying variables</a></li>
-<li><a href="#//ifelse-with-mutate">Creating/modifying variables conditionally</a></li>
+<li><a href="#//if_else-with-mutate">Creating/modifying variables conditionally</a></li>
 <li><a href="#//the-pipe-operator">The pipe operator</a></li>
 <li><a href="#//renaming-variables">Renaming variables</a></li>
 </ul>
@@ -660,7 +660,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <tr class="odd">
 <td>.dta</td>
 <td><code>haven</code></td>
-<td><code>read.dta(&quot;path/to/file&quot;)</code></td>
+<td><code>read_dta(&quot;path/to/file&quot;)</code></td>
 </tr>
 </tbody>
 </table>
@@ -677,18 +677,18 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h1>Importing data</h1>
 <p>Simply reading data from a file just prints it to the console:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read_csv</span>(<span class="st">&quot;data/achievement_profile_data_with_CORE.csv&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 146 × 28
+<pre><code>## # A tibble: 146 x 28
 ##    system        system_name  AlgI AlgII  BioI Chemistry   ELA
 ##     &lt;int&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
-## 1       0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
-## 2      10    Anderson County  76.1  63.3  73.6      41.0  45.7
-## 3      11       Clinton City    NA    NA    NA        NA  58.3
-## 4      12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
-## 5      20     Bedford County  64.3  42.4  62.1      32.5  44.1
-## 6      30      Benton County  73.7  58.4  77.1      33.1  46.0
-## 7      40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
-## 8      50      Blount County  73.2  59.8  65.1      45.4  46.3
-## 9      51         Alcoa City  82.2  76.8  88.0      66.0  50.2
+##  1      0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
+##  2     10    Anderson County  76.1  63.3  73.6      41.0  45.7
+##  3     11       Clinton City    NA    NA    NA        NA  58.3
+##  4     12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
+##  5     20     Bedford County  64.3  42.4  62.1      32.5  44.1
+##  6     30      Benton County  73.7  58.4  77.1      33.1  46.0
+##  7     40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
+##  8     50      Blount County  73.2  59.8  65.1      45.4  46.3
+##  9     51         Alcoa City  82.2  76.8  88.0      66.0  50.2
 ## 10     52     Maryville City  83.8  77.3  92.1      80.4  69.6
 ## # ... with 136 more rows, and 21 more variables: EngI &lt;dbl&gt;,
 ## #   EngII &lt;dbl&gt;, EngIII &lt;dbl&gt;, Math &lt;dbl&gt;, Science &lt;dbl&gt;,
@@ -935,18 +935,18 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h1>Keeping/dropping variables</h1>
 <p>Keep variables with <code>select()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">select</span>(ach_profile, system, system_name)</code></pre></div>
-<pre><code>## # A tibble: 146 × 2
+<pre><code>## # A tibble: 146 x 2
 ##    system        system_name
 ##     &lt;int&gt;              &lt;chr&gt;
-## 1       0 State of Tennessee
-## 2      10    Anderson County
-## 3      11       Clinton City
-## 4      12     Oak Ridge City
-## 5      20     Bedford County
-## 6      30      Benton County
-## 7      40     Bledsoe County
-## 8      50      Blount County
-## 9      51         Alcoa City
+##  1      0 State of Tennessee
+##  2     10    Anderson County
+##  3     11       Clinton City
+##  4     12     Oak Ridge City
+##  5     20     Bedford County
+##  6     30      Benton County
+##  7     40     Bledsoe County
+##  8     50      Blount County
+##  9     51         Alcoa City
 ## 10     52     Maryville City
 ## # ... with 136 more rows</code></pre>
 </section>
@@ -954,18 +954,18 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h1>Keeping/dropping variables</h1>
 <p>Drop variables with <code>select()</code> using <code>-</code> before a variable name:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">select</span>(ach_profile, -system)</code></pre></div>
-<pre><code>## # A tibble: 146 × 27
+<pre><code>## # A tibble: 146 x 27
 ##           system_name  AlgI AlgII  BioI Chemistry   ELA  EngI
 ##                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1  State of Tennessee  70.0  54.3  65.3      44.2  48.4  71.8
-## 2     Anderson County  76.1  63.3  73.6      41.0  45.7  73.7
-## 3        Clinton City    NA    NA    NA        NA  58.3    NA
-## 4      Oak Ridge City  76.9  72.0  83.5      80.9  56.1  86.7
-## 5      Bedford County  64.3  42.4  62.1      32.5  44.1  72.3
-## 6       Benton County  73.7  58.4  77.1      33.1  46.0  75.4
-## 7      Bledsoe County  64.8  73.9  73.0      19.5  35.4  63.6
-## 8       Blount County  73.2  59.8  65.1      45.4  46.3  71.8
-## 9          Alcoa City  82.2  76.8  88.0      66.0  50.2  85.5
+##  1 State of Tennessee  70.0  54.3  65.3      44.2  48.4  71.8
+##  2    Anderson County  76.1  63.3  73.6      41.0  45.7  73.7
+##  3       Clinton City    NA    NA    NA        NA  58.3    NA
+##  4     Oak Ridge City  76.9  72.0  83.5      80.9  56.1  86.7
+##  5     Bedford County  64.3  42.4  62.1      32.5  44.1  72.3
+##  6      Benton County  73.7  58.4  77.1      33.1  46.0  75.4
+##  7     Bledsoe County  64.8  73.9  73.0      19.5  35.4  63.6
+##  8      Blount County  73.2  59.8  65.1      45.4  46.3  71.8
+##  9         Alcoa City  82.2  76.8  88.0      66.0  50.2  85.5
 ## 10     Maryville City  83.8  77.3  92.1      80.4  69.6  89.9
 ## # ... with 136 more rows, and 20 more variables: EngII &lt;dbl&gt;,
 ## #   EngIII &lt;dbl&gt;, Math &lt;dbl&gt;, Science &lt;dbl&gt;, Enrollment &lt;int&gt;,
@@ -979,20 +979,20 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section id="reordering-variables" class="slide level2">
 <h1>Reordering variables</h1>
 <p>Reorder variables with <code>select()</code> by listing variables in the order you want:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">select</span>(ach_profile, system, system_name, CORE_region, AlgI:Dropout)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">select</span>(ach_profile, system, system_name, CORE_region, <span class="kw">everything</span>())</code></pre></div>
 <div class="fragment">
-<pre><code>## # A tibble: 146 × 28
+<pre><code>## # A tibble: 146 x 28
 ##    system        system_name           CORE_region  AlgI AlgII
 ##     &lt;int&gt;              &lt;chr&gt;                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1       0 State of Tennessee                  &lt;NA&gt;  70.0  54.3
-## 2      10    Anderson County          East TN CORE  76.1  63.3
-## 3      11       Clinton City          East TN CORE    NA    NA
-## 4      12     Oak Ridge City          East TN CORE  76.9  72.0
-## 5      20     Bedford County    South Central CORE  64.3  42.4
-## 6      30      Benton County        Northwest CORE  73.7  58.4
-## 7      40     Bledsoe County Upper Cumberland CORE  64.8  73.9
-## 8      50      Blount County          East TN CORE  73.2  59.8
-## 9      51         Alcoa City          East TN CORE  82.2  76.8
+##  1      0 State of Tennessee                  &lt;NA&gt;  70.0  54.3
+##  2     10    Anderson County          East TN CORE  76.1  63.3
+##  3     11       Clinton City          East TN CORE    NA    NA
+##  4     12     Oak Ridge City          East TN CORE  76.9  72.0
+##  5     20     Bedford County    South Central CORE  64.3  42.4
+##  6     30      Benton County        Northwest CORE  73.7  58.4
+##  7     40     Bledsoe County Upper Cumberland CORE  64.8  73.9
+##  8     50      Blount County          East TN CORE  73.2  59.8
+##  9     51         Alcoa City          East TN CORE  82.2  76.8
 ## 10     52     Maryville City          East TN CORE  83.8  77.3
 ## # ... with 136 more rows, and 23 more variables: BioI &lt;dbl&gt;,
 ## #   Chemistry &lt;dbl&gt;, ELA &lt;dbl&gt;, EngI &lt;dbl&gt;, EngII &lt;dbl&gt;,
@@ -1017,7 +1017,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h1>Keeping/dropping observations</h1>
 <p>Keep observations with <code>filter()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(ach_profile, system_name ==<span class="st"> &quot;State of Tennessee&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 1 × 28
+<pre><code>## # A tibble: 1 x 28
 ##   system        system_name  AlgI AlgII  BioI Chemistry   ELA
 ##    &lt;int&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
 ## 1      0 State of Tennessee    70  54.3  65.3      44.2  48.4
@@ -1034,18 +1034,18 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h1>Keeping/dropping observations</h1>
 <p>Drop observations with <code>filter()</code> using <code>!</code> before a logical condition:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(ach_profile, !system_name ==<span class="st"> &quot;State of Tennessee&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 145 × 28
+<pre><code>## # A tibble: 145 x 28
 ##    system     system_name  AlgI AlgII  BioI Chemistry   ELA
 ##     &lt;int&gt;           &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
-## 1      10 Anderson County  76.1  63.3  73.6      41.0  45.7
-## 2      11    Clinton City    NA    NA    NA        NA  58.3
-## 3      12  Oak Ridge City  76.9  72.0  83.5      80.9  56.1
-## 4      20  Bedford County  64.3  42.4  62.1      32.5  44.1
-## 5      30   Benton County  73.7  58.4  77.1      33.1  46.0
-## 6      40  Bledsoe County  64.8  73.9  73.0      19.5  35.4
-## 7      50   Blount County  73.2  59.8  65.1      45.4  46.3
-## 8      51      Alcoa City  82.2  76.8  88.0      66.0  50.2
-## 9      52  Maryville City  83.8  77.3  92.1      80.4  69.6
+##  1     10 Anderson County  76.1  63.3  73.6      41.0  45.7
+##  2     11    Clinton City    NA    NA    NA        NA  58.3
+##  3     12  Oak Ridge City  76.9  72.0  83.5      80.9  56.1
+##  4     20  Bedford County  64.3  42.4  62.1      32.5  44.1
+##  5     30   Benton County  73.7  58.4  77.1      33.1  46.0
+##  6     40  Bledsoe County  64.8  73.9  73.0      19.5  35.4
+##  7     50   Blount County  73.2  59.8  65.1      45.4  46.3
+##  8     51      Alcoa City  82.2  76.8  88.0      66.0  50.2
+##  9     52  Maryville City  83.8  77.3  92.1      80.4  69.6
 ## 10     60  Bradley County   0.0  59.5  64.1      55.7  52.4
 ## # ... with 135 more rows, and 21 more variables: EngI &lt;dbl&gt;,
 ## #   EngII &lt;dbl&gt;, EngIII &lt;dbl&gt;, Math &lt;dbl&gt;, Science &lt;dbl&gt;,
@@ -1063,7 +1063,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(ach_profile, AlgI ==<span class="st"> </span><span class="dv">100</span>)</code></pre></div>
 </div>
 <div class="fragment">
-<pre><code>## # A tibble: 4 × 28
+<pre><code>## # A tibble: 4 x 28
 ##   system                      system_name  AlgI AlgII  BioI
 ##    &lt;int&gt;                            &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1    401    Paris Special School District   100    NA    NA
@@ -1101,92 +1101,103 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile, <span class="dt">Enrollment =</span> Enrollment/<span class="dv">1000</span>,
     <span class="dt">Per_Pupil_Expenditures =</span> Per_Pupil_Expenditures/<span class="dv">1000</span>)</code></pre></div>
 </section>
-<section id="ifelse-with-mutate" class="slide level2">
-<h1><code>ifelse()</code> with <code>mutate()</code></h1>
-<p>Use <code>ifelse()</code> if you want a variable to take different values under different conditions:</p>
+<section id="if_else-with-mutate" class="slide level2">
+<h1><code>if_else()</code> with <code>mutate()</code></h1>
+<p>Use <code>if_else()</code> if you want a variable to take different values under different conditions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile,
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="st">&quot;Small&quot;</span>))</code></pre></div>
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="st">&quot;Small&quot;</span>))</code></pre></div>
 <p> </p>
 <ul>
-<li class="fragment">The first argument to <code>ifelse()</code> is a logical condition.</li>
+<li class="fragment">The first argument to <code>if_else()</code> is a logical condition.</li>
 <li class="fragment">The second is the value of the new variable if the logical condition is <code>TRUE</code>.</li>
 <li class="fragment">The third is the value of the variable if the logical condition is <code>FALSE</code>.</li>
 <li class="fragment">If the logical condition returns <code>NA</code>, the value of the variable will be <code>NA</code>.</li>
 </ul>
 </section>
-<section id="ifelse-with-mutate-1" class="slide level2">
-<h1><code>ifelse()</code> with <code>mutate()</code></h1>
-<p>Use <code>ifelse()</code> if you want a variable to take different values under different conditions:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile, 
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="st">&quot;Small&quot;</span>))</code></pre></div>
-<pre><code>## # A tibble: 146 × 3
+<section id="if_else-with-mutate-1" class="slide level2">
+<h1><code>if_else()</code> with <code>mutate()</code></h1>
+<p>Use <code>if_else()</code> if you want a variable to take different values under different conditions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile,
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="st">&quot;Small&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 146 x 3
 ##           system_name Enrollment district_size
 ##                 &lt;chr&gt;      &lt;int&gt;         &lt;chr&gt;
-## 1  State of Tennessee     943699         Large
-## 2     Anderson County       6304         Small
-## 3        Clinton City        894         Small
-## 4      Oak Ridge City       4326         Small
-## 5      Bedford County       8270         Small
-## 6       Benton County       2133         Small
-## 7      Bledsoe County       1674         Small
-## 8       Blount County      10500         Large
-## 9          Alcoa City       1850         Small
+##  1 State of Tennessee     943699         Large
+##  2    Anderson County       6304         Small
+##  3       Clinton City        894         Small
+##  4     Oak Ridge City       4326         Small
+##  5     Bedford County       8270         Small
+##  6      Benton County       2133         Small
+##  7     Bledsoe County       1674         Small
+##  8      Blount County      10500         Large
+##  9         Alcoa City       1850         Small
 ## 10     Maryville City       4944         Small
 ## # ... with 136 more rows</code></pre>
 </section>
-<section id="ifelse-with-mutate-2" class="slide level2">
-<h1><code>ifelse()</code> with <code>mutate()</code></h1>
-<p>Use multiple <code>ifelse()</code> statements in succession if you have multiple conditions:</p>
+<section id="if_else-with-mutate-2" class="slide level2">
+<h1><code>if_else()</code> with <code>mutate()</code></h1>
+<p>Use multiple <code>if_else()</code> statements in succession if you have multiple conditions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile,
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="ot">NA</span>),
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">5000</span> &amp;<span class="st"> </span>Enrollment &lt;<span class="st"> </span><span class="dv">10000</span>, 
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="ot">NA</span>),
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">5000</span> &amp;<span class="st"> </span>Enrollment &lt;<span class="st"> </span><span class="dv">10000</span>, 
         <span class="st">&quot;Medium&quot;</span>, district_size),
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &lt;<span class="st"> </span><span class="dv">5000</span>, <span class="st">&quot;Small&quot;</span>, district_size))</code></pre></div>
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &lt;<span class="st"> </span><span class="dv">5000</span>, <span class="st">&quot;Small&quot;</span>, district_size))</code></pre></div>
 <div class="fragment">
-<p>The first <code>ifelse()</code> assigns a value of <code>&quot;Large&quot;</code> to <code>district_size</code> if <code>Enrollment</code> is greater or equal to 10000, and <code>NA</code> otherwise.</p>
+<p>The first <code>if_else()</code> assigns a value of <code>&quot;Large&quot;</code> to <code>district_size</code> if <code>Enrollment</code> is greater or equal to 10000, and <code>NA</code> (of the character variety) otherwise.</p>
 </div>
 </section>
-<section id="ifelse-with-mutate-3" class="slide level2">
-<h1><code>ifelse()</code> with <code>mutate()</code></h1>
-<p>Use multiple <code>ifelse()</code> statements in succession if you have multiple conditions:</p>
+<section id="if_else-with-mutate-3" class="slide level2">
+<h1><code>if_else()</code> with <code>mutate()</code></h1>
+<p>Use multiple <code>if_else()</code> statements in succession if you have multiple conditions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile,
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="ot">NA</span>),
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">5000</span> &amp;<span class="st"> </span>Enrollment &lt;<span class="st"> </span><span class="dv">10000</span>, 
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="ot">NA_character_</span>),
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">5000</span> &amp;<span class="st"> </span>Enrollment &lt;<span class="st"> </span><span class="dv">10000</span>, 
         <span class="st">&quot;Medium&quot;</span>, district_size),
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &lt;<span class="st"> </span><span class="dv">5000</span>, <span class="st">&quot;Small&quot;</span>, district_size))</code></pre></div>
-<p>The second <code>ifelse()</code> assigns a value of <code>&quot;Medium&quot;</code> to <code>district_size</code> if <code>Enrollment</code> is between 5000 and 10000, and leaves <code>district_size</code> the same otherwise.</p>
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &lt;<span class="st"> </span><span class="dv">5000</span>, <span class="st">&quot;Small&quot;</span>, district_size))</code></pre></div>
+<p>The second <code>if_else()</code> assigns a value of <code>&quot;Medium&quot;</code> to <code>district_size</code> if <code>Enrollment</code> is between 5000 and 10000, and leaves <code>district_size</code> the same otherwise.</p>
 </section>
-<section id="ifelse-with-mutate-4" class="slide level2">
-<h1><code>ifelse()</code> with <code>mutate()</code></h1>
-<p>Use multiple <code>ifelse()</code> statements in succession if you have multiple conditions:</p>
+<section id="if_else-with-mutate-4" class="slide level2">
+<h1><code>if_else()</code> with <code>mutate()</code></h1>
+<p>Use multiple <code>if_else()</code> statements in succession if you have multiple conditions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile,
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="ot">NA</span>),
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">5000</span> &amp;<span class="st"> </span>Enrollment &lt;<span class="st"> </span><span class="dv">10000</span>,
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="ot">NA_character_</span>),
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">5000</span> &amp;<span class="st"> </span>Enrollment &lt;<span class="st"> </span><span class="dv">10000</span>,
         <span class="st">&quot;Medium&quot;</span>, district_size),
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &lt;<span class="st"> </span><span class="dv">5000</span>, <span class="st">&quot;Small&quot;</span>, district_size))</code></pre></div>
-<p>The third <code>ifelse()</code> assigns a value of <code>&quot;Small&quot;</code> to <code>district_size</code> if <code>Enrollment</code> is less than 5000, and leaves <code>district_size</code> the same otherwise.</p>
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &lt;<span class="st"> </span><span class="dv">5000</span>, <span class="st">&quot;Small&quot;</span>, district_size))</code></pre></div>
+<p>The third <code>if_else()</code> assigns a value of <code>&quot;Small&quot;</code> to <code>district_size</code> if <code>Enrollment</code> is less than 5000, and leaves <code>district_size</code> the same otherwise.</p>
 </section>
-<section id="ifelse-with-mutate-5" class="slide level2">
-<h1><code>ifelse()</code> with <code>mutate()</code></h1>
+<section id="if_else-with-mutate-5" class="slide level2">
+<h1><code>if_else()</code> with <code>mutate()</code></h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile,
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="ot">NA</span>),
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">5000</span> &amp;<span class="st"> </span>Enrollment &lt;<span class="st"> </span><span class="dv">10000</span>,
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span>, <span class="st">&quot;Large&quot;</span>, <span class="ot">NA_character_</span>),
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">5000</span> &amp;<span class="st"> </span>Enrollment &lt;<span class="st"> </span><span class="dv">10000</span>,
         <span class="st">&quot;Medium&quot;</span>, district_size),
-    <span class="dt">district_size =</span> <span class="kw">ifelse</span>(Enrollment &lt;<span class="st"> </span><span class="dv">5000</span>, <span class="st">&quot;Small&quot;</span>, district_size))</code></pre></div>
-<pre><code>## # A tibble: 146 × 3
+    <span class="dt">district_size =</span> <span class="kw">if_else</span>(Enrollment &lt;<span class="st"> </span><span class="dv">5000</span>, <span class="st">&quot;Small&quot;</span>, district_size))</code></pre></div>
+<pre><code>## # A tibble: 146 x 3
 ##           system_name Enrollment district_size
 ##                 &lt;chr&gt;      &lt;int&gt;         &lt;chr&gt;
-## 1  State of Tennessee     943699         Large
-## 2     Anderson County       6304        Medium
-## 3        Clinton City        894         Small
-## 4      Oak Ridge City       4326         Small
-## 5      Bedford County       8270        Medium
-## 6       Benton County       2133         Small
-## 7      Bledsoe County       1674         Small
-## 8       Blount County      10500         Large
-## 9          Alcoa City       1850         Small
+##  1 State of Tennessee     943699         Large
+##  2    Anderson County       6304        Medium
+##  3       Clinton City        894         Small
+##  4     Oak Ridge City       4326         Small
+##  5     Bedford County       8270        Medium
+##  6      Benton County       2133         Small
+##  7     Bledsoe County       1674         Small
+##  8      Blount County      10500         Large
+##  9         Alcoa City       1850         Small
 ## 10     Maryville City       4944         Small
 ## # ... with 136 more rows</code></pre>
+</section>
+<section id="case_when" class="slide level2">
+<h1><code>case_when</code></h1>
+<p>With many conditions, it’s better to use <code>case_when</code> than several <code>if_else</code> statements:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile,
+    <span class="dt">district_size =</span> <span class="kw">case_when</span>(Enrollment &gt;=<span class="st"> </span><span class="dv">10000</span> ~<span class="st"> &quot;Large&quot;</span>,
+        Enrollment &gt;=<span class="st"> </span><span class="dv">5000</span> &amp;<span class="st"> </span>Enrollment &lt;<span class="st"> </span><span class="dv">10000</span> ~<span class="st"> &quot;Medium&quot;</span>,
+        Enrollment &lt;<span class="st"> </span><span class="dv">5000</span> ~<span class="st"> &quot;Small&quot;</span>)</code></pre></div>
+<div class="fragment">
+<p>The argument to <code>case_when</code> is a sequence of two-sided formulas, where the left side of each formula is a logical condition, and the right side is the value of a variable if the logical condition is <code>TRUE</code>.</p>
+</div>
 </section>
 <section id="exercise-2" class="slide level2">
 <h1>Exercise 2</h1>
@@ -1199,10 +1210,9 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <p> </p>
 <div class="fragment">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile,
-    <span class="dt">math_achievement =</span> <span class="kw">ifelse</span>(Math &gt;=<span class="st"> </span><span class="dv">75</span>, <span class="st">&quot;High&quot;</span>, <span class="ot">NA</span>),
-    <span class="dt">math_achievement =</span> <span class="kw">ifelse</span>(Math &gt;=<span class="st"> </span><span class="dv">50</span> &amp;<span class="st"> </span>Math &lt;<span class="st"> </span><span class="dv">75</span>, <span class="st">&quot;Medium&quot;</span>,
-                              math_achievement),
-    <span class="dt">math_achievement =</span> <span class="kw">ifelse</span>(Math &lt;<span class="st"> </span><span class="dv">50</span>, <span class="st">&quot;Low&quot;</span>, math_achievement))</code></pre></div>
+    <span class="dt">math_achievement =</span> <span class="kw">if_else</span>(Math &gt;=<span class="st"> </span><span class="dv">75</span>, <span class="st">&quot;High&quot;</span>, <span class="ot">NA_character_</span>),
+    <span class="dt">math_achievement =</span> <span class="kw">if_else</span>(Math &gt;=<span class="st"> </span><span class="dv">50</span> &amp;<span class="st"> </span>Math &lt;<span class="st"> </span><span class="dv">75</span>, <span class="st">&quot;Medium&quot;</span>, math_achievement),
+    <span class="dt">math_achievement =</span> <span class="kw">if_else</span>(Math &lt;<span class="st"> </span><span class="dv">50</span>, <span class="st">&quot;Low&quot;</span>, math_achievement))</code></pre></div>
 </div>
 </section>
 <section id="exercise-2-1" class="slide level2">
@@ -1213,18 +1223,32 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li><code>&quot;Medium&quot;</code> if a district’s Math proficiency is between 50% and 75%;</li>
 <li><code>&quot;Low&quot;</code> if a district’s Math proficiency is below 50%.</li>
 </ul>
-<pre><code>## # A tibble: 146 × 3
+<p> </p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mutate</span>(ach_profile,
+    <span class="dt">math_achievement =</span> <span class="kw">case_when</span>(Math &gt;=<span class="st"> </span><span class="dv">75</span> ~<span class="st"> &quot;High&quot;</span>,
+            Math &gt;=<span class="st"> </span><span class="dv">50</span> &amp;<span class="st"> </span>Math &lt;<span class="st"> </span><span class="dv">75</span> ~<span class="st"> &quot;Medium&quot;</span>,
+            Math &lt;<span class="st"> </span><span class="dv">50</span> ~<span class="st"> &quot;Low&quot;</span>))</code></pre></div>
+</section>
+<section id="exercise-2-2" class="slide level2">
+<h1>Exercise 2</h1>
+<p>Create a new variable called <code>math_achievement</code> with a value of:</p>
+<ul>
+<li><code>&quot;High&quot;</code> if a district’s Math proficiency is 75% or higher;</li>
+<li><code>&quot;Medium&quot;</code> if a district’s Math proficiency is between 50% and 75%;</li>
+<li><code>&quot;Low&quot;</code> if a district’s Math proficiency is below 50%.</li>
+</ul>
+<pre><code>## # A tibble: 146 x 3
 ##           system_name  Math math_achievement
 ##                 &lt;chr&gt; &lt;dbl&gt;            &lt;chr&gt;
-## 1  State of Tennessee  54.7           Medium
-## 2     Anderson County  54.0           Medium
-## 3        Clinton City  68.9           Medium
-## 4      Oak Ridge City  55.3           Medium
-## 5      Bedford County  53.1           Medium
-## 6       Benton County  53.9           Medium
-## 7      Bledsoe County  41.1              Low
-## 8       Blount County  50.5           Medium
-## 9          Alcoa City  56.6           Medium
+##  1 State of Tennessee  54.7           Medium
+##  2    Anderson County  54.0           Medium
+##  3       Clinton City  68.9           Medium
+##  4     Oak Ridge City  55.3           Medium
+##  5     Bedford County  53.1           Medium
+##  6      Benton County  53.9           Medium
+##  7     Bledsoe County  41.1              Low
+##  8      Blount County  50.5           Medium
+##  9         Alcoa City  56.6           Medium
 ## 10     Maryville City  70.2           Medium
 ## # ... with 136 more rows</code></pre>
 </section>
@@ -1235,7 +1259,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
     system_name, Enrollment:Per_Pupil_Expenditures),
     <span class="dt">Enrollment =</span> <span class="kw">log10</span>(Enrollment))</code></pre></div>
 <div class="fragment">
-<p>Or assign each intermediate step to a variable:</p>
+<p>Or assign each intermediate step to a object:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ach_profile2 &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profile, system_name !=<span class="st"> &quot;State of Tennessee&quot;</span>)
 ach_profile3 &lt;-<span class="st"> </span><span class="kw">select</span>(ach_profile2,
                        system_name, Enrollment:Per_Pupil_Expenditures)
@@ -1282,18 +1306,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <h1>Renaming variables</h1>
 <p>Rename variables with <code>rename()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rename</span>(ach_profile, <span class="dt">District =</span> system)</code></pre></div>
-<pre><code>## # A tibble: 146 × 28
+<pre><code>## # A tibble: 146 x 28
 ##    District        system_name  AlgI AlgII  BioI Chemistry   ELA
 ##       &lt;int&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
-## 1         0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
-## 2        10    Anderson County  76.1  63.3  73.6      41.0  45.7
-## 3        11       Clinton City    NA    NA    NA        NA  58.3
-## 4        12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
-## 5        20     Bedford County  64.3  42.4  62.1      32.5  44.1
-## 6        30      Benton County  73.7  58.4  77.1      33.1  46.0
-## 7        40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
-## 8        50      Blount County  73.2  59.8  65.1      45.4  46.3
-## 9        51         Alcoa City  82.2  76.8  88.0      66.0  50.2
+##  1        0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
+##  2       10    Anderson County  76.1  63.3  73.6      41.0  45.7
+##  3       11       Clinton City    NA    NA    NA        NA  58.3
+##  4       12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
+##  5       20     Bedford County  64.3  42.4  62.1      32.5  44.1
+##  6       30      Benton County  73.7  58.4  77.1      33.1  46.0
+##  7       40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
+##  8       50      Blount County  73.2  59.8  65.1      45.4  46.3
+##  9       51         Alcoa City  82.2  76.8  88.0      66.0  50.2
 ## 10       52     Maryville City  83.8  77.3  92.1      80.4  69.6
 ## # ... with 136 more rows, and 21 more variables: EngI &lt;dbl&gt;,
 ## #   EngII &lt;dbl&gt;, EngIII &lt;dbl&gt;, Math &lt;dbl&gt;, Science &lt;dbl&gt;,
@@ -1310,18 +1334,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rename</span>(ach_profile, <span class="dt">District =</span> system, 
        <span class="st">`</span><span class="dt">District Name</span><span class="st">`</span> =<span class="st"> </span>system_name)</code></pre></div>
 <div class="fragment">
-<pre><code>## # A tibble: 146 × 28
+<pre><code>## # A tibble: 146 x 28
 ##    District    `District Name`  AlgI AlgII  BioI Chemistry   ELA
 ##       &lt;int&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
-## 1         0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
-## 2        10    Anderson County  76.1  63.3  73.6      41.0  45.7
-## 3        11       Clinton City    NA    NA    NA        NA  58.3
-## 4        12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
-## 5        20     Bedford County  64.3  42.4  62.1      32.5  44.1
-## 6        30      Benton County  73.7  58.4  77.1      33.1  46.0
-## 7        40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
-## 8        50      Blount County  73.2  59.8  65.1      45.4  46.3
-## 9        51         Alcoa City  82.2  76.8  88.0      66.0  50.2
+##  1        0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
+##  2       10    Anderson County  76.1  63.3  73.6      41.0  45.7
+##  3       11       Clinton City    NA    NA    NA        NA  58.3
+##  4       12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
+##  5       20     Bedford County  64.3  42.4  62.1      32.5  44.1
+##  6       30      Benton County  73.7  58.4  77.1      33.1  46.0
+##  7       40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
+##  8       50      Blount County  73.2  59.8  65.1      45.4  46.3
+##  9       51         Alcoa City  82.2  76.8  88.0      66.0  50.2
 ## 10       52     Maryville City  83.8  77.3  92.1      80.4  69.6
 ## # ... with 136 more rows, and 21 more variables: EngI &lt;dbl&gt;,
 ## #   EngII &lt;dbl&gt;, EngIII &lt;dbl&gt;, Math &lt;dbl&gt;, Science &lt;dbl&gt;,
@@ -1375,18 +1399,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <h1>Sorting a data frame</h1>
 <p>Sort a data frame with <code>arrange()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">arrange</span>(ach_profile, system_name)</code></pre></div>
-<pre><code>## # A tibble: 146 × 28
+<pre><code>## # A tibble: 146 x 28
 ##    system                 system_name  AlgI AlgII  BioI
 ##     &lt;int&gt;                       &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1     985 Achievement School District  34.0  20.4  20.6
-## 2     171                  Alamo City    NA    NA    NA
-## 3      51                  Alcoa City  82.2  76.8  88.0
-## 4     961     Alvin C. York Institute  79.5  69.8  70.4
-## 5      10             Anderson County  76.1  63.3  73.6
-## 6     793              Arlington City  88.0  66.9  82.5
-## 7     541                 Athens City 100.0    NA    NA
-## 8     794               Bartlett City  78.1  59.5  71.8
-## 9      20              Bedford County  64.3  42.4  62.1
+##  1    985 Achievement School District  34.0  20.4  20.6
+##  2    171                  Alamo City    NA    NA    NA
+##  3     51                  Alcoa City  82.2  76.8  88.0
+##  4    961     Alvin C. York Institute  79.5  69.8  70.4
+##  5     10             Anderson County  76.1  63.3  73.6
+##  6    793              Arlington City  88.0  66.9  82.5
+##  7    541                 Athens City 100.0    NA    NA
+##  8    794               Bartlett City  78.1  59.5  71.8
+##  9     20              Bedford County  64.3  42.4  62.1
 ## 10    172                  Bells City    NA    NA    NA
 ## # ... with 136 more rows, and 23 more variables:
 ## #   Chemistry &lt;dbl&gt;, ELA &lt;dbl&gt;, EngI &lt;dbl&gt;, EngII &lt;dbl&gt;,
@@ -1402,18 +1426,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <h1>Sorting a data frame</h1>
 <p><code>arrange()</code> sorts numeric variables in ascending order and string variables alphabetically; reverse this with <code>desc(var_name)</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">arrange</span>(ach_profile, <span class="kw">desc</span>(system_name))</code></pre></div>
-<pre><code>## # A tibble: 146 × 28
+<pre><code>## # A tibble: 146 x 28
 ##    system                          system_name  AlgI AlgII  BioI
 ##     &lt;int&gt;                                &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1     950                        Wilson County  69.8  58.0  74.1
-## 2     940                    Williamson County  90.3  84.8  89.2
-## 3     930                         White County  80.3  58.6  82.8
-## 4     960            West Tenn School for Deaf    NA    NA    NA
-## 5      97 West Carroll Special School District  60.8  54.5  73.8
-## 6     920                       Weakley County  79.3  64.3  81.2
-## 7     910                         Wayne County  71.8  56.0  69.5
-## 8     900                    Washington County  67.0  48.7  67.6
-## 9     890                        Warren County    NA    NA  57.3
+##  1    950                        Wilson County  69.8  58.0  74.1
+##  2    940                    Williamson County  90.3  84.8  89.2
+##  3    930                         White County  80.3  58.6  82.8
+##  4    960            West Tenn School for Deaf    NA    NA    NA
+##  5     97 West Carroll Special School District  60.8  54.5  73.8
+##  6    920                       Weakley County  79.3  64.3  81.2
+##  7    910                         Wayne County  71.8  56.0  69.5
+##  8    900                    Washington County  67.0  48.7  67.6
+##  9    890                        Warren County    NA    NA  57.3
 ## 10    880                     Van Buren County  68.3  68.5  49.2
 ## # ... with 136 more rows, and 23 more variables:
 ## #   Chemistry &lt;dbl&gt;, ELA &lt;dbl&gt;, EngI &lt;dbl&gt;, EngII &lt;dbl&gt;,
@@ -1427,25 +1451,25 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 </section>
 <section id="exercise-5" class="slide level2">
 <h1>Exercise 5</h1>
-<p>Sort <code>ach_profile</code> alphabetically by CORE region, then by Algebra I proficiency in descending order. Then, keep just the district name, Algebra I proficiency, and CORE region variables.</p>
+<p>Sort <code>ach_profile</code> alphabetically by CORE region, then by Algebra I proficiency in descending order. Then, keep the district name, Algebra I proficiency, and CORE region variables.</p>
 <div class="fragment">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ach_profile %&gt;%
 <span class="st">    </span><span class="kw">arrange</span>(CORE_region, <span class="kw">desc</span>(AlgI)) %&gt;%
 <span class="st">    </span><span class="kw">select</span>(system_name, AlgI, CORE_region)</code></pre></div>
 </div>
 <div class="fragment">
-<pre><code>## # A tibble: 146 × 3
+<pre><code>## # A tibble: 146 x 3
 ##                       system_name  AlgI  CORE_region
 ##                             &lt;chr&gt; &lt;dbl&gt;        &lt;chr&gt;
-## 1                  Maryville City  83.8 East TN CORE
-## 2                      Alcoa City  82.2 East TN CORE
-## 3                Jefferson County  80.4 East TN CORE
-## 4                  Oak Ridge City  76.9 East TN CORE
-## 5                 Anderson County  76.1 East TN CORE
-## 6  Oneida Special School District  74.1 East TN CORE
-## 7                   Blount County  73.2 East TN CORE
-## 8                     Knox County  73.1 East TN CORE
-## 9                   Loudon County  71.9 East TN CORE
+##  1                 Maryville City  83.8 East TN CORE
+##  2                     Alcoa City  82.2 East TN CORE
+##  3               Jefferson County  80.4 East TN CORE
+##  4                 Oak Ridge City  76.9 East TN CORE
+##  5                Anderson County  76.1 East TN CORE
+##  6 Oneida Special School District  74.1 East TN CORE
+##  7                  Blount County  73.2 East TN CORE
+##  8                    Knox County  73.1 East TN CORE
+##  9                  Loudon County  71.9 East TN CORE
 ## 10                Campbell County  71.6 East TN CORE
 ## # ... with 136 more rows</code></pre>
 </div>
@@ -1456,7 +1480,7 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ach_profile %&gt;%
 <span class="st">    </span><span class="kw">summarise</span>(<span class="kw">mean</span>(Math, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
               <span class="kw">mean</span>(ELA, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>## # A tibble: 1 × 2
+<pre><code>## # A tibble: 1 x 2
 ##   `mean(Math, na.rm = TRUE)` `mean(ELA, na.rm = TRUE)`
 ##                        &lt;dbl&gt;                     &lt;dbl&gt;
 ## 1                   54.35655                  47.39724</code></pre>
@@ -1470,7 +1494,7 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ach_profile %&gt;%
 <span class="st">    </span><span class="kw">summarise</span>(<span class="dt">mean_math =</span> <span class="kw">mean</span>(Math, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
               <span class="dt">mean_ELA =</span> <span class="kw">mean</span>(ELA, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>## # A tibble: 1 × 2
+<pre><code>## # A tibble: 1 x 2
 ##   mean_math mean_ELA
 ##       &lt;dbl&gt;    &lt;dbl&gt;
 ## 1  54.35655 47.39724</code></pre>
@@ -1487,7 +1511,7 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
               <span class="dt">max_grad =</span> <span class="kw">max</span>(Graduation, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</code></pre></div>
 </div>
 <div class="fragment">
-<pre><code>## # A tibble: 1 × 3
+<pre><code>## # A tibble: 1 x 3
 ##   mean_grad min_grad max_grad
 ##       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
 ## 1  88.00305        0      100</code></pre>
@@ -1514,7 +1538,7 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <span class="st">    </span><span class="kw">group_by</span>(CORE_region) %&gt;%
 <span class="st">    </span><span class="kw">summarise</span>(<span class="dt">Math =</span> <span class="kw">mean</span>(Math, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), 
               <span class="dt">ELA =</span> <span class="kw">mean</span>(ELA, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>## # A tibble: 9 × 3
+<pre><code>## # A tibble: 9 x 3
 ##              CORE_region     Math      ELA
 ##                    &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
 ## 1           East TN CORE 49.40000 44.36818
@@ -1561,18 +1585,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <p>Do this with <code>mutate()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ach_profile %&gt;%
 <span class="st">    </span><span class="kw">mutate</span>(<span class="dt">Math_mean =</span> <span class="kw">mean</span>(Math, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>## # A tibble: 146 × 3
+<pre><code>## # A tibble: 146 x 3
 ##           system_name  Math Math_mean
 ##                 &lt;chr&gt; &lt;dbl&gt;     &lt;dbl&gt;
-## 1  State of Tennessee  54.7  54.35655
-## 2     Anderson County  54.0  54.35655
-## 3        Clinton City  68.9  54.35655
-## 4      Oak Ridge City  55.3  54.35655
-## 5      Bedford County  53.1  54.35655
-## 6       Benton County  53.9  54.35655
-## 7      Bledsoe County  41.1  54.35655
-## 8       Blount County  50.5  54.35655
-## 9          Alcoa City  56.6  54.35655
+##  1 State of Tennessee  54.7  54.35655
+##  2    Anderson County  54.0  54.35655
+##  3       Clinton City  68.9  54.35655
+##  4     Oak Ridge City  55.3  54.35655
+##  5     Bedford County  53.1  54.35655
+##  6      Benton County  53.9  54.35655
+##  7     Bledsoe County  41.1  54.35655
+##  8      Blount County  50.5  54.35655
+##  9         Alcoa City  56.6  54.35655
 ## 10     Maryville City  70.2  54.35655
 ## # ... with 136 more rows</code></pre>
 </section>
@@ -1591,18 +1615,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <section id="exercise-7-1" class="slide level2">
 <h1>Exercise 7</h1>
 <p>Identify districts with a higher Percent ED than the median district, and a higher Math proficiency than the median district.</p>
-<pre><code>## # A tibble: 22 × 3
+<pre><code>## # A tibble: 22 x 3
 ##                              system_name  Math median_Math
 ##                                    &lt;chr&gt; &lt;dbl&gt;       &lt;dbl&gt;
-## 1                           Clinton City  68.9       55.25
-## 2  South Carroll Special School District  58.1       55.25
-## 3                           Cocke County  59.1       55.25
-## 4                        Crockett County  57.2       55.25
-## 5                             Alamo City  62.8       55.25
-## 6                             Bells City  60.8       55.25
-## 7                      Cumberland County  58.9       55.25
-## 8                         Dyersburg City  57.4       55.25
-## 9          Milan Special School District  69.4       55.25
+##  1                          Clinton City  68.9       55.25
+##  2 South Carroll Special School District  58.1       55.25
+##  3                          Cocke County  59.1       55.25
+##  4                       Crockett County  57.2       55.25
+##  5                            Alamo City  62.8       55.25
+##  6                            Bells City  60.8       55.25
+##  7                     Cumberland County  58.9       55.25
+##  8                        Dyersburg City  57.4       55.25
+##  9         Milan Special School District  69.4       55.25
 ## 10       Trenton Special School District  62.9       55.25
 ## # ... with 12 more rows</code></pre>
 </section>
@@ -1614,18 +1638,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <span class="st">    </span><span class="kw">mutate</span>(<span class="dt">Math_mean =</span> <span class="kw">mean</span>(Math, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) %&gt;%
 <span class="st">    </span><span class="kw">ungroup</span>() %&gt;%
 <span class="st">    </span><span class="kw">select</span>(system_name, CORE_region, Math, Math_mean)</code></pre></div>
-<pre><code>## # A tibble: 146 × 4
+<pre><code>## # A tibble: 146 x 4
 ##           system_name           CORE_region  Math Math_mean
 ##                 &lt;chr&gt;                 &lt;chr&gt; &lt;dbl&gt;     &lt;dbl&gt;
-## 1  State of Tennessee                  &lt;NA&gt;  54.7  54.70000
-## 2     Anderson County          East TN CORE  54.0  49.40000
-## 3        Clinton City          East TN CORE  68.9  49.40000
-## 4      Oak Ridge City          East TN CORE  55.3  49.40000
-## 5      Bedford County    South Central CORE  53.1  54.98750
-## 6       Benton County        Northwest CORE  53.9  58.70455
-## 7      Bledsoe County Upper Cumberland CORE  41.1  50.71875
-## 8       Blount County          East TN CORE  50.5  49.40000
-## 9          Alcoa City          East TN CORE  56.6  49.40000
+##  1 State of Tennessee                  &lt;NA&gt;  54.7  54.70000
+##  2    Anderson County          East TN CORE  54.0  49.40000
+##  3       Clinton City          East TN CORE  68.9  49.40000
+##  4     Oak Ridge City          East TN CORE  55.3  49.40000
+##  5     Bedford County    South Central CORE  53.1  54.98750
+##  6      Benton County        Northwest CORE  53.9  58.70455
+##  7     Bledsoe County Upper Cumberland CORE  41.1  50.71875
+##  8      Blount County          East TN CORE  50.5  49.40000
+##  9         Alcoa City          East TN CORE  56.6  49.40000
 ## 10     Maryville City          East TN CORE  70.2  49.40000
 ## # ... with 136 more rows</code></pre>
 </section>
@@ -1644,36 +1668,36 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <section id="exercise-8-1" class="slide level2">
 <h1>Exercise 8</h1>
 <p>Identify districts with a higher dropout rate than the average of districts in the same CORE Region.</p>
-<pre><code>## # A tibble: 53 × 4
+<pre><code>## # A tibble: 53 x 4
 ##        system_name            CORE_region Dropout dropout_mean
 ##              &lt;chr&gt;                  &lt;chr&gt;   &lt;dbl&gt;        &lt;dbl&gt;
-## 1   Bledsoe County  Upper Cumberland CORE     6.9     5.423529
-## 2    Blount County           East TN CORE     9.2     5.410000
-## 3    Carter County          First TN CORE     8.0     4.626667
-## 4  Cheatham County    Mid Cumberland CORE     5.9     5.261538
-## 5    Coffee County     South Central CORE     6.4     5.675000
-## 6   Tullahoma City     South Central CORE     6.3     5.675000
-## 7  Davidson County    Mid Cumberland CORE    14.6     5.261538
-## 8   Dickson County    Mid Cumberland CORE     7.4     5.261538
-## 9   Dyersburg City         Northwest CORE    12.5     5.330000
+##  1  Bledsoe County  Upper Cumberland CORE     6.9     5.423529
+##  2   Blount County           East TN CORE     9.2     5.410000
+##  3   Carter County          First TN CORE     8.0     4.626667
+##  4 Cheatham County    Mid Cumberland CORE     5.9     5.261538
+##  5   Coffee County     South Central CORE     6.4     5.675000
+##  6  Tullahoma City     South Central CORE     6.3     5.675000
+##  7 Davidson County    Mid Cumberland CORE    14.6     5.261538
+##  8  Dickson County    Mid Cumberland CORE     7.4     5.261538
+##  9  Dyersburg City         Northwest CORE    12.5     5.330000
 ## 10  Fayette County Southwest/Memphis CORE    15.9     8.144444
 ## # ... with 43 more rows</code></pre>
 </section>
 <section id="operations-by-row" class="slide level2">
 <h1>Operations by row</h1>
 <p>Suppose you want the average of a district’s Algebra I and Algebra II proficiency rates.</p>
-<pre><code>## # A tibble: 146 × 3
+<pre><code>## # A tibble: 146 x 3
 ##           system_name  AlgI AlgII
 ##                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1  State of Tennessee  70.0  54.3
-## 2     Anderson County  76.1  63.3
-## 3        Clinton City    NA    NA
-## 4      Oak Ridge City  76.9  72.0
-## 5      Bedford County  64.3  42.4
-## 6       Benton County  73.7  58.4
-## 7      Bledsoe County  64.8  73.9
-## 8       Blount County  73.2  59.8
-## 9          Alcoa City  82.2  76.8
+##  1 State of Tennessee  70.0  54.3
+##  2    Anderson County  76.1  63.3
+##  3       Clinton City    NA    NA
+##  4     Oak Ridge City  76.9  72.0
+##  5     Bedford County  64.3  42.4
+##  6      Benton County  73.7  58.4
+##  7     Bledsoe County  64.8  73.9
+##  8      Blount County  73.2  59.8
+##  9         Alcoa City  82.2  76.8
 ## 10     Maryville City  83.8  77.3
 ## # ... with 136 more rows</code></pre>
 </section>
@@ -1684,18 +1708,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <span class="st">    </span><span class="kw">select</span>(system_name, AlgI, AlgII) %&gt;%
 <span class="st">    </span><span class="kw">mutate</span>(<span class="dt">Alg_average =</span> (AlgI +<span class="st"> </span>AlgII)/<span class="dv">2</span>)</code></pre></div>
 <div class="fragment">
-<pre><code>## # A tibble: 146 × 4
+<pre><code>## # A tibble: 146 x 4
 ##           system_name  AlgI AlgII Alg_average
 ##                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
-## 1  State of Tennessee  70.0  54.3       62.15
-## 2     Anderson County  76.1  63.3       69.70
-## 3        Clinton City    NA    NA          NA
-## 4      Oak Ridge City  76.9  72.0       74.45
-## 5      Bedford County  64.3  42.4       53.35
-## 6       Benton County  73.7  58.4       66.05
-## 7      Bledsoe County  64.8  73.9       69.35
-## 8       Blount County  73.2  59.8       66.50
-## 9          Alcoa City  82.2  76.8       79.50
+##  1 State of Tennessee  70.0  54.3       62.15
+##  2    Anderson County  76.1  63.3       69.70
+##  3       Clinton City    NA    NA          NA
+##  4     Oak Ridge City  76.9  72.0       74.45
+##  5     Bedford County  64.3  42.4       53.35
+##  6      Benton County  73.7  58.4       66.05
+##  7     Bledsoe County  64.8  73.9       69.35
+##  8      Blount County  73.2  59.8       66.50
+##  9         Alcoa City  82.2  76.8       79.50
 ## 10     Maryville City  83.8  77.3       80.55
 ## # ... with 136 more rows</code></pre>
 </div>
@@ -1703,18 +1727,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <section id="operations-by-row-2" class="slide level2">
 <h1>Operations by row</h1>
 <p>However, this breaks down when either <code>AlgI</code> or <code>AlgII</code> is missing.</p>
-<pre><code>## # A tibble: 11 × 4
+<pre><code>## # A tibble: 11 x 4
 ##                         system_name  AlgI AlgII Alg_average
 ##                               &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
-## 1                     Cannon County    NA  52.5          NA
-## 2                     Carter County   0.0    NA          NA
-## 3                   Cheatham County   0.0    NA          NA
-## 4     Paris Special School District 100.0    NA          NA
-## 5                       Athens City 100.0    NA          NA
-## 6                     Marion County    NA  20.5          NA
-## 7                       Dayton City  91.7    NA          NA
-## 8  Franklin Special School District 100.0    NA          NA
-## 9   Lebanon Special School District 100.0    NA          NA
+##  1                    Cannon County    NA  52.5          NA
+##  2                    Carter County   0.0    NA          NA
+##  3                  Cheatham County   0.0    NA          NA
+##  4    Paris Special School District 100.0    NA          NA
+##  5                      Athens City 100.0    NA          NA
+##  6                    Marion County    NA  20.5          NA
+##  7                      Dayton City  91.7    NA          NA
+##  8 Franklin Special School District 100.0    NA          NA
+##  9  Lebanon Special School District 100.0    NA          NA
 ## 10            Tenn School for Blind  23.1    NA          NA
 ## 11             Tenn School for Deaf    NA   0.0          NA</code></pre>
 </section>
@@ -1734,18 +1758,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 <pre><code>## Source: local data frame [11 x 4]
 ## Groups: &lt;by row&gt;
 ## 
-## # A tibble: 11 × 4
+## # A tibble: 11 x 4
 ##                         system_name  AlgI AlgII Alg_average
 ##                               &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
-## 1                     Cannon County    NA  52.5        52.5
-## 2                     Carter County   0.0    NA         0.0
-## 3                   Cheatham County   0.0    NA         0.0
-## 4     Paris Special School District 100.0    NA       100.0
-## 5                       Athens City 100.0    NA       100.0
-## 6                     Marion County    NA  20.5        20.5
-## 7                       Dayton City  91.7    NA        91.7
-## 8  Franklin Special School District 100.0    NA       100.0
-## 9   Lebanon Special School District 100.0    NA       100.0
+##  1                    Cannon County    NA  52.5        52.5
+##  2                    Carter County   0.0    NA         0.0
+##  3                  Cheatham County   0.0    NA         0.0
+##  4    Paris Special School District 100.0    NA       100.0
+##  5                      Athens City 100.0    NA       100.0
+##  6                    Marion County    NA  20.5        20.5
+##  7                      Dayton City  91.7    NA        91.7
+##  8 Franklin Special School District 100.0    NA       100.0
+##  9  Lebanon Special School District 100.0    NA       100.0
 ## 10            Tenn School for Blind  23.1    NA        23.1
 ## 11             Tenn School for Deaf    NA   0.0         0.0</code></pre>
 </section>
@@ -1786,18 +1810,18 @@ ach_profile4 &lt;-<span class="st"> </span><span class="kw">mutate</span>(ach_pr
 </section>
 <section id="exercise-9-2" class="slide level2">
 <h1>Exercise 9</h1>
-<pre><code>## # A tibble: 146 × 15
+<pre><code>## # A tibble: 146 x 15
 ##    system        system_name  Math  AlgI AlgII Math_avg   ELA
 ##     &lt;int&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
-## 1       0 State of Tennessee  54.7  70.0  54.3 59.66667  48.4
-## 2      10    Anderson County  54.0  76.1  63.3 64.46667  45.7
-## 3      11       Clinton City  68.9    NA    NA 68.90000  58.3
-## 4      12     Oak Ridge City  55.3  76.9  72.0 68.06667  56.1
-## 5      20     Bedford County  53.1  64.3  42.4 53.26667  44.1
-## 6      30      Benton County  53.9  73.7  58.4 62.00000  46.0
-## 7      40     Bledsoe County  41.1  64.8  73.9 59.93333  35.4
-## 8      50      Blount County  50.5  73.2  59.8 61.16667  46.3
-## 9      51         Alcoa City  56.6  82.2  76.8 71.86667  50.2
+##  1      0 State of Tennessee  54.7  70.0  54.3 59.66667  48.4
+##  2     10    Anderson County  54.0  76.1  63.3 64.46667  45.7
+##  3     11       Clinton City  68.9    NA    NA 68.90000  58.3
+##  4     12     Oak Ridge City  55.3  76.9  72.0 68.06667  56.1
+##  5     20     Bedford County  53.1  64.3  42.4 53.26667  44.1
+##  6     30      Benton County  53.9  73.7  58.4 62.00000  46.0
+##  7     40     Bledsoe County  41.1  64.8  73.9 59.93333  35.4
+##  8     50      Blount County  50.5  73.2  59.8 61.16667  46.3
+##  9     51         Alcoa City  56.6  82.2  76.8 71.86667  50.2
 ## 10     52     Maryville City  70.2  83.8  77.3 77.10000  69.6
 ## # ... with 136 more rows, and 8 more variables: EngI &lt;dbl&gt;,
 ## #   EngII &lt;dbl&gt;, EngIII &lt;dbl&gt;, Eng_avg &lt;dbl&gt;, Science &lt;dbl&gt;,
@@ -1829,18 +1853,18 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profile, system_name !=<span class="st"> &quot;State of Tennessee&quot;</span>)
 
 <span class="kw">bind_rows</span>(state, districts)</code></pre></div>
-<pre><code>## # A tibble: 146 × 28
+<pre><code>## # A tibble: 146 x 28
 ##    system        system_name  AlgI AlgII  BioI Chemistry   ELA
 ##     &lt;int&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
-## 1       0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
-## 2      10    Anderson County  76.1  63.3  73.6      41.0  45.7
-## 3      11       Clinton City    NA    NA    NA        NA  58.3
-## 4      12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
-## 5      20     Bedford County  64.3  42.4  62.1      32.5  44.1
-## 6      30      Benton County  73.7  58.4  77.1      33.1  46.0
-## 7      40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
-## 8      50      Blount County  73.2  59.8  65.1      45.4  46.3
-## 9      51         Alcoa City  82.2  76.8  88.0      66.0  50.2
+##  1      0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
+##  2     10    Anderson County  76.1  63.3  73.6      41.0  45.7
+##  3     11       Clinton City    NA    NA    NA        NA  58.3
+##  4     12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
+##  5     20     Bedford County  64.3  42.4  62.1      32.5  44.1
+##  6     30      Benton County  73.7  58.4  77.1      33.1  46.0
+##  7     40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
+##  8     50      Blount County  73.2  59.8  65.1      45.4  46.3
+##  9     51         Alcoa City  82.2  76.8  88.0      66.0  50.2
 ## 10     52     Maryville City  83.8  77.3  92.1      80.4  69.6
 ## # ... with 136 more rows, and 21 more variables: EngI &lt;dbl&gt;,
 ## #   EngII &lt;dbl&gt;, EngIII &lt;dbl&gt;, Math &lt;dbl&gt;, Science &lt;dbl&gt;,
@@ -1951,18 +1975,18 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <section id="combining-data-frames-12" class="slide level2">
 <h1>Combining data frames</h1>
 <p>We will join the <code>ach_profile</code> and <code>tvaas</code> data frames using <code>system</code> as a key.</p>
-<pre><code>## # A tibble: 147 × 31
+<pre><code>## # A tibble: 147 x 31
 ##    system        system_name  AlgI AlgII  BioI Chemistry   ELA
 ##     &lt;int&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
-## 1       0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
-## 2      10    Anderson County  76.1  63.3  73.6      41.0  45.7
-## 3      11       Clinton City    NA    NA    NA        NA  58.3
-## 4      12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
-## 5      20     Bedford County  64.3  42.4  62.1      32.5  44.1
-## 6      30      Benton County  73.7  58.4  77.1      33.1  46.0
-## 7      40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
-## 8      50      Blount County  73.2  59.8  65.1      45.4  46.3
-## 9      51         Alcoa City  82.2  76.8  88.0      66.0  50.2
+##  1      0 State of Tennessee  70.0  54.3  65.3      44.2  48.4
+##  2     10    Anderson County  76.1  63.3  73.6      41.0  45.7
+##  3     11       Clinton City    NA    NA    NA        NA  58.3
+##  4     12     Oak Ridge City  76.9  72.0  83.5      80.9  56.1
+##  5     20     Bedford County  64.3  42.4  62.1      32.5  44.1
+##  6     30      Benton County  73.7  58.4  77.1      33.1  46.0
+##  7     40     Bledsoe County  64.8  73.9  73.0      19.5  35.4
+##  8     50      Blount County  73.2  59.8  65.1      45.4  46.3
+##  9     51         Alcoa City  82.2  76.8  88.0      66.0  50.2
 ## 10     52     Maryville City  83.8  77.3  92.1      80.4  69.6
 ## # ... with 137 more rows, and 24 more variables: EngI &lt;dbl&gt;,
 ## #   EngII &lt;dbl&gt;, EngIII &lt;dbl&gt;, Math &lt;dbl&gt;, Science &lt;dbl&gt;,
@@ -1985,11 +2009,11 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <div class="fragment">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ach_profile %&gt;%
 <span class="st">    </span><span class="kw">inner_join</span>(tvaas, <span class="dt">by =</span> <span class="st">&quot;system&quot;</span>) %&gt;%
-<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">Level1 =</span> <span class="kw">ifelse</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),
-           <span class="dt">Level2 =</span> <span class="kw">ifelse</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>),
-           <span class="dt">Level3 =</span> <span class="kw">ifelse</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>),
-           <span class="dt">Level4 =</span> <span class="kw">ifelse</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">0</span>),
-           <span class="dt">Level5 =</span> <span class="kw">ifelse</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">0</span>)) %&gt;%
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">Level1 =</span> <span class="kw">if_else</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),
+           <span class="dt">Level2 =</span> <span class="kw">if_else</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>),
+           <span class="dt">Level3 =</span> <span class="kw">if_else</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>),
+           <span class="dt">Level4 =</span> <span class="kw">if_else</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">0</span>),
+           <span class="dt">Level5 =</span> <span class="kw">if_else</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span> ==<span class="st"> </span><span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">0</span>)) %&gt;%
 <span class="st">    </span><span class="kw">group_by</span>(CORE_region) %&gt;%
 <span class="st">    </span><span class="kw">summarise</span>(<span class="dt">Level1 =</span> <span class="kw">sum</span>(Level1, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
               <span class="dt">Level2 =</span> <span class="kw">sum</span>(Level2, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
@@ -2020,7 +2044,7 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <section id="exercise-10-2" class="slide level2">
 <h1>Exercise 10</h1>
 <p>Create a data frame with the number of districts at each TVAAS level, by CORE region.</p>
-<pre><code>## # A tibble: 8 × 6
+<pre><code>## # A tibble: 8 x 6
 ##              CORE_region Level1 Level2 Level3 Level4 Level5
 ##                    &lt;chr&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
 ## 1           East TN CORE     11      1      4      1      5
@@ -2070,18 +2094,18 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <section id="reshaping-data-frames-2" class="slide level2">
 <h1>Reshaping data frames</h1>
 <p>This is going to create a new variable with <code>&quot;AlgI&quot;</code>, <code>&quot;AlgII&quot;</code>, … , <code>&quot;Dropout&quot;</code>, and a new variable with the appropriate value for each district.</p>
-<pre><code>## # A tibble: 3,650 × 4
+<pre><code>## # A tibble: 3,650 x 4
 ##    system        system_name outcome value
 ##     &lt;int&gt;              &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
-## 1       0 State of Tennessee    AlgI  70.0
-## 2      10    Anderson County    AlgI  76.1
-## 3      11       Clinton City    AlgI    NA
-## 4      12     Oak Ridge City    AlgI  76.9
-## 5      20     Bedford County    AlgI  64.3
-## 6      30      Benton County    AlgI  73.7
-## 7      40     Bledsoe County    AlgI  64.8
-## 8      50      Blount County    AlgI  73.2
-## 9      51         Alcoa City    AlgI  82.2
+##  1      0 State of Tennessee    AlgI  70.0
+##  2     10    Anderson County    AlgI  76.1
+##  3     11       Clinton City    AlgI    NA
+##  4     12     Oak Ridge City    AlgI  76.9
+##  5     20     Bedford County    AlgI  64.3
+##  6     30      Benton County    AlgI  73.7
+##  7     40     Bledsoe County    AlgI  64.8
+##  8     50      Blount County    AlgI  73.2
+##  9     51         Alcoa City    AlgI  82.2
 ## 10     52     Maryville City    AlgI  83.8
 ## # ... with 3,640 more rows</code></pre>
 </section>
@@ -2100,36 +2124,36 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <h1>Reshaping data frames</h1>
 <p><code>gather()</code> converts a data frame from wide to long:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gather</span>(ach_profile, outcome, value, AlgI:Dropout)</code></pre></div>
-<pre><code>## # A tibble: 3,650 × 5
+<pre><code>## # A tibble: 3,650 x 5
 ##    system        system_name outcome value           CORE_region
 ##     &lt;int&gt;              &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;                 &lt;chr&gt;
-## 1       0 State of Tennessee    AlgI  70.0                  &lt;NA&gt;
-## 2      10    Anderson County    AlgI  76.1          East TN CORE
-## 3      11       Clinton City    AlgI    NA          East TN CORE
-## 4      12     Oak Ridge City    AlgI  76.9          East TN CORE
-## 5      20     Bedford County    AlgI  64.3    South Central CORE
-## 6      30      Benton County    AlgI  73.7        Northwest CORE
-## 7      40     Bledsoe County    AlgI  64.8 Upper Cumberland CORE
-## 8      50      Blount County    AlgI  73.2          East TN CORE
-## 9      51         Alcoa City    AlgI  82.2          East TN CORE
+##  1      0 State of Tennessee    AlgI  70.0                  &lt;NA&gt;
+##  2     10    Anderson County    AlgI  76.1          East TN CORE
+##  3     11       Clinton City    AlgI    NA          East TN CORE
+##  4     12     Oak Ridge City    AlgI  76.9          East TN CORE
+##  5     20     Bedford County    AlgI  64.3    South Central CORE
+##  6     30      Benton County    AlgI  73.7        Northwest CORE
+##  7     40     Bledsoe County    AlgI  64.8 Upper Cumberland CORE
+##  8     50      Blount County    AlgI  73.2          East TN CORE
+##  9     51         Alcoa City    AlgI  82.2          East TN CORE
 ## 10     52     Maryville City    AlgI  83.8          East TN CORE
 ## # ... with 3,640 more rows</code></pre>
 </section>
 <section id="reshaping-data-frames-5" class="slide level2">
 <h1>Reshaping data frames</h1>
 <p><code>spread()</code> converts a data frame from long to wide:</p>
-<pre><code>## # A tibble: 3,650 × 5
+<pre><code>## # A tibble: 3,650 x 5
 ##    system        system_name outcome value           CORE_region
 ##     &lt;int&gt;              &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;                 &lt;chr&gt;
-## 1       0 State of Tennessee    AlgI  70.0                  &lt;NA&gt;
-## 2      10    Anderson County    AlgI  76.1          East TN CORE
-## 3      11       Clinton City    AlgI    NA          East TN CORE
-## 4      12     Oak Ridge City    AlgI  76.9          East TN CORE
-## 5      20     Bedford County    AlgI  64.3    South Central CORE
-## 6      30      Benton County    AlgI  73.7        Northwest CORE
-## 7      40     Bledsoe County    AlgI  64.8 Upper Cumberland CORE
-## 8      50      Blount County    AlgI  73.2          East TN CORE
-## 9      51         Alcoa City    AlgI  82.2          East TN CORE
+##  1      0 State of Tennessee    AlgI  70.0                  &lt;NA&gt;
+##  2     10    Anderson County    AlgI  76.1          East TN CORE
+##  3     11       Clinton City    AlgI    NA          East TN CORE
+##  4     12     Oak Ridge City    AlgI  76.9          East TN CORE
+##  5     20     Bedford County    AlgI  64.3    South Central CORE
+##  6     30      Benton County    AlgI  73.7        Northwest CORE
+##  7     40     Bledsoe County    AlgI  64.8 Upper Cumberland CORE
+##  8     50      Blount County    AlgI  73.2          East TN CORE
+##  9     51         Alcoa City    AlgI  82.2          East TN CORE
 ## 10     52     Maryville City    AlgI  83.8          East TN CORE
 ## # ... with 3,640 more rows</code></pre>
 <div class="fragment">
@@ -2156,18 +2180,18 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <section id="reshaping-data-frames-8" class="slide level2">
 <h1>Reshaping data frames</h1>
 <p><code>spread()</code> converts a data frame from long to wide:</p>
-<pre><code>## # A tibble: 25 × 147
+<pre><code>## # A tibble: 25 x 147
 ##          outcome `Achievement School District` `Alamo City`
-## *          &lt;chr&gt;                         &lt;dbl&gt;        &lt;dbl&gt;
-## 1  ACT_Composite                          14.2           NA
-## 2           AlgI                          34.0           NA
-## 3          AlgII                          20.4           NA
-## 4           BioI                          20.6           NA
-## 5      Chemistry                           4.5           NA
-## 6        Dropout                          27.6           NA
-## 7            ELA                          14.3         53.5
-## 8           EngI                          37.8           NA
-## 9          EngII                          33.0           NA
+##  *         &lt;chr&gt;                         &lt;dbl&gt;        &lt;dbl&gt;
+##  1 ACT_Composite                          14.2           NA
+##  2          AlgI                          34.0           NA
+##  3         AlgII                          20.4           NA
+##  4          BioI                          20.6           NA
+##  5     Chemistry                           4.5           NA
+##  6       Dropout                          27.6           NA
+##  7           ELA                          14.3         53.5
+##  8          EngI                          37.8           NA
+##  9         EngII                          33.0           NA
 ## 10        EngIII                           8.2           NA
 ## # ... with 15 more rows, and 144 more variables: `Alcoa
 ## #   City` &lt;dbl&gt;, `Alvin C. York Institute` &lt;dbl&gt;, `Anderson
@@ -2228,18 +2252,18 @@ districts &lt;-<span class="st"> </span><span class="kw">filter</span>(ach_profi
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tvaas %&gt;%
 <span class="st">    </span><span class="kw">gather</span>(subject, score, <span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span>:<span class="st">`</span><span class="dt">TVAAS Numeracy</span><span class="st">`</span>) %&gt;%
 <span class="st">    </span><span class="kw">arrange</span>(system)</code></pre></div>
-<pre><code>## # A tibble: 435 × 3
+<pre><code>## # A tibble: 435 x 3
 ##    system         subject score
 ##     &lt;int&gt;           &lt;chr&gt; &lt;dbl&gt;
-## 1      10 TVAAS Composite     1
-## 2      10  TVAAS Literacy     1
-## 3      10  TVAAS Numeracy     3
-## 4      11 TVAAS Composite     5
-## 5      11  TVAAS Literacy     5
-## 6      11  TVAAS Numeracy     5
-## 7      12 TVAAS Composite     1
-## 8      12  TVAAS Literacy     3
-## 9      12  TVAAS Numeracy     1
+##  1     10 TVAAS Composite     1
+##  2     10  TVAAS Literacy     1
+##  3     10  TVAAS Numeracy     3
+##  4     11 TVAAS Composite     5
+##  5     11  TVAAS Literacy     5
+##  6     11  TVAAS Numeracy     5
+##  7     12 TVAAS Composite     1
+##  8     12  TVAAS Literacy     3
+##  9     12  TVAAS Numeracy     1
 ## 10     20 TVAAS Composite     3
 ## # ... with 425 more rows</code></pre>
 </section>

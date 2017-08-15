@@ -203,7 +203,7 @@ library("dplyr")
 |------------------|----------------------|------------------------------|
 |      .csv        |    `readr`           | `read_csv("path/to/file")`   |
 |      .xlsx       |    `readxl`          | `read_excel("path/to/file")` |
-|      .dta        |    `haven`           | `read.dta("path/to/file")` |
+|      .dta        |    `haven`           | `read_dta("path/to/file")` |
 
 A backslash (\\) serves a special purpose in R, so use forward slashes (/) in file paths.
 
@@ -419,13 +419,13 @@ select(ach_profile, -system)
 Reorder variables with `select()` by listing variables in the order you want:
 
 ``` {r, eval = FALSE}
-select(ach_profile, system, system_name, CORE_region, AlgI:Dropout)
+select(ach_profile, system, system_name, CORE_region, everything())
 ```
 
 . . .
 
 ``` {r, echo = FALSE}
-select(ach_profile, system, system_name, CORE_region, AlgI:Dropout)
+select(ach_profile, system, system_name, CORE_region, everything())
 ```
 
 ## Keeping/dropping observations
@@ -546,7 +546,7 @@ mutate(ach_profile,
 
 . . .
 
-The first `if_else()` assigns a value of `"Large"` to `district_size` if `Enrollment` is greater or equal to 10000, and `NA` otherwise.
+The first `if_else()` assigns a value of `"Large"` to `district_size` if `Enrollment` is greater or equal to 10000, and `NA` (of the character variety) otherwise.
 
 ## `if_else()` with `mutate()`
 
@@ -554,7 +554,7 @@ Use multiple `if_else()` statements in succession if you have multiple condition
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    district_size = if_else(Enrollment >= 10000, "Large", NA),
+    district_size = if_else(Enrollment >= 10000, "Large", NA_character_),
     district_size = if_else(Enrollment >= 5000 & Enrollment < 10000, 
         "Medium", district_size),
     district_size = if_else(Enrollment < 5000, "Small", district_size))
@@ -568,7 +568,7 @@ Use multiple `if_else()` statements in succession if you have multiple condition
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    district_size = if_else(Enrollment >= 10000, "Large", NA),
+    district_size = if_else(Enrollment >= 10000, "Large", NA_character_),
     district_size = if_else(Enrollment >= 5000 & Enrollment < 10000,
         "Medium", district_size),
     district_size = if_else(Enrollment < 5000, "Small", district_size))
@@ -580,7 +580,7 @@ The third `if_else()` assigns a value of `"Small"` to `district_size` if `Enroll
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    district_size = if_else(Enrollment >= 10000, "Large", NA),
+    district_size = if_else(Enrollment >= 10000, "Large", NA_character_),
     district_size = if_else(Enrollment >= 5000 & Enrollment < 10000,
         "Medium", district_size),
     district_size = if_else(Enrollment < 5000, "Small", district_size))
@@ -588,11 +588,27 @@ mutate(ach_profile,
 
 ``` {r, echo = FALSE}
 mutate(ach_profile,
-    district_size = if_else(Enrollment >= 10000, "Large", NA),
+    district_size = if_else(Enrollment >= 10000, "Large", NA_character_),
     district_size = if_else(Enrollment >= 5000 & Enrollment < 10000, "Medium", district_size),
     district_size = if_else(Enrollment < 5000, "Small", district_size)) %>%
     select(system_name, Enrollment, district_size)
 ```
+
+## `case_when`
+
+With many conditions, it's better to use `case_when` than several `if_else` statements:
+
+```{r, eval = FALSE}
+mutate(ach_profile,
+    district_size = case_when(Enrollment >= 10000 ~ "Large",
+        Enrollment >= 5000 & Enrollment < 10000 ~ "Medium",
+        Enrollment < 5000 ~ "Small")
+```
+
+
+. . .
+
+The argument to `case_when` is a sequence of two-sided formulas, where the left side of each formula is a logical condition, and the right side is the value of a variable if the logical condition is `TRUE`.
 
 ## Exercise 2
 
@@ -608,7 +624,7 @@ Create a new variable called `math_achievement` with a value of:
 
 ``` {r, eval = FALSE}
 mutate(ach_profile,
-    math_achievement = if_else(Math >= 75, "High", NA),
+    math_achievement = if_else(Math >= 75, "High", NA_character_),
     math_achievement = if_else(Math >= 50 & Math < 75, "Medium", math_achievement),
     math_achievement = if_else(Math < 50, "Low", math_achievement))
 ```
@@ -621,9 +637,26 @@ Create a new variable called `math_achievement` with a value of:
 * `"Medium"` if a district's Math proficiency is between 50% and 75%;
 * `"Low"` if a district's Math proficiency is below 50%.
 
+&nbsp;
+
+``` {r, eval = FALSE}
+mutate(ach_profile,
+    math_achievement = case_when(Math >= 75 ~ "High",
+            Math >= 50 & Math < 75 ~ "Medium",
+            Math < 50 ~ "Low"))
+```
+
+## Exercise 2
+
+Create a new variable called `math_achievement` with a value of:
+    
+* `"High"` if a district's Math proficiency is 75% or higher;
+* `"Medium"` if a district's Math proficiency is between 50% and 75%;
+* `"Low"` if a district's Math proficiency is below 50%.
+
 ``` {r, echo = FALSE}
 mutate(ach_profile,
-    math_achievement = if_else(Math >= 75, "High", NA),
+    math_achievement = if_else(Math >= 75, "High", NA_character_),
     math_achievement = if_else(Math >= 50 & Math < 75, "Medium", math_achievement),
     math_achievement = if_else(Math < 50, "Low", math_achievement)) %>%
     select(system_name, Math, math_achievement)
@@ -786,7 +819,7 @@ arrange(ach_profile, desc(system_name))
 
 ## Exercise 5
 
-Sort `ach_profile` alphabetically by CORE region, then by Algebra I proficiency in descending order. Then, keep just the district name, Algebra I proficiency, and CORE region variables.
+Sort `ach_profile` alphabetically by CORE region, then by Algebra I proficiency in descending order. Then, keep the district name, Algebra I proficiency, and CORE region variables.
 
 . . .
 
