@@ -1,5 +1,5 @@
 ---
-title: "Data Wrangling in R"
+title: "Data Wrangling"
 author: "<br> Alexander Poon <br> [alex.poon@tn.gov](mailto:alex.poon@tn.gov)"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output:
@@ -413,6 +413,20 @@ Drop variables with `select()` using `-` before a variable name:
 ``` {r}
 select(ach_profile, -system)
 ```
+
+## Ways to call variables with `select`
+
+> * Unquoted names - `select(df, x, y, z)`
+> * A range of variables positionally - `select(df, x:z)`
+
+. . .
+
+* Using `dplyr` helper functions, including:
+    * `starts_with()`
+    * `ends_with()`
+    * `contains()`
+    * `one_of()` if you need to specify variables as a string
+    * `everything()`
 
 ## Reordering variables
 
