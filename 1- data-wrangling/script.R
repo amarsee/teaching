@@ -1,6 +1,4 @@
-library(readr)
-library(tidyr)
-library(dplyr)
+library(tidyverse)
 
 ach_profile <- read_csv("data/achievement_profile_data_with_CORE.csv")
 
