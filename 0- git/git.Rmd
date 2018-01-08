@@ -365,7 +365,6 @@ Or everything all at once:
 
 > * The first use of `git add` on a file tells git to start tracking that file
 > * Subsequent uses of `git add` tells `git` to reflect changes to that file in next commit  
-
 ## More commits
 
 Commit these changes:

@@ -34,3 +34,4 @@ vignettes/*.pdf
 # OS X hidden files
 *.DS_Store
 *.knit.md
+.Rproj.user
