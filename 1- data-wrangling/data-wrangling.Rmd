@@ -12,8 +12,6 @@ output:
 ``` {r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 options(width = 65)
-
-library(tidyverse)
 ```
 
 ## Table of contents
@@ -47,7 +45,9 @@ The `tidyverse` is a set of packages which covers most steps of the data science
 
 Install the `tidyverse` packages and their dependencies:
 
-`install.packages("tidyverse")`  
+```{r, eval = FALSE}
+install.packages("tidyverse")
+```
 
 &nbsp;
 
@@ -55,7 +55,9 @@ Install the `tidyverse` packages and their dependencies:
 
 Import the core `tidyverse` packages into your R session:
 
-`library(tidyverse)`
+```{r}
+library(tidyverse)
+```
 
 ## Reading in data
 
@@ -171,7 +173,7 @@ Drop variables with `select()` using `-` before a variable name:
 select(ach_profile, -system)
 ```
 
-## Ways to call variables with `select`
+## Ways to call variables with `select()`
 
 > * Unquoted names - `select(df, x, y, z)`
 > * A range of variables positionally - `select(df, x:z)`
@@ -269,8 +271,10 @@ mutate(ach_profile, Enrollment = Enrollment/1000)
 Create and/or modify arbitrarily many variables with `mutate()`; separate expressions with a comma:
 
 ``` {r, eval = FALSE}
-mutate(ach_profile, Enrollment = Enrollment/1000,
-    Per_Pupil_Expenditures = Per_Pupil_Expenditures/1000)
+mutate(ach_profile,
+    Enrollment = Enrollment/1000,
+    Per_Pupil_Expenditures = Per_Pupil_Expenditures/1000
+)
 ```
 
 ## `if_else()` with `mutate()`
@@ -551,15 +555,19 @@ rename(ach_profile, District = system)
 Variable names can contain spaces and other characters. Put backticks (``) around a name if it contains spaces.
 
 ``` {r, eval = FALSE}
-rename(ach_profile, District = system, 
-    `District Name` = system_name)
+rename(ach_profile,
+    District = system, 
+    `District Name` = system_name
+)
 ```
 
 . . .
 
 ``` {r, echo = FALSE}
-rename(ach_profile, District = system, 
-    `District Name` = system_name)
+rename(ach_profile,
+    District = system, 
+    `District Name` = system_name
+)
 ```
 
 ## Exercise 4
@@ -580,10 +588,12 @@ Assign the name `tvaas` to the result.
 
 ``` {r}
 tvaas <- read_csv("data/tvaas.csv") %>%
-    rename(system = `District Number`,
-           `TVAAS Composite` = `District-Wide: Composite`,
-           `TVAAS Literacy` = `District-Wide: Literacy`,
-           `TVAAS Numeracy` = `District-Wide: Numeracy`) %>%
+    rename(
+        system = `District Number`,
+        `TVAAS Composite` = `District-Wide: Composite`,
+        `TVAAS Literacy` = `District-Wide: Literacy`,
+        `TVAAS Numeracy` = `District-Wide: Numeracy`
+    ) %>%
     select(-`District Name`)
 ```
 
@@ -647,8 +657,10 @@ Collapse a data frame into summary statistics with `summarise()`:
 
 ``` {r}
 ach_profile %>%
-    summarise(mean(Math, na.rm = TRUE),
-              mean(ELA, na.rm = TRUE))
+    summarise(
+        mean(Math, na.rm = TRUE),
+        mean(ELA, na.rm = TRUE)
+    )
 ```
 
 . . .
@@ -661,8 +673,10 @@ Collapse a data frame into summary statistics with `summarise()`:
 
 ``` {r}
 ach_profile %>%
-    summarise(mean_math = mean(Math, na.rm = TRUE),
-              mean_ELA = mean(ELA, na.rm = TRUE))
+    summarise(
+        mean_math = mean(Math, na.rm = TRUE),
+        mean_ELA = mean(ELA, na.rm = TRUE)
+    )
 ```
 
 You can also supply variable names to the resulting data frame.
@@ -676,9 +690,11 @@ Use `summarise()` to find the mean, minimum, and maximum district grad rate. Ass
 ``` {r, eval = FALSE}
 ach_profile %>%
     filter(system_name != "State of Tennessee") %>%
-    summarise(mean_grad = mean(Graduation, na.rm = TRUE),
-              min_grad = min(Graduation, na.rm = TRUE),
-              max_grad = max(Graduation, na.rm = TRUE))
+    summarise(
+        mean_grad = mean(Graduation, na.rm = TRUE),
+        min_grad = min(Graduation, na.rm = TRUE),
+        max_grad = max(Graduation, na.rm = TRUE)
+    )
 ```
 
 . . .
@@ -686,9 +702,11 @@ ach_profile %>%
 ``` {r, echo = FALSE}
 ach_profile %>%
     filter(system_name != "State of Tennessee") %>%
-    summarise(mean_grad = mean(Graduation, na.rm = TRUE),
-              min_grad = min(Graduation, na.rm = TRUE),
-              max_grad = max(Graduation, na.rm = TRUE))
+    summarise(
+        mean_grad = mean(Graduation, na.rm = TRUE),
+        min_grad = min(Graduation, na.rm = TRUE),
+        max_grad = max(Graduation, na.rm = TRUE)
+    )
 ```
 
 ## Collapsing a data frame
@@ -698,8 +716,10 @@ Use `group_by()` with `summarise()` to aggregate data to a higher unit of analys
 ``` {r, eval = FALSE}
 ach_profile %>%
     group_by(CORE_region) %>%
-    summarise(Math = mean(Math, na.rm = TRUE), 
-              ELA = mean(ELA, na.rm = TRUE))
+    summarise(
+        Math = mean(Math, na.rm = TRUE), 
+        ELA = mean(ELA, na.rm = TRUE)
+    )
 ```
 
 . . .
@@ -715,8 +735,10 @@ Use `group_by()` with `summarise()` to aggregate data to a higher unit of analys
 ``` {r}
 ach_profile %>%
     group_by(CORE_region) %>%
-    summarise(Math = mean(Math, na.rm = TRUE), 
-              ELA = mean(ELA, na.rm = TRUE))
+    summarise(
+        Math = mean(Math, na.rm = TRUE), 
+        ELA = mean(ELA, na.rm = TRUE)
+    )
 ```
 
 ## Collapsing a data frame
@@ -726,8 +748,10 @@ After doing operations with `group_by()`, be sure to `ungroup()` your data frame
 ``` {r, eval = FALSE}
 ach_profile %>%
     group_by(CORE_region) %>%
-    summarise(Math = mean(Math, na.rm = TRUE), 
-              ELA = mean(ELA, na.rm = TRUE)) %>%
+    summarise(
+        Math = mean(Math, na.rm = TRUE), 
+        ELA = mean(ELA, na.rm = TRUE)
+    ) %>%
     ungroup()
 ```
 
@@ -781,8 +805,10 @@ Identify districts with a higher Percent ED than the median district, and a high
 ``` {r, eval = FALSE}
 ach_profile %>%
     filter(system_name != "State of Tennessee") %>%
-    mutate(median_pct_ED = median(Pct_ED, na.rm = TRUE),
-        median_Math = median(Math, na.rm = TRUE)) %>%
+    mutate(
+        median_pct_ED = median(Pct_ED, na.rm = TRUE),
+        median_Math = median(Math, na.rm = TRUE)
+    ) %>%
     filter(Pct_ED > median_pct_ED & Math > median_Math) %>%
     select(system_name, Math, median_Math)
 ```
@@ -794,8 +820,10 @@ Identify districts with a higher Percent ED than the median district, and a high
 ``` {r, echo = FALSE}
 ach_profile %>%
     filter(system_name != "State of Tennessee") %>%
-    mutate(median_pct_ED = median(Pct_ED, na.rm = TRUE),
-        median_Math = median(Math, na.rm = TRUE)) %>%
+    mutate(
+        median_pct_ED = median(Pct_ED, na.rm = TRUE),
+        median_Math = median(Math, na.rm = TRUE)
+    ) %>%
     filter(Pct_ED > median_pct_ED & Math > median_Math) %>%
     select(system_name, Math, median_Math)
 ```
@@ -929,19 +957,20 @@ Then, reorder variables such that:
 * The English average is next to the individual English variables.
 * The science average is next to the individual science variables.
 
-
 ## Exercise 9
 
 ``` {r, eval = FALSE}
 ach_profile %>%
     rowwise() %>%
-    mutate(Math_avg = mean(c(Math, AlgI, AlgII), na.rm = TRUE),
-           Eng_avg = mean(c(ELA, EngI, EngII, EngIII), na.rm = TRUE),
-           Sci_avg = mean(c(Science, BioI, Chemistry), na.rm = TRUE)) %>%
+    mutate(
+        Math_avg = mean(c(Math, AlgI, AlgII), na.rm = TRUE),
+        Eng_avg = mean(c(ELA, EngI, EngII, EngIII), na.rm = TRUE),
+        Sci_avg = mean(c(Science, BioI, Chemistry), na.rm = TRUE)
+    ) %>%
     ungroup() %>%
     select(system, system_name, Math, AlgI, AlgII, Math_avg,
-           ELA, EngI, EngII, EngIII, Eng_avg, 
-           Science, BioI, Chemistry, Sci_avg)
+        ELA, EngI, EngII, EngIII, Eng_avg, 
+        Science, BioI, Chemistry, Sci_avg)
 ```
 
 ## Exercise 9
@@ -949,12 +978,14 @@ ach_profile %>%
 ``` {r, echo = FALSE}
 ach_profile %>%
     rowwise() %>%
-    mutate(Math_avg = mean(c(Math, AlgI, AlgII), na.rm = TRUE),
-           Eng_avg = mean(c(ELA, EngI, EngII, EngIII), na.rm = TRUE),
-           Sci_avg = mean(c(Science, BioI, Chemistry), na.rm = TRUE)) %>%
+    mutate(
+        Math_avg = mean(c(Math, AlgI, AlgII), na.rm = TRUE),
+        Eng_avg = mean(c(ELA, EngI, EngII, EngIII), na.rm = TRUE),
+        Sci_avg = mean(c(Science, BioI, Chemistry), na.rm = TRUE)
+    ) %>%
     ungroup() %>%
     select(system, system_name, Math, AlgI, AlgII, Math_avg,
-           ELA, EngI, EngII, EngIII, Eng_avg, Science, BioI, Chemistry, Sci_avg)
+        ELA, EngI, EngII, EngIII, Eng_avg, Science, BioI, Chemistry, Sci_avg)
 ```
 
 ## Combining data frames
@@ -1142,17 +1173,21 @@ Create a data frame with the number of districts at each TVAAS Composite level, 
 ``` {r, eval = FALSE}
 ach_profile %>%
     inner_join(tvaas, by = "system") %>%
-    mutate(Level1 = if_else(`TVAAS Composite` == 1, 1, 0),
-           Level2 = if_else(`TVAAS Composite` == 2, 1, 0),
-           Level3 = if_else(`TVAAS Composite` == 3, 1, 0),
-           Level4 = if_else(`TVAAS Composite` == 4, 1, 0),
-           Level5 = if_else(`TVAAS Composite` == 5, 1, 0)) %>%
+    mutate(
+        Level1 = if_else(`TVAAS Composite` == 1, 1, 0),
+        Level2 = if_else(`TVAAS Composite` == 2, 1, 0),
+        Level3 = if_else(`TVAAS Composite` == 3, 1, 0),
+        Level4 = if_else(`TVAAS Composite` == 4, 1, 0),
+        Level5 = if_else(`TVAAS Composite` == 5, 1, 0)
+    ) %>%
     group_by(CORE_region) %>%
-    summarise(Level1 = sum(Level1, na.rm = TRUE),
-              Level2 = sum(Level2, na.rm = TRUE),
-              Level3 = sum(Level3, na.rm = TRUE),
-              Level4 = sum(Level4, na.rm = TRUE),
-              Level5 = sum(Level5, na.rm = TRUE)) %>%
+    summarise(
+        Level1 = sum(Level1, na.rm = TRUE),
+        Level2 = sum(Level2, na.rm = TRUE),
+        Level3 = sum(Level3, na.rm = TRUE),
+        Level4 = sum(Level4, na.rm = TRUE),
+        Level5 = sum(Level5, na.rm = TRUE)
+    ) %>%
     ungroup()
 ```
 
@@ -1163,17 +1198,20 @@ Create a data frame with the number of districts at each TVAAS Composite level, 
 ``` {r, eval = FALSE}
 ach_profile %>%
     inner_join(tvaas, by = "system") %>%
-    mutate(Level1 = `TVAAS Composite` == 1,
-           Level2 = `TVAAS Composite` == 2,
-           Level3 = `TVAAS Composite` == 3,
-           Level4 = `TVAAS Composite` == 4,
-           Level5 = `TVAAS Composite` == 5) %>%
+    mutate(
+        Level1 = `TVAAS Composite` == 1,
+        Level2 = `TVAAS Composite` == 2,
+        Level3 = `TVAAS Composite` == 3,
+        Level4 = `TVAAS Composite` == 4,
+        Level5 = `TVAAS Composite` == 5) %>%
     group_by(CORE_region) %>%
-    summarise(Level1 = sum(Level1, na.rm = TRUE),
-              Level2 = sum(Level2, na.rm = TRUE),
-              Level3 = sum(Level3, na.rm = TRUE),
-              Level4 = sum(Level4, na.rm = TRUE),
-              Level5 = sum(Level5, na.rm = TRUE)) %>%
+    summarise(
+        Level1 = sum(Level1, na.rm = TRUE),
+        Level2 = sum(Level2, na.rm = TRUE),
+        Level3 = sum(Level3, na.rm = TRUE),
+        Level4 = sum(Level4, na.rm = TRUE),
+        Level5 = sum(Level5, na.rm = TRUE)
+    ) %>%
     ungroup()
 ```
 
@@ -1184,17 +1222,21 @@ Create a data frame with the number of districts at each TVAAS Composite level, 
 ``` {r, echo = FALSE}
 ach_profile %>%
     inner_join(tvaas, by = "system") %>%
-    mutate(Level1 = `TVAAS Composite` == 1,
-           Level2 = `TVAAS Composite` == 2,
-           Level3 = `TVAAS Composite` == 3,
-           Level4 = `TVAAS Composite` == 4,
-           Level5 = `TVAAS Composite` == 5) %>%
+    mutate(
+        Level1 = `TVAAS Composite` == 1,
+        Level2 = `TVAAS Composite` == 2,
+        Level3 = `TVAAS Composite` == 3,
+        Level4 = `TVAAS Composite` == 4,
+        Level5 = `TVAAS Composite` == 5
+    ) %>%
     group_by(CORE_region) %>%
-    summarise(Level1 = sum(Level1, na.rm = TRUE),
-              Level2 = sum(Level2, na.rm = TRUE),
-              Level3 = sum(Level3, na.rm = TRUE),
-              Level4 = sum(Level4, na.rm = TRUE),
-              Level5 = sum(Level5, na.rm = TRUE)) %>%
+    summarise(
+        Level1 = sum(Level1, na.rm = TRUE),
+        Level2 = sum(Level2, na.rm = TRUE),
+        Level3 = sum(Level3, na.rm = TRUE),
+        Level4 = sum(Level4, na.rm = TRUE),
+        Level5 = sum(Level5, na.rm = TRUE)
+    ) %>%
     ungroup()
 ```
 
@@ -1202,7 +1244,7 @@ ach_profile %>%
 
 More succinctly:
 
-``` {r, echo = FALSE}
+``` {r}
 ach_profile %>%
     inner_join(tvaas, by = "system") %>%
     count(CORE_region, `TVAAS Composite`)
