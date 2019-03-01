@@ -1,0 +1,1036 @@
+---
+title: "Iteration in the `tidyverse`"
+author: "<br>Alexander Poon<br> [alex.poon@tn.gov](mailto:alex.poon@tn.gov)"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+    revealjs::revealjs_presentation:
+        theme: night
+        transition: none
+        css: slides.css
+---
+
+``` {r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+options(width = 65)
+```
+
+## Warmup
+
+Q: What's the difference between a vector and a list?
+
+&nbsp;
+
+> * Each element of a vector is a single int or double or character or logical or factor, etc.
+> * All elements of a vector have to be of the same *mode*
+> * Lists can contain arbitrary objects
+> * Lists can be arbitrarily nested
+
+## Preamble
+
+```{r}
+library(tidyverse)
+
+(districts <- read_csv("data/districts.csv"))
+```
+
+## Iteration
+
+Doing the same(ish) thing over and over (without copy + paste).
+
+## Iteration in `dplyr`
+
+Applying the same function to multiple columns:
+
+```{r, eval = FALSE}
+districts %>%
+    summarise(
+        mean(math, na.rm = TRUE),
+        mean(ela, na.rm = TRUE)
+    )
+
+districts %>%
+    mutate(
+        enrollment = enrollment/1000,
+        expenditures = expenditures/1000
+    )
+```
+
+## Iteration in `dplyr`
+
+Applying multiple functions to the same column:
+
+```{r, eval = FALSE}
+districts %>%
+    summarise(
+        mean(grad, na.rm = TRUE),
+        min(grad, na.rm = TRUE),
+        max(grad, na.rm = TRUE)
+    )
+```
+
+## Iteration in `dplyr`
+
+`dplyr` has a family of `*_all`, `*_at`, and `*_if` functions to do iteration tasks, where `*` is any of the following:
+
+* `select()`
+* `rename()`
+* `filter()`
+* `arrange()`
+* `mutate()`
+* `summarise()`
+* `transmute()`
+
+## Iteration in `dplyr`
+
+`dplyr` has a family of `*_all`, `*_at`, and `*_if` functions to do iteration tasks.
+
+> * `*_all` applies to all columns in a data frame
+> * `*_at` applies to a selection of columns
+> * `*_if` applies to a selection of columns meeting a condition
+
+## Arguments
+
+`*_all`, `*_if`, and `*_at`, functions take the following arguments:
+
+&nbsp;
+
+|  function  | .tbl | .vars | .predicate | .funs |
+|------------|------|-------|------------|-------|
+|   *_all    |  x   |       |            |   x   |
+|   *_if     |  x   |       |     x      |   x   |
+|   *_at     |  x   |   x   |            |   x   |
+
+&nbsp;
+
+* `.tbl`: a data frame
+* `.vars`: column(s) in `.tbl`
+* `.predicate`: a function to select columns based on values
+* `.funs`: one or more functions
+
+. . .
+
+There is tons of flexibility in specifying `.vars` and `.funs`.
+
+## `.vars`
+
+`.vars` can be a character vector:
+
+```{r, eval = FALSE}
+districts %>%
+    summarise_at(
+        .vars = c("math", "ela"),
+        .funs = mean
+    )
+```
+
+## `.vars`
+
+`.vars` can be unquoted variable names, wrapped in `vars()`:
+
+```{r, eval = FALSE}
+districts %>%
+    summarise_at(
+        .vars = vars(math, ela),
+        .funs = mean
+    )
+```
+
+## `.vars`
+
+`vars()` follows the same syntax as `select()`:
+
+```{r, eval = FALSE}
+districts %>%
+    summarise_at(
+        .vars = vars(-system, -system_name, -region),
+        .funs = mean
+    )
+```
+
+Applies `mean` to all columns except `system`, `system_name`, and `region`.
+
+## `.vars`
+
+`vars()` follows the same syntax as `select()`:
+
+```{r, eval = FALSE}
+districts %>%
+    summarise_at(
+        .vars = vars(alg_1:dropout),
+        .funs = mean
+    )
+```
+
+Applies `mean` to all columns positionally from `AlgI` to `Dropout`.
+
+## `.vars`
+
+`vars()` follows the same syntax as `select()`:
+
+```{r, eval = FALSE}
+districts %>%
+    summarise_at(
+        .vars = vars(starts_with("alg")),
+        .funs = mean
+    )
+```
+
+Use select helpers in `vars()`:
+
+* `starts_with()`
+* `ends_with()`
+* `contains()`
+* `matches()` (a regular expression)
+* etc.
+
+## `.predicate`
+
+`.predicate` takes a function that returns `TRUE` or `FALSE` based on column values:
+
+```{r, eval = FALSE}
+districts %>%
+    select_if(is.character)
+```
+
+## `.funs`
+
+`.funs` can be a named function:
+
+```{r, eval = FALSE}
+districts %>%
+    summarise_at(c("math", "ela"), mean)
+```
+
+## `.funs`
+
+Pass other arguments to `funs` via `...`:
+
+```{r, eval = FALSE}
+districts %>%
+    summarise_at(c("math", "ela"), mean, na.rm = TRUE)
+```
+
+## `.funs`
+
+`.funs` can be an anonymous function:
+
+```{r, eval = FALSE}
+districts %>%
+    mutate_at(c("enrollment", "expenditures"), function(x) x/1000)
+```
+
+## `.funs`
+
+`.funs` can be an anonymous function:
+
+```{r, eval = FALSE}
+districts %>%
+    mutate_at(c("enrollment", "expenditures"), ~ ./1000)
+```
+
+`~` is shorthand for an anonymous function with one argument.
+
+## `.funs`
+
+`.funs` can be multiple functions, wrapped in `funs`:
+
+```{r}
+districts %>%
+    summarise_at(
+        .vars = c("grad", "dropout"),
+        .funs = funs(mean, min, max),
+        na.rm = TRUE  # passed to mean, min, max via ...
+    )
+```
+
+Any `...` arguments will apply to each of `funs`.
+
+## Examples
+
+Count the number of missing values in each column:
+
+. . .
+
+```{r}
+districts %>%
+    summarise_all(~ sum(is.na(.)))
+```
+
+## Examples
+
+Count the number of missing values in each column:
+
+```{r}
+districts %>%
+    mutate_all(is.na) %>%
+    summarise_all(sum)
+```
+
+## Examples
+
+Keep all the columns with no missing values:
+
+. . .
+
+```{r}
+districts %>%
+    select_if(~ all(!is.na(.)))
+```
+
+## Examples
+
+Round all numeric columns to the whole number:
+
+. . .
+
+```{r}
+districts %>%
+    mutate_if(is.numeric, round)
+```
+
+## Examples
+
+Take the average of all district profile columns:
+
+. . .
+
+```{r}
+districts %>%
+    summarise_at(vars(enrollment:expenditures), mean, na.rm = TRUE)
+```
+
+## Iteration Pre-`tidyverse`
+
+Vectorized functions:
+
+```{r}
+x <- 1:10
+
+x^2
+```
+
+## Iteration Pre-`tidyverse`
+
+For loops:
+
+```{r, eval = FALSE}
+for (x in vec) {
+    # Do something
+}
+```
+
+. . .
+
+Not very idiomatic in R.
+
+## Iteration Pre-tidyverse
+
+`apply` family in base R:
+
+```{r, eval = FALSE}
+lapply(X, fun, ...)
+```
+
+Applies a function to each element of a vector or a list `X`.
+
+. . .
+
+Superseded by the `map` family in `purrr`.
+
+## The `purrr::map` family
+
+A family of functions that take a list (or vector), applies a function to each element, and provides some flexibility in how the result is returned.
+
+<img src="images/purrr.svg" width="200">
+
+## Scenario
+
+I build models to predict whether students in middle school will graduate high school with a 21+ ACT Composite based on:
+
+* test scores
+* absenteeism
+* disciplinary issues
+* mobility
+* the school they attend
+
+## Scenario
+
+I train a few candidate models on a training set of one cohort of students, predict on a test set of a second cohort, and check classification accuracy.
+
+| Student | Prediction |  Outcome  |
+|---------|------------|-----------|
+|    1    |  Ready     | Ready     |
+|    2    |  Not Ready | Not Ready |
+|    3    |  Not Ready | Not Ready |
+|    4    |  Ready     | Not Ready |
+|    .    |     .      |    .      |
+|    .    |     .      |    .      |
+|    .    |     .      |    .      |
+
+## Preamble 2
+
+Read in models and test set:
+
+```{r}
+library(caret)
+
+# Pre-trained models
+glm <- read_rds("models/glm_8.rds")
+nnet <- read_rds("models/nnet_8.rds")
+rpart <- read_rds("models/rpart_8.rds")
+xgb <- read_rds("models/xgb_8.rds")
+
+# Test set to make predictions
+test <- read_csv("data/grade_8.csv") %>%
+    filter(cohort == 2012)
+```
+
+## Preamble 2
+
+Split and preprocess test set:
+
+```{r}
+predictors <- c("absences", "enrollments", "expulsions", "suspensions",
+    "math", "read", "school_math", "school_read")
+
+test_x <- test[predictors]
+test_y <- factor(test$ready_grad)
+
+# Models were trained on centered/scaled data
+# Center and scale test predictors
+test_preprocess <- preProcess(test_x, method = c("center", "scale"))
+
+test_x <- predict(test_preprocess, test_x)
+```
+
+## Example
+
+I want to do this:
+
+```{r, eval = FALSE}
+predict(glm, test_x)
+predict(nnet, test_x)
+predict(rpart, test_x)
+predict(xgb, test_x)
+```
+
+. . .
+
+where:
+
+* `glm` is logistic regression
+* `nnet` is a simple neural network
+* `rpart` is a decision tree
+* `xgb` is (eXtreme) gradient boosting
+
+## Example
+
+With `map`:
+
+```{r, eval = FALSE}
+map(.x = list(glm, nnet, rpart, xgb), .f = predict, test_x)
+```
+
+Iterates by applying function `.f` over each element of `.x`, with the common argument `test_set`.
+
+## Example
+
+With `map`:
+
+```{r}
+map(.x = list(glm, nnet, rpart, xgb), .f = predict, test_x) %>% 
+    str()
+```
+
+This returns a list, where each element is the result of predicting on the test set with the appropriate model.
+
+## `map`
+
+If `.x` is a named list, those names will persist through `map`s:
+
+```{r}
+model_list <- list(
+    "glm" = glm, 
+    "nnet" = nnet, 
+    "rpart" = rpart, 
+    "xgb" = xgb
+)
+
+map(.x = model_list, .f = predict, test_x) %>%
+    str()
+```
+
+## `map`
+
+`map`s are composable with `%>%`:
+
+```{r, eval = FALSE}
+model_list %>%
+    map(predict, test_x) %>%
+    map(~ . == test_y) %>%
+    map(mean)
+```
+
+## `map`
+
+`map`s are composable with `%>%`:
+
+```{r}
+model_list %>%
+    map(predict, test_x) %>%
+    str()
+```
+
+The first `map` takes each model and predicts on the test set, returning a 10,000-length vector of `ready`/`not ready` for each model.
+
+## `map`
+
+`map`s are composable with `%>%`:
+
+```{r}
+model_list %>%
+    map(predict, test_x) %>%
+    map(~ . == test_y) %>%
+    str()
+```
+
+The second `map` takes each list of predictions and compares it element-wise to `test_y`, returning a 10,000-length vector of `TRUE`/`FALSE` for each model.
+
+## `map`
+
+`map`s are composable with `%>%`:
+
+```{r}
+model_list %>%
+    map(predict, test_x) %>%
+    map(~ . == test_y) %>%
+    map(mean)
+```
+
+The third `map` averages each list of booleans, giving a proportion of correct predictions.
+
+## `map_*`
+
+If the result of each iteration is a length 1 vector of the same type, `map_*` will return an atomic vector of type `*`:
+
+```{r, eval = FALSE}
+model_list %>%
+    map(predict, test_x) %>%
+    map(~ . == test_y) %>%
+    map_dbl(mean)
+```
+
+where `*` can be any of `lgl`, `chr`, `int`, `dbl`.
+
+## `map_*`
+
+If the result of each iteration is a length 1 vector of the same type, `map_*` will return an atomic vector of type `*`:
+
+```{r}
+model_list %>%
+    map(predict, test_x) %>%
+    map(~ . == test_y) %>%
+    map_dbl(mean)
+```
+
+. . .
+
+This is useful because vectors are easier to work with than lists, and it's easier to reason about code when you know what it returns.
+
+## `map_*`
+
+`map_*` returns an error if the result is not of the expected type:
+
+```{r, error = TRUE}
+model_list %>%
+    map(predict, test_x) %>%
+    map(~ . == test_y) %>%
+    map_lgl(mean)
+```
+
+## `map_*`
+
+There are also `map_dfc` and `map_dfr` variants, which bind the list elements as columns/rows of a data frame respectively:
+
+```{r}
+model_list %>%
+    map_dfc(predict, test_x)
+```
+
+## `.f` in `map`
+
+`.f` follows all the conventions of the `dplyr` iteration functions:
+
+```{r, eval = FALSE}
+model_list %>%
+    map(predict, test_x) %>%
+    map(~ . == test_y) %>%
+    map_dbl(mean)
+```
+
+* Can be a named function
+* Can be an anonymous function
+* Can use the `~` shorthand
+
+## `.f` in `map`
+
+`.f` follows all the conventions of the `dplyr` iteration functions:
+
+```{r, eval = FALSE}
+model_list %>%
+    map(predict, test_x, type = "prob")
+```
+
+* Take additional arguments with `...`
+
+## `.f` in `map`
+
+`.f` follows all the conventions of the `dplyr` iteration functions:
+
+```{r}
+model_list %>%
+    map(predict, test_x, type = "prob") %>% 
+    str()
+```
+
+## `.f` in `map`
+
+`.f` can be an integer or a character string, in which case it will extract an element by position (integer) or name (string).
+
+```{r}
+model_list %>%
+    map(predict, test_x, type = "prob") %>%
+    map("ready") %>%
+    str()
+```
+
+## `.f` in `map`
+
+Calculate area under the [Receiver Operating Characteristic curve](https://en.wikipedia.org/wiki/Receiver_operating_characteristic):
+
+```{r}
+model_list %>%
+    map(predict, test_x, type = "prob") %>%
+    map("ready") %>%
+    map_dbl(~ yardstick::roc_auc_vec(truth = test_y, estimate = .))
+```
+
+## Preamble 3
+
+I've decided to use `nnet`, and trained a model on each of three cohorts, and want to predict on each of three test sets.
+
+## Preamble 3
+
+Read in trained model and test set for each grade:
+
+```{r}
+nnet_6 <- read_rds("models/nnet_6.rds")
+nnet_7 <- read_rds("models/nnet_7.rds")
+nnet_8 <- read_rds("models/nnet_8.rds")
+
+test_6 <- read_csv("data/grade_6.csv") %>% filter(cohort == 2012)
+test_7 <- read_csv("data/grade_7.csv") %>% filter(cohort == 2012)
+test_8 <- read_csv("data/grade_8.csv") %>% filter(cohort == 2012)
+```
+
+## Preamble 3
+
+Write a function to preprocess test set predictors:
+
+```{r}
+preprocess_test <- function(cohort) {
+
+    predictors <- c("absences", "enrollments", "expulsions", "suspensions",
+        "math", "read", "school_math", "school_read")
+
+    x <- cohort[predictors]
+
+    train_preprocess <- preProcess(x, method = c("center", "scale"))
+
+    predict(train_preprocess, x)
+
+}
+```
+
+## Preamble 3
+
+Split test set into (preprocessed) predictors and outcomes:
+
+``` {r}
+test_x_6 <- preprocess_test(test_6)
+test_x_7 <- preprocess_test(test_7)
+test_x_8 <- preprocess_test(test_8)
+
+test_y_6 <- test_6$ready_grad
+test_y_7 <- test_7$ready_grad
+test_y_8 <- test_8$ready_grad
+```
+
+## Example 2
+
+I want to do this:
+
+```{r, eval = FALSE}
+predict(nnet_6, test_x_6)
+predict(nnet_7, test_x_7)
+predict(nnet_8, test_x_8)
+```
+
+. . .
+
+i.e., iterating over two arguments instead of one.
+
+## `map2`
+
+The solution is `map2`:
+
+```{r, eval = FALSE}
+map2(
+    .x = list(nnet_6, nnet_7, nnet_8),
+    .y = list(test_x_6, test_x_7, test_x_8),
+    .f = predict
+)
+```
+
+`.x` and `.y` are lists of the same length, which will be cycled through as the first and second arguments of `.f`.
+
+## `map2`
+
+The solution is `map2`:
+
+```{r}
+map2(
+    .x = list(nnet_6, nnet_7, nnet_8),
+    .y = list(test_x_6, test_x_7, test_x_8),
+    .f = predict
+) %>% str()
+```
+
+## `map2`
+
+`map2` behaves otherwise identically to `map`:
+
+```{r, eval = FALSE}
+map2(
+    .x = list(nnet_6, nnet_7, nnet_8),
+    .y = list(test_x_6, test_x_7, test_x_8),
+    .f = predict) %>%
+map2(
+    .x = .,
+    .y = list(test_y_6, test_y_7, test_y_8),
+    .f = ~ .x == .y) %>%
+map_dbl(mean)
+```
+
+* Composable with pipes
+* Take named or anonymous functions
+    * For a two-argument anonymous function, use `.x` and `.y`
+* Take additonal `.f` arguments with `...`
+* Has `_int`, `_chr`, `_dbl`, `_lgl` variants
+
+## `map` with Arbitrary Number of Arguments
+
+For iterating over arbitrary number of arguments, use `pmap`:
+
+```{r, eval = FALSE}
+pmap(
+    .l = list(
+        c("A", "B", "C"),
+        c(1, 2, 3),
+        c(foo, bar, baz)
+    ),
+    .f = function(x, y, z) {
+        # do something
+    }
+)
+```
+
+`pmap` takes a list of lists (or vectors), and calls `.f` with the first element of each sublist as its arguments, then the second element of each sublist, etc.
+
+## `map` with Arbitrary Number of Arguments
+
+For iterating over arbitrary number of arguments, use `pmap`:
+
+```{r, eval = FALSE}
+pmap(
+    .l = list(
+        models = list(nnet_6, nnet_7, nnet_8),
+        test_sets = list(test_6, test_7, test_8)
+    ),
+    .f = predict
+)
+```
+
+## `map` with data frames
+
+Recall:
+
+A data frame is a list of vectors.  
+A tibble is a list of lists.
+
+&nbsp;
+
+. . .
+
+This means we can use `map_*` to apply functions over columns of a data frame.
+
+## `map` on data frames
+
+e.g.:
+
+```{r}
+map_chr(test, class)
+```
+
+## `map` on data frames
+
+You can use `map`s on list-columns in a `tibble`:
+
+```{r}
+model_df <- tibble(
+    grade = c(6, 7, 8),
+    test_set = list(test_x_6, test_x_7, test_x_8),
+    model = list(nnet_6, nnet_7, nnet_8)
+)
+```
+
+. . .
+
+```{r, eval = FALSE}
+map2(.x = model_df$model, .y = model_df$test_set, .f = predict)
+```
+
+## `map` on data frames
+
+You can use `map` in conjunction with `mutate`:
+
+```{r}
+model_df %>%
+    mutate(
+        predictions = map2(.x = model, .y = test_set, .f = predict),
+        accuracy = map2(.x = model, .y = test_set, .f = predict) %>%
+            map2(
+                .x = .,
+                .y = list(test_y_6, test_y_7, test_y_8), 
+                .f = ~ .x == .y
+            ) %>%
+            map_dbl(mean)
+    )
+```
+
+## `map` on data frames
+
+You can replicate the iteration functions in `dplyr` with `map`:
+
+```{r}
+summarise_all(districts, ~ sum(is.na(.)))
+```
+
+## `map` on data frames
+
+You can replicate the iteration functions in `dplyr` with `map`:
+
+```{r}
+map_int(districts, ~ sum(is.na(.)))
+```
+
+## `map`
+
+You can `map` all manner of repetitive code:
+
+```{r, eval = FALSE}
+glm <- read_rds("models/glm_8.rds")
+nnet <- read_rds("models/nnet_8.rds")
+rpart <- read_rds("models/rpart_8.rds")
+xgb <- read_rds("models/xgb_8.rds")
+```
+
+. . .
+
+becomes:
+
+```{r, eval = FALSE}
+model_list <- map(
+    .x = c("models/glm_8.rds", "models/nnet_8.rds", "models/rpart_8.rds", "models/xgb_8.rds"),
+    .f = read_rds
+)
+```
+
+## `map`
+
+You can `map` all manner of repetitive code:
+
+```{r, eval = FALSE}
+preprocess_test(test_6)
+preprocess_test(test_7)
+preprocess_test(test_8)
+```
+
+. . .
+
+becomes:
+
+```{r, eval = FALSE}
+map(.x = list(test_6, test_7, test_8), .f = preprocess_test)
+```
+
+## `map`
+
+You can `map` all manner of repetitive code:
+
+```{r, eval = FALSE}
+test_6$ready_grad
+test_7$ready_grad
+test_8$ready_grad
+```
+
+. . .
+
+becomes:
+
+```{r, eval = FALSE}
+map(.x = list(test_6, test_7, test_8), .f = "ready_grad")
+```
+
+## List Unpacking
+
+If you want to assign the components of a `map` to different objects, use the multiple assignment operator (`%<-%`) from `zeallot`:
+
+```{r, eval = FALSE}
+c(glm, nnet, rpart, xgb) %<-% map(
+    .x = c("models/glm_8.rds", "models/nnet_8.rds", "models/rpart_8.rds", "models/xgb_8.rds"),
+    .f = read_rds
+)
+```
+
+vs.
+
+```{r, eval = FALSE}
+model_list <- map(
+    .x = c("models/glm_8.rds", "models/nnet_8.rds", "models/rpart_8.rds", "models/xgb_8.rds"),
+    .f = read_rds
+)
+```
+
+## `map`
+
+Iterate over large blocks of code succinctly with `map`:
+
+e.g.: for each grade:
+
+* read in the data
+* split into training and test sets
+* split training and test sets into features and outcome
+* center and scale features
+* fit a model
+
+## `map`
+
+Iterate over large blocks of code succinctly with `map`:
+
+```{r, eval = FALSE}
+train_set <- read_csv("data/grade_8.csv") %>%
+    filter(cohort == 2011)
+
+predictors <- c("absences", "enrollments", "expulsions", "suspensions",
+    "math", "read", "school_math", "school_read")
+
+train_x <- train_set[predictors]
+train_y <- train_set$ready_grad
+
+train_preprocess <- preProcess(train_x, method = c("center", "scale"))
+
+train_x <- predict(train_preprocess, train_x)
+
+train(x = train_x, y = train_y, method = "nnet", metric = "ROC")
+```
+
+## `map`
+
+Iterate over large blocks of code succinctly with `map`:
+
+```{r, eval = FALSE}
+fit_nnet <- function(grade) {
+    
+    train_set <- read_csv(grade) %>%
+        filter(cohort == 2011)
+
+    predictors <- c("absences", "enrollments", "expulsions", "suspensions",
+        "math", "read", "school_math", "school_read")
+
+    x <- grade[predictors]
+    y <- grade$ready_grad
+
+    train_preprocess <- preProcess(x, method = c("center", "scale"))
+
+    x <- predict(train_preprocess, x)
+
+    train(x = x, y = y, method = "nnet", metric = "ROC", trControl = train_controls)
+}
+```
+
+## `map`
+
+Iterate over large blocks of code succinctly with `map`:
+
+```{r, eval = FALSE}
+map(
+    .x = c("data/grade_6.csv", "data/grade_7.csv", "data/grade_8.csv"),
+    .f = fit_nnet
+)
+```
+
+## `reduce`
+
+From the docs:
+
+> Reduce a list to a single value by iteratively applying a binary function:
+
+`ach`, `growth`, etc. are data frames to be joined:
+
+``` {r, eval = FALSE}
+ach %>%
+    left_join(growth, by = c("system", "school")) %>%
+    left_join(grad, by = c("system", "school")) %>%
+    left_join(ready_grad, by = c("system", "school")) %>%
+    left_join(absenteeism, by = c("system", "school")) %>%
+    left_join(elpa, by = c("system", "school"))
+```
+
+## `reduce`
+
+With `reduce`, this becomes:
+
+```{r, eval = FALSE}
+reduce(
+    .x = list(ach, growth, grad, ready_grad, absenteeism, elpa),
+    .f = left_join,
+    by = c("system", "school")  # passed to left_join via ...
+)
+```
+
+## `walk`
+
+In programming, *side effects* refer to anything a function does other than providing a return value.
+
+> * `write_csv()`
+> * `print()`
+> * `plot()`
+> * `library()`
+
+## `walk`
+
+`walk` is the equivalent of `map` for producing side effects.
+
+```{r, eval = FALSE}
+walk(
+    .x = list(nnet_6, nnet_7, nnet_8),
+    .f = write_rds("models/nnet_6.rds", "models/nnet_7.rds", "models/nnet_8.rds")
+)
+```
+
+## Further Reading
+
+* A `purrr` DataCamp tutorial: https://www.datacamp.com/courses/writing-functions-in-r
+* Charlotte Wickham's `purrr` tutorial for working with nested lists: https://github.com/cwickham/purrr-tutorial
+* The `purrr` cheat sheet: https://www.rstudio.com/resources/cheatsheets/#purrr
