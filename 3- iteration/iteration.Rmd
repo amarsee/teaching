@@ -355,6 +355,12 @@ I build models to predict whether students in middle school will graduate high s
 
 ## Scenario
 
+```{r}
+(grade_8 <- read_csv("data/grade_8.csv"))
+```
+
+## Scenario
+
 I train a few candidate models on a training set of one cohort of students, predict on a test set of a second cohort, and check classification accuracy.
 
 | Student | Prediction |  Outcome  |
@@ -381,8 +387,7 @@ rpart <- read_rds("models/rpart_8.rds")
 xgb <- read_rds("models/xgb_8.rds")
 
 # Test set to make predictions
-test <- read_csv("data/grade_8.csv") %>%
-    filter(cohort == 2012)
+test_set <- filter(grade_8, cohort == 2012)
 ```
 
 ## Preamble 2
@@ -393,8 +398,8 @@ Split and preprocess test set:
 predictors <- c("absences", "enrollments", "expulsions", "suspensions",
     "math", "read", "school_math", "school_read")
 
-test_x <- test[predictors]
-test_y <- factor(test$ready_grad)
+test_x <- test_set[predictors]
+test_y <- factor(test_set$ready_grad)
 
 # Models were trained on centered/scaled data
 # Center and scale test predictors
@@ -619,18 +624,36 @@ model_list %>%
 
 I've decided to use `nnet`, and trained a model on each of three cohorts, and want to predict on each of three test sets.
 
+. . .
+
+I want to do something like this:
+
+```{r, eval = FALSE}
+predict(nnet_6, test_x_6)
+predict(nnet_7, test_x_7)
+predict(nnet_8, test_x_8)
+```
+
+. . .
+
+i.e., iterating over two arguments instead of one.
+
 ## Preamble 3
 
 Read in trained model and test set for each grade:
 
 ```{r}
-nnet_6 <- read_rds("models/nnet_6.rds")
-nnet_7 <- read_rds("models/nnet_7.rds")
-nnet_8 <- read_rds("models/nnet_8.rds")
+nnet_list <- list(
+    "grade_6" = read_rds("models/nnet_6.rds"),
+    "grade_7" = read_rds("models/nnet_7.rds"),
+    "grade_8" = read_rds("models/nnet_8.rds")
+)
 
-test_6 <- read_csv("data/grade_6.csv") %>% filter(cohort == 2012)
-test_7 <- read_csv("data/grade_7.csv") %>% filter(cohort == 2012)
-test_8 <- read_csv("data/grade_8.csv") %>% filter(cohort == 2012)
+test_list <- list(
+    "test_6" = read_csv("data/grade_6.csv") %>% filter(cohort == 2012),
+    "test_7" = read_csv("data/grade_7.csv") %>% filter(cohort == 2012),
+    "test_8" = read_csv("data/grade_8.csv") %>% filter(cohort == 2012)    
+)
 ```
 
 ## Preamble 3
@@ -654,42 +677,19 @@ preprocess_test <- function(cohort) {
 
 ## Preamble 3
 
-Split test set into (preprocessed) predictors and outcomes:
+Split test sets into (preprocessed) predictors and outcomes:
 
 ``` {r}
-test_x_6 <- preprocess_test(test_6)
-test_x_7 <- preprocess_test(test_7)
-test_x_8 <- preprocess_test(test_8)
-
-test_y_6 <- test_6$ready_grad
-test_y_7 <- test_7$ready_grad
-test_y_8 <- test_8$ready_grad
+test_x <- map(.x = test_list, .f = preprocess_test)
+test_y <- map(.x = test_list, .f = "ready_grad")
 ```
-
-## Example 2
-
-I want to do this:
-
-```{r, eval = FALSE}
-predict(nnet_6, test_x_6)
-predict(nnet_7, test_x_7)
-predict(nnet_8, test_x_8)
-```
-
-. . .
-
-i.e., iterating over two arguments instead of one.
 
 ## `map2`
 
 The solution is `map2`:
 
 ```{r, eval = FALSE}
-map2(
-    .x = list(nnet_6, nnet_7, nnet_8),
-    .y = list(test_x_6, test_x_7, test_x_8),
-    .f = predict
-)
+map2(.x = nnet_list, .y = test_x, .f = predict)
 ```
 
 `.x` and `.y` are lists of the same length, which will be cycled through as the first and second arguments of `.f`.
@@ -699,11 +699,8 @@ map2(
 The solution is `map2`:
 
 ```{r}
-map2(
-    .x = list(nnet_6, nnet_7, nnet_8),
-    .y = list(test_x_6, test_x_7, test_x_8),
-    .f = predict
-) %>% str()
+map2(.x = nnet_list, .y = test_x, .f = predict) %>% 
+    str()
 ```
 
 ## `map2`
@@ -711,22 +708,26 @@ map2(
 `map2` behaves otherwise identically to `map`:
 
 ```{r, eval = FALSE}
-map2(
-    .x = list(nnet_6, nnet_7, nnet_8),
-    .y = list(test_x_6, test_x_7, test_x_8),
-    .f = predict) %>%
-map2(
-    .x = .,
-    .y = list(test_y_6, test_y_7, test_y_8),
-    .f = ~ .x == .y) %>%
-map_dbl(mean)
+map2(.x = nnet_list, .y = test_x, .f = predict) %>%
+    map2(.x = ., .y = test_y, .f = ~ .x == .y) %>%
+    map_dbl(mean)
 ```
 
-* Composable with pipes
-* Take named or anonymous functions
+> * Composable with pipes
+> * Take named or anonymous functions
     * For a two-argument anonymous function, use `.x` and `.y`
-* Take additonal `.f` arguments with `...`
-* Has `_int`, `_chr`, `_dbl`, `_lgl` variants
+> * Take additonal `.f` arguments with `...`
+> * Has `_int`, `_chr`, `_dbl`, `_lgl` variants
+
+## `map2`
+
+`map2` behaves otherwise identically to `map`:
+
+```{r}
+map2(.x = nnet_list, .y = test_x, .f = predict) %>%
+    map2(.x = ., .y = test_y, .f = ~ .x == .y) %>%
+    map_dbl(mean)
+```
 
 ## `map` with Arbitrary Number of Arguments
 
@@ -754,8 +755,8 @@ For iterating over arbitrary number of arguments, use `pmap`:
 ```{r, eval = FALSE}
 pmap(
     .l = list(
-        models = list(nnet_6, nnet_7, nnet_8),
-        test_sets = list(test_6, test_7, test_8)
+        models = nnet_list
+        test_sets = test_x
     ),
     .f = predict
 )
@@ -772,48 +773,55 @@ A tibble is a list of lists.
 
 . . .
 
-This means we can use `map_*` to apply functions over columns of a data frame.
-
-## `map` on data frames
-
-e.g.:
+Use `map_*` to apply functions over columns of a data frame, e.g.:
 
 ```{r}
-map_chr(test, class)
+map_chr(test_set, class)
 ```
 
 ## `map` on data frames
 
-You can use `map`s on list-columns in a `tibble`:
+You can use `map`s on list-columns of a `tibble`:
 
 ```{r}
-model_df <- tibble(
+(model_df <- tibble(
     grade = c(6, 7, 8),
-    test_set = list(test_x_6, test_x_7, test_x_8),
-    model = list(nnet_6, nnet_7, nnet_8)
-)
+    test_set = test_x,
+    model = nnet_list
+))
 ```
 
-. . .
+## `map` on data frames
 
-```{r, eval = FALSE}
-map2(.x = model_df$model, .y = model_df$test_set, .f = predict)
+You can use `map`s on list-columns of a `tibble`:
+
+```{r}
+map2(.x = model_df$model, .y = model_df$test_set, .f = predict) %>%
+    str()
 ```
 
 ## `map` on data frames
 
 You can use `map` in conjunction with `mutate`:
 
-```{r}
+```{r, eval = FALSE}
 model_df %>%
     mutate(
         predictions = map2(.x = model, .y = test_set, .f = predict),
         accuracy = map2(.x = model, .y = test_set, .f = predict) %>%
-            map2(
-                .x = .,
-                .y = list(test_y_6, test_y_7, test_y_8), 
-                .f = ~ .x == .y
-            ) %>%
+            map2(.x = ., .y = test_y, .f = ~ .x == .y) %>%
+            map_dbl(mean)
+    )
+```
+
+. . .
+
+```{r, echo = FALSE}
+model_df %>%
+    mutate(
+        predictions = map2(.x = model, .y = test_set, .f = predict),
+        accuracy = map2(.x = model, .y = test_set, .f = predict) %>%
+            map2(.x = ., .y = test_y, .f = ~ .x == .y) %>%
             map_dbl(mean)
     )
 ```
@@ -856,42 +864,6 @@ model_list <- map(
 )
 ```
 
-## `map`
-
-You can `map` all manner of repetitive code:
-
-```{r, eval = FALSE}
-preprocess_test(test_6)
-preprocess_test(test_7)
-preprocess_test(test_8)
-```
-
-. . .
-
-becomes:
-
-```{r, eval = FALSE}
-map(.x = list(test_6, test_7, test_8), .f = preprocess_test)
-```
-
-## `map`
-
-You can `map` all manner of repetitive code:
-
-```{r, eval = FALSE}
-test_6$ready_grad
-test_7$ready_grad
-test_8$ready_grad
-```
-
-. . .
-
-becomes:
-
-```{r, eval = FALSE}
-map(.x = list(test_6, test_7, test_8), .f = "ready_grad")
-```
-
 ## List Unpacking
 
 If you want to assign the components of a `map` to different objects, use the multiple assignment operator (`%<-%`) from `zeallot`:
@@ -903,13 +875,23 @@ c(glm, nnet, rpart, xgb) %<-% map(
 )
 ```
 
-vs.
+## List Unpacking
 
-```{r, eval = FALSE}
+In general, you should keep things as a list unless you're going to do the same things with each element.
+
+```{r}
 model_list <- map(
     .x = c("models/glm_8.rds", "models/nnet_8.rds", "models/rpart_8.rds", "models/xgb_8.rds"),
     .f = read_rds
 )
+```
+
+. . .
+
+vs.
+
+```{r, eval = FALSE}
+c(train_8, test_8) %<-% split(grade_8, grade_8$cohort)
 ```
 
 ## `map`
@@ -926,7 +908,7 @@ e.g.: for each grade:
 
 ## `map`
 
-Iterate over large blocks of code succinctly with `map`:
+To train models, I do something like this for each grade:
 
 ```{r, eval = FALSE}
 train_set <- read_csv("data/grade_8.csv") %>%
@@ -938,16 +920,16 @@ predictors <- c("absences", "enrollments", "expulsions", "suspensions",
 train_x <- train_set[predictors]
 train_y <- train_set$ready_grad
 
-train_preprocess <- preProcess(train_x, method = c("center", "scale"))
+center_scale <- preProcess(train_x, method = c("center", "scale"))
 
-train_x <- predict(train_preprocess, train_x)
+train_x <- predict(center_scale, train_x)
 
 train(x = train_x, y = train_y, method = "nnet", metric = "ROC")
 ```
 
 ## `map`
 
-Iterate over large blocks of code succinctly with `map`:
+Turn it into a function:
 
 ```{r, eval = FALSE}
 fit_nnet <- function(grade) {
@@ -961,17 +943,18 @@ fit_nnet <- function(grade) {
     x <- grade[predictors]
     y <- grade$ready_grad
 
-    train_preprocess <- preProcess(x, method = c("center", "scale"))
+    center_scale <- preProcess(x, method = c("center", "scale"))
 
-    x <- predict(train_preprocess, x)
+    x <- predict(center_scale, x)
 
-    train(x = x, y = y, method = "nnet", metric = "ROC", trControl = train_controls)
+    train(x = x, y = y, method = "nnet", metric = "ROC")
+
 }
 ```
 
 ## `map`
 
-Iterate over large blocks of code succinctly with `map`:
+Iterate with `map`:
 
 ```{r, eval = FALSE}
 map(
@@ -980,11 +963,34 @@ map(
 )
 ```
 
+## `walk`
+
+In programming, *side effects* refer to anything a function does other than providing a return value.
+
+> * `write_csv()`
+> * `print()`
+> * `plot()`
+> * `library()`
+
+## `walk`
+
+`walk` is the equivalent of `map` for producing side effects.
+
+```{r, eval = FALSE}
+walk2(
+    .x = model_list,
+    .y = paste0("models/", names(model_list), "_8.rds"),
+    .f = write_rds
+)
+```
+
 ## `reduce`
 
 From the docs:
 
 > Reduce a list to a single value by iteratively applying a binary function:
+
+. . .
 
 `ach`, `growth`, etc. are data frames to be joined:
 
@@ -1006,26 +1012,6 @@ reduce(
     .x = list(ach, growth, grad, ready_grad, absenteeism, elpa),
     .f = left_join,
     by = c("system", "school")  # passed to left_join via ...
-)
-```
-
-## `walk`
-
-In programming, *side effects* refer to anything a function does other than providing a return value.
-
-> * `write_csv()`
-> * `print()`
-> * `plot()`
-> * `library()`
-
-## `walk`
-
-`walk` is the equivalent of `map` for producing side effects.
-
-```{r, eval = FALSE}
-walk(
-    .x = list(nnet_6, nnet_7, nnet_8),
-    .f = write_rds("models/nnet_6.rds", "models/nnet_7.rds", "models/nnet_8.rds")
 )
 ```
 
