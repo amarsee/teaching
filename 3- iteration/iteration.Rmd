@@ -14,6 +14,23 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 options(width = 65)
 ```
 
+## Table of Contents
+
+* [Iteration in `dplyr`](#/Iteration-in-dplyr-2)
+* [Iteration function arguments](#/arguments)
+* [`.vars`](#/vars)
+* [`.predicate`](#/predicate)
+* [`.funs`](#/funs)
+* [`map`](#/map-1)
+* [`map_*`](#/map_)
+* [`.f` in `map`](#/f-in-map)
+* [`map2`](#/map2)
+* [`pmap`](#/map-with-arbitrary-number-of-arguments)
+* [`map` with data frames](#/map-with-data-frames)
+* [List unpacking with `%<-%`](#/list-unpacking)
+* [`walk`](#/walk)
+* [`reduce`](#/reduce)
+
 ## Warmup
 
 Q: What's the difference between a vector and a list?
@@ -70,7 +87,7 @@ districts %>%
 
 ## Iteration in `dplyr`
 
-`dplyr` has a family of `*_all`, `*_at`, and `*_if` functions to do iteration tasks, where `*` is any of the following:
+`dplyr` has a family of `*_all`, `*_at`, and `*_if` functions to perform iteration tasks, where `*` is any of the following:
 
 * `select()`
 * `rename()`
@@ -82,7 +99,7 @@ districts %>%
 
 ## Iteration in `dplyr`
 
-`dplyr` has a family of `*_all`, `*_at`, and `*_if` functions to do iteration tasks.
+`dplyr` has a family of `*_all`, `*_at`, and `*_if` functions to perform iteration tasks.
 
 > * `*_all` applies to all columns in a data frame
 > * `*_at` applies to a selection of columns
@@ -428,7 +445,7 @@ where:
 * `rpart` is a decision tree
 * `xgb` is (eXtreme) gradient boosting
 
-## Example
+## `map`
 
 With `map`:
 
@@ -438,7 +455,7 @@ map(.x = list(glm, nnet, rpart, xgb), .f = predict, test_x)
 
 Iterates by applying function `.f` over each element of `.x`, with the common argument `test_set`.
 
-## Example
+## `map`
 
 With `map`:
 
@@ -762,7 +779,7 @@ pmap(
 )
 ```
 
-## `map` with data frames
+## `map` with Data Frames
 
 Recall:
 
@@ -779,7 +796,7 @@ Use `map_*` to apply functions over columns of a data frame, e.g.:
 map_chr(test_set, class)
 ```
 
-## `map` on data frames
+## `map` with Data Frames
 
 You can use `map`s on list-columns of a `tibble`:
 
@@ -791,7 +808,7 @@ You can use `map`s on list-columns of a `tibble`:
 ))
 ```
 
-## `map` on data frames
+## `map` with Data Frames
 
 You can use `map`s on list-columns of a `tibble`:
 
@@ -800,7 +817,7 @@ map2(.x = model_df$model, .y = model_df$test_set, .f = predict) %>%
     str()
 ```
 
-## `map` on data frames
+## `map` with Data Frames
 
 You can use `map` in conjunction with `mutate`:
 
@@ -826,7 +843,7 @@ model_df %>%
     )
 ```
 
-## `map` on data frames
+## `map` with Data Frames
 
 You can replicate the iteration functions in `dplyr` with `map`:
 
@@ -834,7 +851,7 @@ You can replicate the iteration functions in `dplyr` with `map`:
 summarise_all(districts, ~ sum(is.na(.)))
 ```
 
-## `map` on data frames
+## `map` with Data Frames
 
 You can replicate the iteration functions in `dplyr` with `map`:
 

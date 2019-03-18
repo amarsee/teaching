@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content=" Alexander Poon  alex.poon@tn.gov" />
-  <meta name="dcterms.date" content="2019-03-04" />
+  <meta name="dcterms.date" content="2019-03-18" />
   <title>Iteration in the tidyverse</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1854,9 +1854,28 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section>
     <h1 class="title">Iteration in the <code>tidyverse</code></h1>
     <h2 class="author"><br>Alexander Poon<br> <a href="mailto:alex.poon@tn.gov">alex.poon@tn.gov</a></h2>
-    <h3 class="date">March 04, 2019</h3>
+    <h3 class="date">March 18, 2019</h3>
 </section>
 
+<section id="table-of-contents" class="slide level2">
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#//Iteration-in-dplyr-2">Iteration in <code>dplyr</code></a></li>
+<li><a href="#//arguments">Iteration function arguments</a></li>
+<li><a href="#//vars"><code>.vars</code></a></li>
+<li><a href="#//predicate"><code>.predicate</code></a></li>
+<li><a href="#//funs"><code>.funs</code></a></li>
+<li><a href="#//map-1"><code>map</code></a></li>
+<li><a href="#//map_"><code>map_*</code></a></li>
+<li><a href="#//f-in-map"><code>.f</code> in <code>map</code></a></li>
+<li><a href="#//map2"><code>map2</code></a></li>
+<li><a href="#//map-with-arbitrary-number-of-arguments"><code>pmap</code></a></li>
+<li><a href="#//map-with-data-frames"><code>map</code> with data frames</a></li>
+<li><a href="#//list-unpacking">List unpacking with <code>%&lt;-%</code></a></li>
+<li><a href="#//walk"><code>walk</code></a></li>
+<li><a href="#//reduce"><code>reduce</code></a></li>
+</ul>
+</section>
 <section id="warmup" class="slide level2">
 <h2>Warmup</h2>
 <p>Q: What’s the difference between a vector and a list?</p>
@@ -1924,7 +1943,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </section>
 <section id="iteration-in-dplyr-2" class="slide level2">
 <h2>Iteration in <code>dplyr</code></h2>
-<p><code>dplyr</code> has a family of <code>*_all</code>, <code>*_at</code>, and <code>*_if</code> functions to do iteration tasks, where <code>*</code> is any of the following:</p>
+<p><code>dplyr</code> has a family of <code>*_all</code>, <code>*_at</code>, and <code>*_if</code> functions to perform iteration tasks, where <code>*</code> is any of the following:</p>
 <ul>
 <li><code>select()</code></li>
 <li><code>rename()</code></li>
@@ -1937,7 +1956,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </section>
 <section id="iteration-in-dplyr-3" class="slide level2">
 <h2>Iteration in <code>dplyr</code></h2>
-<p><code>dplyr</code> has a family of <code>*_all</code>, <code>*_at</code>, and <code>*_if</code> functions to do iteration tasks.</p>
+<p><code>dplyr</code> has a family of <code>*_all</code>, <code>*_at</code>, and <code>*_if</code> functions to perform iteration tasks.</p>
 <ul>
 <li class="fragment"><code>*_all</code> applies to all columns in a data frame</li>
 <li class="fragment"><code>*_at</code> applies to a selection of columns</li>
@@ -2350,14 +2369,14 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul>
 </div>
 </section>
-<section id="example-1" class="slide level2">
-<h2>Example</h2>
+<section id="map" class="slide level2">
+<h2><code>map</code></h2>
 <p>With <code>map</code>:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">map</span>(<span class="dt">.x =</span> <span class="kw">list</span>(glm, nnet, rpart, xgb), <span class="dt">.f =</span> predict, test_x)</a></code></pre></div>
 <p>Iterates by applying function <code>.f</code> over each element of <code>.x</code>, with the common argument <code>test_set</code>.</p>
 </section>
-<section id="example-2" class="slide level2">
-<h2>Example</h2>
+<section id="map-1" class="slide level2">
+<h2><code>map</code></h2>
 <p>With <code>map</code>:</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">map</span>(<span class="dt">.x =</span> <span class="kw">list</span>(glm, nnet, rpart, xgb), <span class="dt">.f =</span> predict, test_x) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb37-2" data-line-number="2"><span class="st">    </span><span class="kw">str</span>()</a></code></pre></div>
@@ -2368,7 +2387,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  $ : Factor w/ 2 levels &quot;not_ready&quot;,&quot;ready&quot;: 1 1 2 1 1 1 1 1 1 1 ...</code></pre>
 <p>This returns a list, where each element is the result of predicting on the test set with the appropriate model.</p>
 </section>
-<section id="map" class="slide level2">
+<section id="map-2" class="slide level2">
 <h2><code>map</code></h2>
 <p>If <code>.x</code> is a named list, those names will persist through <code>map</code>s:</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">model_list &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
@@ -2386,7 +2405,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  $ rpart: Factor w/ 2 levels &quot;not_ready&quot;,&quot;ready&quot;: 1 1 2 1 1 1 1 1 1 1 ...
 ##  $ xgb  : Factor w/ 2 levels &quot;not_ready&quot;,&quot;ready&quot;: 1 1 2 1 1 1 1 1 1 1 ...</code></pre>
 </section>
-<section id="map-1" class="slide level2">
+<section id="map-3" class="slide level2">
 <h2><code>map</code></h2>
 <p><code>map</code>s are composable with <code>%&gt;%</code>:</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">model_list <span class="op">%&gt;%</span></a>
@@ -2394,7 +2413,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <a class="sourceLine" id="cb41-3" data-line-number="3"><span class="st">    </span><span class="kw">map</span>(<span class="op">~</span><span class="st"> </span>. <span class="op">==</span><span class="st"> </span>test_y) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb41-4" data-line-number="4"><span class="st">    </span><span class="kw">map</span>(mean)</a></code></pre></div>
 </section>
-<section id="map-2" class="slide level2">
+<section id="map-4" class="slide level2">
 <h2><code>map</code></h2>
 <p><code>map</code>s are composable with <code>%&gt;%</code>:</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">model_list <span class="op">%&gt;%</span></a>
@@ -2407,7 +2426,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  $ xgb  : Factor w/ 2 levels &quot;not_ready&quot;,&quot;ready&quot;: 1 1 2 1 1 1 1 1 1 1 ...</code></pre>
 <p>The first <code>map</code> takes each model and predicts on the test set, returning a 10,000-length vector of <code>ready</code>/<code>not ready</code> for each model.</p>
 </section>
-<section id="map-3" class="slide level2">
+<section id="map-5" class="slide level2">
 <h2><code>map</code></h2>
 <p><code>map</code>s are composable with <code>%&gt;%</code>:</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">model_list <span class="op">%&gt;%</span></a>
@@ -2421,7 +2440,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  $ xgb  : logi [1:10000] TRUE TRUE TRUE TRUE TRUE TRUE ...</code></pre>
 <p>The second <code>map</code> takes each list of predictions and compares it element-wise to <code>test_y</code>, returning a 10,000-length vector of <code>TRUE</code>/<code>FALSE</code> for each model.</p>
 </section>
-<section id="map-4" class="slide level2">
+<section id="map-6" class="slide level2">
 <h2><code>map</code></h2>
 <p><code>map</code>s are composable with <code>%&gt;%</code>:</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">model_list <span class="op">%&gt;%</span></a>
@@ -2673,7 +2692,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <a class="sourceLine" id="cb74-7" data-line-number="7">)</a></code></pre></div>
 </section>
 <section id="map-with-data-frames" class="slide level2">
-<h2><code>map</code> with data frames</h2>
+<h2><code>map</code> with Data Frames</h2>
 <p>Recall:</p>
 <p>A data frame is a list of vectors.<br />
 A tibble is a list of lists.</p>
@@ -2687,8 +2706,8 @@ A tibble is a list of lists.</p>
 ##   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot;</code></pre>
 </div>
 </section>
-<section id="map-on-data-frames" class="slide level2">
-<h2><code>map</code> on data frames</h2>
+<section id="map-with-data-frames-1" class="slide level2">
+<h2><code>map</code> with Data Frames</h2>
 <p>You can use <code>map</code>s on list-columns of a <code>tibble</code>:</p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">(model_df &lt;-<span class="st"> </span><span class="kw">tibble</span>(</a>
 <a class="sourceLine" id="cb77-2" data-line-number="2">    <span class="dt">grade =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>),</a>
@@ -2702,8 +2721,8 @@ A tibble is a list of lists.</p>
 ## 2     7 &lt;tibble [10,000 × 8]&gt; &lt;S3: train&gt;
 ## 3     8 &lt;tibble [10,000 × 8]&gt; &lt;S3: train&gt;</code></pre>
 </section>
-<section id="map-on-data-frames-1" class="slide level2">
-<h2><code>map</code> on data frames</h2>
+<section id="map-with-data-frames-2" class="slide level2">
+<h2><code>map</code> with Data Frames</h2>
 <p>You can use <code>map</code>s on list-columns of a <code>tibble</code>:</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw">map2</span>(<span class="dt">.x =</span> model_df<span class="op">$</span>model, <span class="dt">.y =</span> model_df<span class="op">$</span>test_set, <span class="dt">.f =</span> predict) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb79-2" data-line-number="2"><span class="st">    </span><span class="kw">str</span>()</a></code></pre></div>
@@ -2712,8 +2731,8 @@ A tibble is a list of lists.</p>
 ##  $ grade_7: Factor w/ 2 levels &quot;not_ready&quot;,&quot;ready&quot;: 1 2 2 2 1 2 2 1 1 1 ...
 ##  $ grade_8: Factor w/ 2 levels &quot;not_ready&quot;,&quot;ready&quot;: 1 1 2 1 1 1 1 1 1 1 ...</code></pre>
 </section>
-<section id="map-on-data-frames-2" class="slide level2">
-<h2><code>map</code> on data frames</h2>
+<section id="map-with-data-frames-3" class="slide level2">
+<h2><code>map</code> with Data Frames</h2>
 <p>You can use <code>map</code> in conjunction with <code>mutate</code>:</p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1">model_df <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb81-2" data-line-number="2"><span class="st">    </span><span class="kw">mutate</span>(</a>
@@ -2731,8 +2750,8 @@ A tibble is a list of lists.</p>
 ## 3     8 &lt;tibble [10,000 × 8]&gt; &lt;S3: train&gt; &lt;fct [10,000]&gt;    0.843</code></pre>
 </div>
 </section>
-<section id="map-on-data-frames-3" class="slide level2">
-<h2><code>map</code> on data frames</h2>
+<section id="map-with-data-frames-4" class="slide level2">
+<h2><code>map</code> with Data Frames</h2>
 <p>You can replicate the iteration functions in <code>dplyr</code> with <code>map</code>:</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1"><span class="kw">summarise_all</span>(districts, <span class="op">~</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">is.na</span>(.)))</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 27
@@ -2746,8 +2765,8 @@ A tibble is a list of lists.</p>
 ## #   suspended &lt;int&gt;, expelled &lt;int&gt;, grad &lt;int&gt;, dropout &lt;int&gt;,
 ## #   region &lt;int&gt;</code></pre>
 </section>
-<section id="map-on-data-frames-4" class="slide level2">
-<h2><code>map</code> on data frames</h2>
+<section id="map-with-data-frames-5" class="slide level2">
+<h2><code>map</code> with Data Frames</h2>
 <p>You can replicate the iteration functions in <code>dplyr</code> with <code>map</code>:</p>
 <div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="kw">map_int</span>(districts, <span class="op">~</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">is.na</span>(.)))</a></code></pre></div>
 <pre><code>##        system   system_name         alg_1         alg_2 
@@ -2765,7 +2784,7 @@ A tibble is a list of lists.</p>
 ##          grad       dropout        region 
 ##            17            17             1</code></pre>
 </section>
-<section id="map-5" class="slide level2">
+<section id="map-7" class="slide level2">
 <h2><code>map</code></h2>
 <p>You can <code>map</code> all manner of repetitive code:</p>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1">glm &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="st">&quot;models/glm_8.rds&quot;</span>)</a>
@@ -2800,7 +2819,7 @@ A tibble is a list of lists.</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="kw">c</span>(train_<span class="dv">8</span>, test_<span class="dv">8</span>) <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">split</span>(grade_<span class="dv">8</span>, grade_<span class="dv">8</span><span class="op">$</span>cohort)</a></code></pre></div>
 </div>
 </section>
-<section id="map-6" class="slide level2">
+<section id="map-8" class="slide level2">
 <h2><code>map</code></h2>
 <p>Iterate over large blocks of code succinctly with <code>map</code>:</p>
 <p>e.g.: for each grade:</p>
@@ -2812,7 +2831,7 @@ A tibble is a list of lists.</p>
 <li>fit a model</li>
 </ul>
 </section>
-<section id="map-7" class="slide level2">
+<section id="map-9" class="slide level2">
 <h2><code>map</code></h2>
 <p>To train models, I do something like this for each grade:</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1">train_set &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/grade_8.csv&quot;</span>) <span class="op">%&gt;%</span></a>
@@ -2830,7 +2849,7 @@ A tibble is a list of lists.</p>
 <a class="sourceLine" id="cb92-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb92-14" data-line-number="14"><span class="kw">train</span>(<span class="dt">x =</span> train_x, <span class="dt">y =</span> train_y, <span class="dt">method =</span> <span class="st">&quot;nnet&quot;</span>, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</a></code></pre></div>
 </section>
-<section id="map-8" class="slide level2">
+<section id="map-10" class="slide level2">
 <h2><code>map</code></h2>
 <p>Turn it into a function:</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1">fit_nnet &lt;-<span class="st"> </span><span class="cf">function</span>(grade) {</a>
@@ -2849,9 +2868,10 @@ A tibble is a list of lists.</p>
 <a class="sourceLine" id="cb93-14" data-line-number="14">    x &lt;-<span class="st"> </span><span class="kw">predict</span>(center_scale, x)</a>
 <a class="sourceLine" id="cb93-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb93-16" data-line-number="16">    <span class="kw">train</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">method =</span> <span class="st">&quot;nnet&quot;</span>, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</a>
-<a class="sourceLine" id="cb93-17" data-line-number="17">}</a></code></pre></div>
+<a class="sourceLine" id="cb93-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb93-18" data-line-number="18">}</a></code></pre></div>
 </section>
-<section id="map-9" class="slide level2">
+<section id="map-11" class="slide level2">
 <h2><code>map</code></h2>
 <p>Iterate with <code>map</code>:</p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="kw">map</span>(</a>
