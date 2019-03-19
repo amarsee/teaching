@@ -27,7 +27,7 @@ preprocess_features <- function(cohort) {
 train_nnet <- function(x, y) {
 
     train(x = x, y = y, method = "nnet", metric = "ROC",
-          trControl = trainControl(classProbs = TRUE)
+        trControl = trainControl(classProbs = TRUE)
     )
 
 }
@@ -44,8 +44,8 @@ test_sets %>%
     map_dbl(mean)
 
 # Export models
-# walk2(
-#     .x = model_list,
-#     .y = paste0("models/", names(model_list), "_8.rds"),
-#     .f = write_rds
-# )
+walk2(
+    .x = model_list,
+    .y = paste0("models/", names(model_list), "_8.rds"),
+    .f = write_rds
+)

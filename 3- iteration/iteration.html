@@ -2123,7 +2123,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 1 x 27
 ##   system system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##    &lt;int&gt;       &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-## 1      0           0    18    23    17    19     1    17    18
+## 1      0           0    21    25    17    22     3    18    18
 ## # … with 18 more variables: eng_3 &lt;int&gt;, math &lt;int&gt;,
 ## #   science &lt;int&gt;, enrollment &lt;int&gt;, black &lt;int&gt;,
 ## #   hispanic &lt;int&gt;, native &lt;int&gt;, el &lt;int&gt;, swd &lt;int&gt;, ed &lt;int&gt;,
@@ -2141,7 +2141,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 1 x 27
 ##   system system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##    &lt;int&gt;       &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-## 1      0           0    18    23    17    19     1    17    18
+## 1      0           0    21    25    17    22     3    18    18
 ## # … with 18 more variables: eng_3 &lt;int&gt;, math &lt;int&gt;,
 ## #   science &lt;int&gt;, enrollment &lt;int&gt;, black &lt;int&gt;,
 ## #   hispanic &lt;int&gt;, native &lt;int&gt;, el &lt;int&gt;, swd &lt;int&gt;, ed &lt;int&gt;,
@@ -2757,7 +2757,7 @@ A tibble is a list of lists.</p>
 <pre><code>## # A tibble: 1 x 27
 ##   system system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##    &lt;int&gt;       &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-## 1      0           0    18    23    17    19     1    17    18
+## 1      0           0    21    25    17    22     3    18    18
 ## # … with 18 more variables: eng_3 &lt;int&gt;, math &lt;int&gt;,
 ## #   science &lt;int&gt;, enrollment &lt;int&gt;, black &lt;int&gt;,
 ## #   hispanic &lt;int&gt;, native &lt;int&gt;, el &lt;int&gt;, swd &lt;int&gt;, ed &lt;int&gt;,
@@ -2770,11 +2770,11 @@ A tibble is a list of lists.</p>
 <p>You can replicate the iteration functions in <code>dplyr</code> with <code>map</code>:</p>
 <div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="kw">map_int</span>(districts, <span class="op">~</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">is.na</span>(.)))</a></code></pre></div>
 <pre><code>##        system   system_name         alg_1         alg_2 
-##             0             0            18            23 
+##             0             0            21            25 
 ##           bio          chem           ela         eng_1 
-##            17            19             1            17 
+##            17            22             3            18 
 ##         eng_2         eng_3          math       science 
-##            18            17             1             1 
+##            18            18             4             2 
 ##    enrollment         black      hispanic        native 
 ##             4             0             0             0 
 ##            el           swd            ed  expenditures 
@@ -2802,10 +2802,12 @@ A tibble is a list of lists.</p>
 <section id="list-unpacking" class="slide level2">
 <h2>List Unpacking</h2>
 <p>If you want to assign the components of a <code>map</code> to different objects, use the multiple assignment operator (<code>%&lt;-%</code>) from <code>zeallot</code>:</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">c</span>(glm, nnet, rpart, xgb) <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">map</span>(</a>
-<a class="sourceLine" id="cb89-2" data-line-number="2">    <span class="dt">.x =</span> <span class="kw">c</span>(<span class="st">&quot;models/glm_8.rds&quot;</span>, <span class="st">&quot;models/nnet_8.rds&quot;</span>, <span class="st">&quot;models/rpart_8.rds&quot;</span>, <span class="st">&quot;models/xgb_8.rds&quot;</span>),</a>
-<a class="sourceLine" id="cb89-3" data-line-number="3">    <span class="dt">.f =</span> read_rds</a>
-<a class="sourceLine" id="cb89-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">library</span>(zeallot)</a>
+<a class="sourceLine" id="cb89-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb89-3" data-line-number="3"><span class="kw">c</span>(glm, nnet, rpart, xgb) <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">map</span>(</a>
+<a class="sourceLine" id="cb89-4" data-line-number="4">    <span class="dt">.x =</span> <span class="kw">c</span>(<span class="st">&quot;models/glm_8.rds&quot;</span>, <span class="st">&quot;models/nnet_8.rds&quot;</span>, <span class="st">&quot;models/rpart_8.rds&quot;</span>, <span class="st">&quot;models/xgb_8.rds&quot;</span>),</a>
+<a class="sourceLine" id="cb89-5" data-line-number="5">    <span class="dt">.f =</span> read_rds</a>
+<a class="sourceLine" id="cb89-6" data-line-number="6">)</a></code></pre></div>
 </section>
 <section id="list-unpacking-1" class="slide level2">
 <h2>List Unpacking</h2>

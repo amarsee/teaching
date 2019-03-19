@@ -1362,4 +1362,4 @@ tvaas %>%
 
 * The online book **R for Data Science**: http://r4ds.had.co.nz/
 * RStudio cheat sheets: https://www.rstudio.com/resources/cheatsheets/
-* The Datacamp `dplyr` course: https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial
+* The DataCamp `dplyr` course: https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial

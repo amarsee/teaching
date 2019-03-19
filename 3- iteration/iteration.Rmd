@@ -24,8 +24,8 @@ options(width = 65)
 * [`map`](#/map-1)
 * [`map_*`](#/map_)
 * [`.f` in `map`](#/f-in-map)
-* [`map2`](#/map2)
-* [`pmap`](#/map-with-arbitrary-number-of-arguments)
+* [`map` with two arguments](#/map2)
+* [`map` with arbitrary arguments](#/map-with-arbitrary-arguments)
 * [`map` with data frames](#/map-with-data-frames)
 * [List unpacking with `%<-%`](#/list-unpacking)
 * [`walk`](#/walk)
@@ -453,7 +453,7 @@ With `map`:
 map(.x = list(glm, nnet, rpart, xgb), .f = predict, test_x)
 ```
 
-Iterates by applying function `.f` over each element of `.x`, with the common argument `test_set`.
+Applies function `.f` over each element of `.x`, with the common argument `test_set`.
 
 ## `map`
 
@@ -746,7 +746,7 @@ map2(.x = nnet_list, .y = test_x, .f = predict) %>%
     map_dbl(mean)
 ```
 
-## `map` with Arbitrary Number of Arguments
+## `map` with Arbitrary Arguments
 
 For iterating over arbitrary number of arguments, use `pmap`:
 
@@ -765,7 +765,7 @@ pmap(
 
 `pmap` takes a list of lists (or vectors), and calls `.f` with the first element of each sublist as its arguments, then the second element of each sublist, etc.
 
-## `map` with Arbitrary Number of Arguments
+## `map` with Arbitrary Arguments
 
 For iterating over arbitrary number of arguments, use `pmap`:
 
@@ -886,6 +886,8 @@ model_list <- map(
 If you want to assign the components of a `map` to different objects, use the multiple assignment operator (`%<-%`) from `zeallot`:
 
 ```{r, eval = FALSE}
+library(zeallot)
+
 c(glm, nnet, rpart, xgb) %<-% map(
     .x = c("models/glm_8.rds", "models/nnet_8.rds", "models/rpart_8.rds", "models/xgb_8.rds"),
     .f = read_rds
