@@ -1258,8 +1258,8 @@ Q: What is the `districts` data frame wide by? Long by?
 
 `tidyr` has two functions for reshaping:
 
-* `gather()` converts a data frame from wide to long.
-* `spread()` converts a data frame from long to wide.
+* `pivot_longer()` converts a data frame from wide to long.
+* `pivot_wider()` converts a data frame from long to wide.
 
 ## Reshaping data frames
 
@@ -1273,44 +1273,50 @@ This creates a new variable with `"alg_1"`, `"alg_2"`, ..., `"dropout"`, and a n
 
 ``` {r, echo = FALSE}
 districts %>%
-    gather(outcome, value, alg_1:dropout) %>%
+    pivot_longer(alg_1:dropout, names_to =  'outcome', 
+                 values_to = 'value') %>%
     select(system, system_name, outcome, value)
 ```
 
 ## Reshaping data frames
 
-`gather()` converts a data frame from wide to long:
+`pivot_longer()` converts a data frame from wide to long:
 
 ``` {r, eval = FALSE}
-gather(districts, outcome, value, alg_1:dropout)
+pivot_longer(districts, alg_1:dropout, 
+             names_to = 'outcome', values_to = 'value')
 ```
 
-> * The first argument to `gather()` is a data frame.
-> * The second is the name of a new variable which will take the values of your column names.
-> * The third is the name of a new variable which will take the values of the data in your columns.
-> * The fourth is the columns you want to convert to a column.
+> * The first argument to `pivot_longer()` is a data frame.
+> * The second is the columns you want to convert to a column.
+> * The third is the name of a new variable which will take the values of your column names.
+> * The fourth is the name of a new variable which will take the values of the data in your columns.
+
 
 ## Reshaping data frames
 
-`gather()` converts a data frame from wide to long:
+`pivot_longer()` converts a data frame from wide to long:
 
 ``` {r, eval = FALSE}
-gather(districts, outcome, value, alg_1:dropout)
+pivot_longer(districts, alg_1:dropout, 
+             names_to = outcome, values_to = valuet)
 ```
 
 ``` {r, echo = FALSE}
 districts %>%
-    gather(outcome, value, alg_1:dropout) %>%
+    pivot_longer(alg_1:dropout, names_to =  'outcome', 
+                 values_to = 'value') %>%
     select(system, system_name, outcome, value, region)
 ```
 
 ## Reshaping data frames
 
-`spread()` converts a data frame from long to wide:
+`pivot_wider()` converts a data frame from long to wide:
 
 ``` {r, echo = FALSE}
 districts %>%
-    gather(outcome, value, alg_1:dropout) %>%
+    pivot_longer(alg_1:dropout, names_to =  'outcome', 
+                 values_to = 'value') %>%
     select(system, system_name, outcome, value, region)
 ```
 
@@ -1324,28 +1330,31 @@ First, I'll save the long version of this data frame as an R object.
 
 ``` {r}
 districts_long <- districts %>%
-    gather(outcome, value, alg_1:dropout) %>%
+    pivot_longer(alg_1:dropout, names_to =  'outcome', 
+                 values_to = 'value') %>%
     select(system_name, outcome, value)
 ```
 
 ## Reshaping data frames
 
-`spread()` converts a data frame from long to wide:
+`pivot_wider()` converts a data frame from long to wide:
 
 ``` {r, eval = FALSE}
-spread(districts_long, system_name, value)
+pivot_wider(districts_long, names_from = 'system_name', 
+            values_from = 'value')
 ```
 
-> * The first argument to `spread()` is a data frame.
+> * The first argument to `pivot_wider()` is a data frame.
 > * The second is the column you want to convert your data frame wide by. The values of that column will become column headers.
 > * The third is the values that will populate the cells in your new columns.
 
 ## Reshaping data frames
 
-`spread()` converts a data frame from long to wide:
+`pivot_wider()` converts a data frame from long to wide:
 
 ``` {r, echo = FALSE}
-spread(districts_long, system_name, value)
+pivot_wider(districts_long, names_from = 'system_name', 
+            values_from = 'value')
 ```
 
 ## Exercise 11
@@ -1354,7 +1363,8 @@ Reshape the `tvaas` data frame long by subject, then arrange by system.
 
 ``` {r}
 tvaas %>%
-    gather(subject, score, `TVAAS Composite`:`TVAAS Numeracy`) %>%
+    pivot_longer(`TVAAS Composite`:`TVAAS Numeracy`, 
+                 names_to = 'subject', values_to = 'score') %>%
     arrange(system)
 ```
 
