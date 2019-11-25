@@ -1,6 +1,6 @@
 ---
 title: "Data Wrangling in the `tidyverse`"
-author: "<br> Alexander Poon <br> [alex.poon@tn.gov](mailto:alex.poon@tn.gov)"
+author: "<br> Alexander Poon <br> [alex.poon@tn.gov](mailto:alex.poon@tn.gov) <br> <br> Andrew Marsee <br> [andrew.marsee@tn.gov](mailto:andrew.marsee@tn.gov)"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output:
     revealjs::revealjs_presentation:
@@ -1345,8 +1345,9 @@ pivot_wider(districts_long, names_from = 'system_name',
 ```
 
 > * The first argument to `pivot_wider()` is a data frame.
-> * The second is the column you want to convert your data frame wide by. The values of that column will become column headers.
+> * The second is the columns you want to convert your data frame wide by. The values of that column will become column headers.
 > * The third is the values that will populate the cells in your new columns.
+> * You can specify a character vector with multiple columns for both `names_from` and `values_from`. The new columns will have the name names from the value columns combined with the names from `names_from`, separated by a '_' by default.
 
 ## Reshaping data frames
 
