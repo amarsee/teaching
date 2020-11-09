@@ -1,6 +1,6 @@
 ---
 title: "Data Wrangling in the `tidyverse`"
-author: "<br> Alexander Poon <br> [alex.poon@tn.gov](mailto:alex.poon@tn.gov) <br> <br> Andrew Marsee <br> [andrew.marsee@tn.gov](mailto:andrew.marsee@tn.gov)"
+author: "<br> Alexander Poon <br> <br> Andrew Marsee <br> [andrew.marsee@tn.gov](mailto:andrew.marsee@tn.gov)"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output:
     revealjs::revealjs_presentation:
@@ -1273,7 +1273,8 @@ This creates a new variable with `"alg_1"`, `"alg_2"`, ..., `"dropout"`, and a n
 
 ``` {r, echo = FALSE}
 districts %>%
-    pivot_longer(alg_1:dropout, names_to =  'outcome', 
+    pivot_longer(alg_1:dropout, 
+                 names_to =  'outcome', 
                  values_to = 'value') %>%
     select(system, system_name, outcome, value)
 ```
@@ -1288,7 +1289,7 @@ pivot_longer(districts, alg_1:dropout,
 ```
 
 > * The first argument to `pivot_longer()` is a data frame.
-> * The second is the columns you want to convert to a column.
+> * The second is the columns you want to make long.
 > * The third is the name of a new variable which will take the values of your column names.
 > * The fourth is the name of a new variable which will take the values of the data in your columns.
 
@@ -1345,9 +1346,9 @@ pivot_wider(districts_long, names_from = 'system_name',
 ```
 
 > * The first argument to `pivot_wider()` is a data frame.
-> * The second is the columns you want to convert your data frame wide by. The values of that column will become column headers.
+> * The second is the columns you want to convert your data frame wide by. The values of that column will become column names
 > * The third is the values that will populate the cells in your new columns.
-> * You can specify a character vector with multiple columns for both `names_from` and `values_from`. The new columns will have the name names from the value columns combined with the names from `names_from`, separated by a '_' by default.
+> * You can specify a character vector with multiple columns for both `names_from` and `values_from`. The new columns will have the names from the value columns combined with the names from `names_from`, separated by a '_' by default.
 
 ## Reshaping data frames
 

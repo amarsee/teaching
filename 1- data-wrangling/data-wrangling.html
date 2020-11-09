@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="  Alexander Poon   alex.poon@tn.gov     Andrew Marsee   andrew.marsee@tn.gov" />
-  <meta name="dcterms.date" content="2019-11-25" />
+  <meta name="dcterms.date" content="2020-11-08" />
   <title>Data Wrangling in the tidyverse</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1441,7 +1441,28 @@ transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
 
     <style type="text/css">code{white-space: pre;}</style>
 
-    <style type="text/css">.reveal .sourceCode.r .kw, .sourceCode.r .er {color:inherit;font-weight: normal;}.reveal .sourceCode.r .co {font-style: normal;}.reveal .slides {text-align: inherit;}.reveal .slide.level2 h1 {font-size: 48px;}.reveal pre code {font-size: 20px;line-height: 1.3;}.reveal .slide .tip {margin-top: 3em;font-size: 80%;}</style>
+    <style type="text/css">.reveal .sourceCode.r .kw, .sourceCode.r .er {
+color:inherit;
+font-weight: normal;
+}
+.reveal .sourceCode.r .co {
+font-style: normal;
+}
+.reveal .slides {
+text-align: inherit;
+}
+.reveal .slide.level2 h1 {
+font-size: 48px;
+}
+.reveal pre code {
+font-size: 20px;
+line-height: 1.3;
+}
+.reveal .slide .tip {
+margin-top: 3em;
+font-size: 80%;
+}
+</style>
 
 <!-- Printing and PDF exports -->
 <script id="paper-css" type="application/dynamic-css">
@@ -1833,7 +1854,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section>
     <h1 class="title">Data Wrangling in the <code>tidyverse</code></h1>
     <h2 class="author"><br> Alexander Poon <br> <a href="mailto:alex.poon@tn.gov">alex.poon@tn.gov</a> <br> <br> Andrew Marsee <br> <a href="mailto:andrew.marsee@tn.gov">andrew.marsee@tn.gov</a></h2>
-    <h3 class="date">November 25, 2019</h3>
+    <h3 class="date">November 08, 2020</h3>
 </section>
 
 <section id="table-of-contents" class="slide level2">
@@ -1994,35 +2015,35 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h2>An overview of a data frame</h2>
 <p>Use <code>tibble::glimpse()</code> to get an overview of a data frame:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">glimpse</span>(districts)</a></code></pre></div>
-<pre><code>## Observations: 146
-## Variables: 27
-## $ system        &lt;dbl&gt; 0, 10, 11, 12, 20, 30, 40, 50, 51, 52,...
-## $ system_name   &lt;chr&gt; &quot;State of Tennessee&quot;, &quot;Anderson County...
-## $ alg_1         &lt;dbl&gt; 70.0, 76.1, NA, 76.9, 64.3, 73.7, 64.8...
-## $ alg_2         &lt;dbl&gt; 54.3, 63.3, NA, 72.0, 42.4, 58.4, 73.9...
-## $ bio           &lt;dbl&gt; 65.3, 73.6, NA, 83.5, 62.1, 77.1, 73.0...
-## $ chem          &lt;dbl&gt; 44.2, 41.0, NA, 80.9, 32.5, 33.1, 19.5...
-## $ ela           &lt;dbl&gt; 48.4, 45.7, 58.3, 56.1, 44.1, 46.0, 35...
-## $ eng_1         &lt;dbl&gt; 71.8, 73.7, NA, 86.7, 72.3, 75.4, 63.6...
-## $ eng_2         &lt;dbl&gt; 64.8, 59.2, NA, 74.6, 63.1, 60.8, 53.3...
-## $ eng_3         &lt;dbl&gt; 41.7, 38.2, NA, 53.8, 44.6, 45.6, 50.0...
-## $ math          &lt;dbl&gt; 54.7, 54.0, 68.9, 55.3, 53.1, 53.9, 41...
-## $ science       &lt;dbl&gt; 64.5, 64.5, 69.6, 70.8, 61.8, 65.0, 56...
-## $ enrollment    &lt;dbl&gt; 943699, 6304, 894, 4326, 8270, 2133, 1...
-## $ black         &lt;dbl&gt; 24.1, 2.8, 5.7, 16.6, 11.2, 3.9, 1.5, ...
-## $ hispanic      &lt;dbl&gt; 8.5, 1.1, 2.8, 8.0, 20.6, 2.1, 6.8, 4....
-## $ native        &lt;dbl&gt; 0.3, 0.5, 0.3, 0.7, 0.5, 0.3, 0.6, 0.4...
-## $ el            &lt;dbl&gt; 4.6, 0.2, 1.0, 3.0, 9.4, 0.0, 2.3, 1.9...
-## $ swd           &lt;dbl&gt; 14.0, 18.0, 18.1, 14.3, 10.9, 18.8, 19...
-## $ ed            &lt;dbl&gt; 57.9, 58.5, 63.4, 52.5, 69.9, 50.2, 83...
-## $ expenditures  &lt;dbl&gt; 9374.9, 9535.7, 9537.5, 12355.5, 7756....
-## $ act_composite &lt;dbl&gt; 19.4, 19.9, NA, 23.1, 18.4, 18.4, 19.2...
-## $ chronic_abs   &lt;dbl&gt; 13.2, 11.5, 8.8, 17.5, 8.6, 6.5, 9.1, ...
-## $ suspended     &lt;dbl&gt; 6.2, 5.0, 1.2, 5.7, 2.2, 0.0, 2.4, 4.7...
-## $ expelled      &lt;dbl&gt; 0.2, 0.1, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1...
-## $ grad          &lt;dbl&gt; 87.2, 94.0, NA, 89.7, 90.8, 94.5, 92.4...
-## $ dropout       &lt;dbl&gt; 8.4, 4.2, NA, 4.4, 5.4, 3.0, 6.9, 9.2,...
-## $ region        &lt;chr&gt; NA, &quot;East TN&quot;, &quot;East TN&quot;, &quot;East TN&quot;, &quot;...</code></pre>
+<pre><code>## Rows: 146
+## Columns: 27
+## $ system        &lt;dbl&gt; 0, 10, 11, 12, 20, 30, 40, 50, 51, 52, 6…
+## $ system_name   &lt;chr&gt; &quot;State of Tennessee&quot;, &quot;Anderson County&quot;,…
+## $ alg_1         &lt;dbl&gt; 70.0, 76.1, NA, 76.9, 64.3, 73.7, 64.8, …
+## $ alg_2         &lt;dbl&gt; 54.3, 63.3, NA, 72.0, 42.4, 58.4, 73.9, …
+## $ bio           &lt;dbl&gt; 65.3, 73.6, NA, 83.5, 62.1, 77.1, 73.0, …
+## $ chem          &lt;dbl&gt; 44.2, 41.0, NA, 80.9, 32.5, 33.1, 19.5, …
+## $ ela           &lt;dbl&gt; 48.4, 45.7, 58.3, 56.1, 44.1, 46.0, 35.4…
+## $ eng_1         &lt;dbl&gt; 71.8, 73.7, NA, 86.7, 72.3, 75.4, 63.6, …
+## $ eng_2         &lt;dbl&gt; 64.8, 59.2, NA, 74.6, 63.1, 60.8, 53.3, …
+## $ eng_3         &lt;dbl&gt; 41.7, 38.2, NA, 53.8, 44.6, 45.6, 50.0, …
+## $ math          &lt;dbl&gt; 54.7, 54.0, 68.9, 55.3, 53.1, 53.9, 41.1…
+## $ science       &lt;dbl&gt; 64.5, 64.5, 69.6, 70.8, 61.8, 65.0, 56.2…
+## $ enrollment    &lt;dbl&gt; 943699, 6304, 894, 4326, 8270, 2133, 167…
+## $ black         &lt;dbl&gt; 24.1, 2.8, 5.7, 16.6, 11.2, 3.9, 1.5, 3.…
+## $ hispanic      &lt;dbl&gt; 8.5, 1.1, 2.8, 8.0, 20.6, 2.1, 6.8, 4.2,…
+## $ native        &lt;dbl&gt; 0.3, 0.5, 0.3, 0.7, 0.5, 0.3, 0.6, 0.4, …
+## $ el            &lt;dbl&gt; 4.6, 0.2, 1.0, 3.0, 9.4, 0.0, 2.3, 1.9, …
+## $ swd           &lt;dbl&gt; 14.0, 18.0, 18.1, 14.3, 10.9, 18.8, 19.7…
+## $ ed            &lt;dbl&gt; 57.9, 58.5, 63.4, 52.5, 69.9, 50.2, 83.5…
+## $ expenditures  &lt;dbl&gt; 9374.9, 9535.7, 9537.5, 12355.5, 7756.2,…
+## $ act_composite &lt;dbl&gt; 19.4, 19.9, NA, 23.1, 18.4, 18.4, 19.2, …
+## $ chronic_abs   &lt;dbl&gt; 13.2, 11.5, 8.8, 17.5, 8.6, 6.5, 9.1, 17…
+## $ suspended     &lt;dbl&gt; 6.2, 5.0, 1.2, 5.7, 2.2, 0.0, 2.4, 4.7, …
+## $ expelled      &lt;dbl&gt; 0.2, 0.1, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, …
+## $ grad          &lt;dbl&gt; 87.2, 94.0, NA, 89.7, 90.8, 94.5, 92.4, …
+## $ dropout       &lt;dbl&gt; 8.4, 4.2, NA, 4.4, 5.4, 3.0, 6.9, 9.2, 0…
+## $ region        &lt;chr&gt; NA, &quot;East TN&quot;, &quot;East TN&quot;, &quot;East TN&quot;, &quot;So…</code></pre>
 </section>
 <section id="dplyr-and-tidyr" class="slide level2">
 <h2><code>dplyr</code> and <code>tidyr</code></h2>
@@ -2068,7 +2089,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8     50 Blount County     
 ##  9     51 Alcoa City        
 ## 10     52 Maryville City    
-## # ... with 136 more rows</code></pre>
+## # … with 136 more rows</code></pre>
 </section>
 <section id="keepingdropping-columns-2" class="slide level2">
 <h2>Keeping/dropping columns</h2>
@@ -2077,17 +2098,17 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 146 x 26
 ##    system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2 eng_3
 ##    &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 State of T~  70    54.3  65.3  44.2  48.4  71.8  64.8  41.7
-##  2 Anderson C~  76.1  63.3  73.6  41    45.7  73.7  59.2  38.2
-##  3 Clinton Ci~  NA    NA    NA    NA    58.3  NA    NA    NA  
-##  4 Oak Ridge ~  76.9  72    83.5  80.9  56.1  86.7  74.6  53.8
-##  5 Bedford Co~  64.3  42.4  62.1  32.5  44.1  72.3  63.1  44.6
-##  6 Benton Cou~  73.7  58.4  77.1  33.1  46    75.4  60.8  45.6
-##  7 Bledsoe Co~  64.8  73.9  73    19.5  35.4  63.6  53.3  50  
-##  8 Blount Cou~  73.2  59.8  65.1  45.4  46.3  71.8  66    45.3
+##  1 State of T…  70    54.3  65.3  44.2  48.4  71.8  64.8  41.7
+##  2 Anderson C…  76.1  63.3  73.6  41    45.7  73.7  59.2  38.2
+##  3 Clinton Ci…  NA    NA    NA    NA    58.3  NA    NA    NA  
+##  4 Oak Ridge …  76.9  72    83.5  80.9  56.1  86.7  74.6  53.8
+##  5 Bedford Co…  64.3  42.4  62.1  32.5  44.1  72.3  63.1  44.6
+##  6 Benton Cou…  73.7  58.4  77.1  33.1  46    75.4  60.8  45.6
+##  7 Bledsoe Co…  64.8  73.9  73    19.5  35.4  63.6  53.3  50  
+##  8 Blount Cou…  73.2  59.8  65.1  45.4  46.3  71.8  66    45.3
 ##  9 Alcoa City   82.2  76.8  88    66    50.2  85.5  79.6  67.2
-## 10 Maryville ~  83.8  77.3  92.1  80.4  69.6  89.9  82.7  68.1
-## # ... with 136 more rows, and 17 more variables: math &lt;dbl&gt;,
+## 10 Maryville …  83.8  77.3  92.1  80.4  69.6  89.9  82.7  68.1
+## # … with 136 more rows, and 17 more variables: math &lt;dbl&gt;,
 ## #   science &lt;dbl&gt;, enrollment &lt;dbl&gt;, black &lt;dbl&gt;,
 ## #   hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;, swd &lt;dbl&gt;, ed &lt;dbl&gt;,
 ## #   expenditures &lt;dbl&gt;, act_composite &lt;dbl&gt;, chronic_abs &lt;dbl&gt;,
@@ -2121,17 +2142,17 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 146 x 27
 ##    system system_name region alg_1 alg_2   bio  chem   ela eng_1
 ##     &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1      0 State of T~ &lt;NA&gt;    70    54.3  65.3  44.2  48.4  71.8
-##  2     10 Anderson C~ East ~  76.1  63.3  73.6  41    45.7  73.7
-##  3     11 Clinton Ci~ East ~  NA    NA    NA    NA    58.3  NA  
-##  4     12 Oak Ridge ~ East ~  76.9  72    83.5  80.9  56.1  86.7
-##  5     20 Bedford Co~ South~  64.3  42.4  62.1  32.5  44.1  72.3
-##  6     30 Benton Cou~ North~  73.7  58.4  77.1  33.1  46    75.4
-##  7     40 Bledsoe Co~ Upper~  64.8  73.9  73    19.5  35.4  63.6
-##  8     50 Blount Cou~ East ~  73.2  59.8  65.1  45.4  46.3  71.8
-##  9     51 Alcoa City  East ~  82.2  76.8  88    66    50.2  85.5
-## 10     52 Maryville ~ East ~  83.8  77.3  92.1  80.4  69.6  89.9
-## # ... with 136 more rows, and 18 more variables: eng_2 &lt;dbl&gt;,
+##  1      0 State of T… &lt;NA&gt;    70    54.3  65.3  44.2  48.4  71.8
+##  2     10 Anderson C… East …  76.1  63.3  73.6  41    45.7  73.7
+##  3     11 Clinton Ci… East …  NA    NA    NA    NA    58.3  NA  
+##  4     12 Oak Ridge … East …  76.9  72    83.5  80.9  56.1  86.7
+##  5     20 Bedford Co… South…  64.3  42.4  62.1  32.5  44.1  72.3
+##  6     30 Benton Cou… North…  73.7  58.4  77.1  33.1  46    75.4
+##  7     40 Bledsoe Co… Upper…  64.8  73.9  73    19.5  35.4  63.6
+##  8     50 Blount Cou… East …  73.2  59.8  65.1  45.4  46.3  71.8
+##  9     51 Alcoa City  East …  82.2  76.8  88    66    50.2  85.5
+## 10     52 Maryville … East …  83.8  77.3  92.1  80.4  69.6  89.9
+## # … with 136 more rows, and 18 more variables: eng_2 &lt;dbl&gt;,
 ## #   eng_3 &lt;dbl&gt;, math &lt;dbl&gt;, science &lt;dbl&gt;, enrollment &lt;dbl&gt;,
 ## #   black &lt;dbl&gt;, hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;,
 ## #   swd &lt;dbl&gt;, ed &lt;dbl&gt;, expenditures &lt;dbl&gt;,
@@ -2154,8 +2175,8 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 1 x 27
 ##   system system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1      0 State of T~    70  54.3  65.3  44.2  48.4  71.8  64.8
-## # ... with 18 more variables: eng_3 &lt;dbl&gt;, math &lt;dbl&gt;,
+## 1      0 State of T…    70  54.3  65.3  44.2  48.4  71.8  64.8
+## # … with 18 more variables: eng_3 &lt;dbl&gt;, math &lt;dbl&gt;,
 ## #   science &lt;dbl&gt;, enrollment &lt;dbl&gt;, black &lt;dbl&gt;,
 ## #   hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;, swd &lt;dbl&gt;, ed &lt;dbl&gt;,
 ## #   expenditures &lt;dbl&gt;, act_composite &lt;dbl&gt;, chronic_abs &lt;dbl&gt;,
@@ -2169,17 +2190,17 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 145 x 27
 ##    system system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1     10 Anderson C~  76.1  63.3  73.6  41    45.7  73.7  59.2
-##  2     11 Clinton Ci~  NA    NA    NA    NA    58.3  NA    NA  
-##  3     12 Oak Ridge ~  76.9  72    83.5  80.9  56.1  86.7  74.6
-##  4     20 Bedford Co~  64.3  42.4  62.1  32.5  44.1  72.3  63.1
-##  5     30 Benton Cou~  73.7  58.4  77.1  33.1  46    75.4  60.8
-##  6     40 Bledsoe Co~  64.8  73.9  73    19.5  35.4  63.6  53.3
-##  7     50 Blount Cou~  73.2  59.8  65.1  45.4  46.3  71.8  66  
+##  1     10 Anderson C…  76.1  63.3  73.6  41    45.7  73.7  59.2
+##  2     11 Clinton Ci…  NA    NA    NA    NA    58.3  NA    NA  
+##  3     12 Oak Ridge …  76.9  72    83.5  80.9  56.1  86.7  74.6
+##  4     20 Bedford Co…  64.3  42.4  62.1  32.5  44.1  72.3  63.1
+##  5     30 Benton Cou…  73.7  58.4  77.1  33.1  46    75.4  60.8
+##  6     40 Bledsoe Co…  64.8  73.9  73    19.5  35.4  63.6  53.3
+##  7     50 Blount Cou…  73.2  59.8  65.1  45.4  46.3  71.8  66  
 ##  8     51 Alcoa City   82.2  76.8  88    66    50.2  85.5  79.6
-##  9     52 Maryville ~  83.8  77.3  92.1  80.4  69.6  89.9  82.7
-## 10     60 Bradley Co~  NA    59.5  64.1  55.7  52.4  74.4  66.3
-## # ... with 135 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
+##  9     52 Maryville …  83.8  77.3  92.1  80.4  69.6  89.9  82.7
+## 10     60 Bradley Co…  NA    59.5  64.1  55.7  52.4  74.4  66.3
+## # … with 135 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
 ## #   math &lt;dbl&gt;, science &lt;dbl&gt;, enrollment &lt;dbl&gt;, black &lt;dbl&gt;,
 ## #   hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;, swd &lt;dbl&gt;, ed &lt;dbl&gt;,
 ## #   expenditures &lt;dbl&gt;, act_composite &lt;dbl&gt;, chronic_abs &lt;dbl&gt;,
@@ -2198,9 +2219,9 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1    401 Paris SSD     100    NA    NA    NA  52.3    NA    NA
 ## 2    541 Athens City   100    NA    NA    NA  52.9    NA    NA
-## 3    941 Franklin S~   100    NA    NA    NA  69.1    NA    NA
+## 3    941 Franklin S…   100    NA    NA    NA  69.1    NA    NA
 ## 4    951 Lebanon SSD   100    NA    NA    NA  49.8    NA    NA
-## # ... with 18 more variables: eng_3 &lt;dbl&gt;, math &lt;dbl&gt;,
+## # … with 18 more variables: eng_3 &lt;dbl&gt;, math &lt;dbl&gt;,
 ## #   science &lt;dbl&gt;, enrollment &lt;dbl&gt;, black &lt;dbl&gt;,
 ## #   hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;, swd &lt;dbl&gt;, ed &lt;dbl&gt;,
 ## #   expenditures &lt;dbl&gt;, act_composite &lt;dbl&gt;, chronic_abs &lt;dbl&gt;,
@@ -2261,7 +2282,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Blount County           10500 Large        
 ##  9 Alcoa City               1850 Small        
 ## 10 Maryville City           4944 Small        
-## # ... with 136 more rows</code></pre>
+## # … with 136 more rows</code></pre>
 </section>
 <section id="if_else-with-mutate-2" class="slide level2">
 <h2><code>if_else()</code> with <code>mutate()</code></h2>
@@ -2319,7 +2340,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Blount County           10500 Large        
 ##  9 Alcoa City               1850 Small        
 ## 10 Maryville City           4944 Small        
-## # ... with 136 more rows</code></pre>
+## # … with 136 more rows</code></pre>
 </section>
 <section id="case_when-with-mutate" class="slide level2">
 <h2><code>case_when()</code> with <code>mutate()</code></h2>
@@ -2402,7 +2423,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Blount County       50.5 Medium          
 ##  9 Alcoa City          56.6 Medium          
 ## 10 Maryville City      70.2 Medium          
-## # ... with 136 more rows</code></pre>
+## # … with 136 more rows</code></pre>
 </section>
 <section id="the-pipe-operator" class="slide level2">
 <h2>The pipe operator (<code>%&gt;%</code>)</h2>
@@ -2458,17 +2479,17 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 146 x 27
 ##    district system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##       &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1        0 State of T~  70    54.3  65.3  44.2  48.4  71.8  64.8
-##  2       10 Anderson C~  76.1  63.3  73.6  41    45.7  73.7  59.2
-##  3       11 Clinton Ci~  NA    NA    NA    NA    58.3  NA    NA  
-##  4       12 Oak Ridge ~  76.9  72    83.5  80.9  56.1  86.7  74.6
-##  5       20 Bedford Co~  64.3  42.4  62.1  32.5  44.1  72.3  63.1
-##  6       30 Benton Cou~  73.7  58.4  77.1  33.1  46    75.4  60.8
-##  7       40 Bledsoe Co~  64.8  73.9  73    19.5  35.4  63.6  53.3
-##  8       50 Blount Cou~  73.2  59.8  65.1  45.4  46.3  71.8  66  
+##  1        0 State of T…  70    54.3  65.3  44.2  48.4  71.8  64.8
+##  2       10 Anderson C…  76.1  63.3  73.6  41    45.7  73.7  59.2
+##  3       11 Clinton Ci…  NA    NA    NA    NA    58.3  NA    NA  
+##  4       12 Oak Ridge …  76.9  72    83.5  80.9  56.1  86.7  74.6
+##  5       20 Bedford Co…  64.3  42.4  62.1  32.5  44.1  72.3  63.1
+##  6       30 Benton Cou…  73.7  58.4  77.1  33.1  46    75.4  60.8
+##  7       40 Bledsoe Co…  64.8  73.9  73    19.5  35.4  63.6  53.3
+##  8       50 Blount Cou…  73.2  59.8  65.1  45.4  46.3  71.8  66  
 ##  9       51 Alcoa City   82.2  76.8  88    66    50.2  85.5  79.6
-## 10       52 Maryville ~  83.8  77.3  92.1  80.4  69.6  89.9  82.7
-## # ... with 136 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
+## 10       52 Maryville …  83.8  77.3  92.1  80.4  69.6  89.9  82.7
+## # … with 136 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
 ## #   math &lt;dbl&gt;, science &lt;dbl&gt;, enrollment &lt;dbl&gt;, black &lt;dbl&gt;,
 ## #   hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;, swd &lt;dbl&gt;, ed &lt;dbl&gt;,
 ## #   expenditures &lt;dbl&gt;, act_composite &lt;dbl&gt;, chronic_abs &lt;dbl&gt;,
@@ -2486,7 +2507,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 146 x 27
 ##    district `district name` alg_1 alg_2   bio  chem   ela eng_1
 ##       &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1        0 State of Tenne~  70    54.3  65.3  44.2  48.4  71.8
+##  1        0 State of Tenne…  70    54.3  65.3  44.2  48.4  71.8
 ##  2       10 Anderson County  76.1  63.3  73.6  41    45.7  73.7
 ##  3       11 Clinton City     NA    NA    NA    NA    58.3  NA  
 ##  4       12 Oak Ridge City   76.9  72    83.5  80.9  56.1  86.7
@@ -2496,7 +2517,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8       50 Blount County    73.2  59.8  65.1  45.4  46.3  71.8
 ##  9       51 Alcoa City       82.2  76.8  88    66    50.2  85.5
 ## 10       52 Maryville City   83.8  77.3  92.1  80.4  69.6  89.9
-## # ... with 136 more rows, and 19 more variables: eng_2 &lt;dbl&gt;,
+## # … with 136 more rows, and 19 more variables: eng_2 &lt;dbl&gt;,
 ## #   eng_3 &lt;dbl&gt;, math &lt;dbl&gt;, science &lt;dbl&gt;, enrollment &lt;dbl&gt;,
 ## #   black &lt;dbl&gt;, hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;,
 ## #   swd &lt;dbl&gt;, ed &lt;dbl&gt;, expenditures &lt;dbl&gt;,
@@ -2544,17 +2565,17 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 146 x 27
 ##    system system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1    985 Achievemen~  34    20.4  20.6  NA    14.3  37.8  33  
+##  1    985 Achievemen…  34    20.4  20.6  NA    14.3  37.8  33  
 ##  2    171 Alamo City   NA    NA    NA    NA    53.5  NA    NA  
 ##  3     51 Alcoa City   82.2  76.8  88    66    50.2  85.5  79.6
-##  4    961 Alvin C. Y~  79.5  69.8  70.4  24.3  NA    72.4  66  
-##  5     10 Anderson C~  76.1  63.3  73.6  41    45.7  73.7  59.2
-##  6    793 Arlington ~  88    66.9  82.5  49.8  75.7  88.8  78.1
+##  4    961 Alvin C. Y…  79.5  69.8  70.4  24.3  NA    72.4  66  
+##  5     10 Anderson C…  76.1  63.3  73.6  41    45.7  73.7  59.2
+##  6    793 Arlington …  88    66.9  82.5  49.8  75.7  88.8  78.1
 ##  7    541 Athens City 100    NA    NA    NA    52.9  NA    NA  
-##  8    794 Bartlett C~  78.1  59.5  71.8  36.2  60.6  80.3  74.6
-##  9     20 Bedford Co~  64.3  42.4  62.1  32.5  44.1  72.3  63.1
+##  8    794 Bartlett C…  78.1  59.5  71.8  36.2  60.6  80.3  74.6
+##  9     20 Bedford Co…  64.3  42.4  62.1  32.5  44.1  72.3  63.1
 ## 10    172 Bells City   NA    NA    NA    NA    60.8  NA    NA  
-## # ... with 136 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
+## # … with 136 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
 ## #   math &lt;dbl&gt;, science &lt;dbl&gt;, enrollment &lt;dbl&gt;, black &lt;dbl&gt;,
 ## #   hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;, swd &lt;dbl&gt;, ed &lt;dbl&gt;,
 ## #   expenditures &lt;dbl&gt;, act_composite &lt;dbl&gt;, chronic_abs &lt;dbl&gt;,
@@ -2568,17 +2589,17 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 146 x 27
 ##    system system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1    950 Wilson Cou~  69.8  58    74.1  45.4  60.6  78.1  76.1
-##  2    940 Williamson~  90.3  84.8  89.2  81    80.7  92.9  88.7
-##  3    930 White Coun~  80.3  58.6  82.8  20.2  47.2  78.5  72.1
-##  4    960 West Tenn ~  NA    NA    NA    NA    NA    NA    NA  
-##  5     97 West Carro~  60.8  54.5  73.8  66    40.9  79.1  67.5
-##  6    920 Weakley Co~  79.3  64.3  81.2  50.7  55.4  83.6  71.7
-##  7    910 Wayne Coun~  71.8  56    69.5  29.7  36.9  78.1  68.9
-##  8    900 Washington~  67    48.7  67.6  58.9  55    74.4  67.9
-##  9    890 Warren Cou~  NA    NA    57.3  34.7  43.7  72.5  60.7
-## 10    880 Van Buren ~  68.3  68.5  49.2  32.8  35.8  62.3  57.7
-## # ... with 136 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
+##  1    950 Wilson Cou…  69.8  58    74.1  45.4  60.6  78.1  76.1
+##  2    940 Williamson…  90.3  84.8  89.2  81    80.7  92.9  88.7
+##  3    930 White Coun…  80.3  58.6  82.8  20.2  47.2  78.5  72.1
+##  4    960 West Tenn …  NA    NA    NA    NA    NA    NA    NA  
+##  5     97 West Carro…  60.8  54.5  73.8  66    40.9  79.1  67.5
+##  6    920 Weakley Co…  79.3  64.3  81.2  50.7  55.4  83.6  71.7
+##  7    910 Wayne Coun…  71.8  56    69.5  29.7  36.9  78.1  68.9
+##  8    900 Washington…  67    48.7  67.6  58.9  55    74.4  67.9
+##  9    890 Warren Cou…  NA    NA    57.3  34.7  43.7  72.5  60.7
+## 10    880 Van Buren …  68.3  68.5  49.2  32.8  35.8  62.3  57.7
+## # … with 136 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
 ## #   math &lt;dbl&gt;, science &lt;dbl&gt;, enrollment &lt;dbl&gt;, black &lt;dbl&gt;,
 ## #   hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;, swd &lt;dbl&gt;, ed &lt;dbl&gt;,
 ## #   expenditures &lt;dbl&gt;, act_composite &lt;dbl&gt;, chronic_abs &lt;dbl&gt;,
@@ -2607,7 +2628,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Knox County       73.1 East TN
 ##  9 Loudon County     71.9 East TN
 ## 10 Campbell County   71.6 East TN
-## # ... with 136 more rows</code></pre>
+## # … with 136 more rows</code></pre>
 </div>
 </section>
 <section id="collapsing-a-data-frame" class="slide level2">
@@ -2746,7 +2767,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Blount County       50.5      55.5
 ##  9 Alcoa City          56.6      55.5
 ## 10 Maryville City      70.2      55.5
-## # ... with 136 more rows</code></pre>
+## # … with 136 more rows</code></pre>
 </section>
 <section id="exercise-7" class="slide level2">
 <h2>Exercise 7</h2>
@@ -2778,7 +2799,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Dyersburg City     57.4        55.3
 ##  9 Milan SSD          69.4        55.3
 ## 10 Trenton SSD        62.9        55.3
-## # ... with 12 more rows</code></pre>
+## # … with 12 more rows</code></pre>
 </section>
 <section id="add-summary-statistics-to-a-data-frame-2" class="slide level2">
 <h2>Add summary statistics to a data frame</h2>
@@ -2801,7 +2822,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Blount County      East TN           50.5      51.6
 ##  9 Alcoa City         East TN           56.6      51.6
 ## 10 Maryville City     East TN           70.2      51.6
-## # ... with 136 more rows</code></pre>
+## # … with 136 more rows</code></pre>
 </section>
 <section id="exercise-8" class="slide level2">
 <h2>Exercise 8</h2>
@@ -2831,7 +2852,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Davidson County Mid Cumberland      14.6         5.26
 ##  9 Dickson County  Mid Cumberland       7.4         5.26
 ## 10 Dyersburg City  Northwest           12.5         5.61
-## # ... with 48 more rows</code></pre>
+## # … with 48 more rows</code></pre>
 </section>
 <section id="operations-by-row" class="slide level2">
 <h2>Operations by row</h2>
@@ -2849,7 +2870,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Blount County       73.2  59.8
 ##  9 Alcoa City          82.2  76.8
 ## 10 Maryville City      83.8  77.3
-## # ... with 136 more rows</code></pre>
+## # … with 136 more rows</code></pre>
 </section>
 <section id="operations-by-row-1" class="slide level2">
 <h2>Operations by row</h2>
@@ -2871,7 +2892,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 Blount County       73.2  59.8     66.5
 ##  9 Alcoa City          82.2  76.8     79.5
 ## 10 Maryville City      83.8  77.3     80.6
-## # ... with 136 more rows</code></pre>
+## # … with 136 more rows</code></pre>
 </div>
 </section>
 <section id="operations-by-row-2" class="slide level2">
@@ -2904,10 +2925,8 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section id="operations-by-row-4" class="slide level2">
 <h2>Operations by row</h2>
 <p>The solution is to use <code>rowwise()</code>:</p>
-<pre><code>## Source: local data frame [10 x 4]
-## Groups: &lt;by row&gt;
-## 
-## # A tibble: 10 x 4
+<pre><code>## # A tibble: 10 x 4
+## # Rowwise: 
 ##    system_name           alg_1 alg_2 alg_mean
 ##    &lt;chr&gt;                 &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
 ##  1 Bradley County         NA    59.5     59.5
@@ -2962,17 +2981,17 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 146 x 15
 ##    system system_name  math alg_1 alg_2 math_mean   ela eng_1
 ##     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1      0 State of T~  54.7  70    54.3      59.7  48.4  71.8
-##  2     10 Anderson C~  54    76.1  63.3      64.5  45.7  73.7
-##  3     11 Clinton Ci~  68.9  NA    NA        68.9  58.3  NA  
-##  4     12 Oak Ridge ~  55.3  76.9  72        68.1  56.1  86.7
-##  5     20 Bedford Co~  53.1  64.3  42.4      53.3  44.1  72.3
-##  6     30 Benton Cou~  53.9  73.7  58.4      62    46    75.4
-##  7     40 Bledsoe Co~  41.1  64.8  73.9      59.9  35.4  63.6
-##  8     50 Blount Cou~  50.5  73.2  59.8      61.2  46.3  71.8
+##  1      0 State of T…  54.7  70    54.3      59.7  48.4  71.8
+##  2     10 Anderson C…  54    76.1  63.3      64.5  45.7  73.7
+##  3     11 Clinton Ci…  68.9  NA    NA        68.9  58.3  NA  
+##  4     12 Oak Ridge …  55.3  76.9  72        68.1  56.1  86.7
+##  5     20 Bedford Co…  53.1  64.3  42.4      53.3  44.1  72.3
+##  6     30 Benton Cou…  53.9  73.7  58.4      62    46    75.4
+##  7     40 Bledsoe Co…  41.1  64.8  73.9      59.9  35.4  63.6
+##  8     50 Blount Cou…  50.5  73.2  59.8      61.2  46.3  71.8
 ##  9     51 Alcoa City   56.6  82.2  76.8      71.9  50.2  85.5
-## 10     52 Maryville ~  70.2  83.8  77.3      77.1  69.6  89.9
-## # ... with 136 more rows, and 7 more variables: eng_2 &lt;dbl&gt;,
+## 10     52 Maryville …  70.2  83.8  77.3      77.1  69.6  89.9
+## # … with 136 more rows, and 7 more variables: eng_2 &lt;dbl&gt;,
 ## #   eng_3 &lt;dbl&gt;, eng_mean &lt;dbl&gt;, science &lt;dbl&gt;, bio &lt;dbl&gt;,
 ## #   chem &lt;dbl&gt;, sci_mean &lt;dbl&gt;</code></pre>
 </section>
@@ -3005,17 +3024,17 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 146 x 27
 ##    system system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1      0 State of T~  70    54.3  65.3  44.2  48.4  71.8  64.8
-##  2     10 Anderson C~  76.1  63.3  73.6  41    45.7  73.7  59.2
-##  3     11 Clinton Ci~  NA    NA    NA    NA    58.3  NA    NA  
-##  4     12 Oak Ridge ~  76.9  72    83.5  80.9  56.1  86.7  74.6
-##  5     20 Bedford Co~  64.3  42.4  62.1  32.5  44.1  72.3  63.1
-##  6     30 Benton Cou~  73.7  58.4  77.1  33.1  46    75.4  60.8
-##  7     40 Bledsoe Co~  64.8  73.9  73    19.5  35.4  63.6  53.3
-##  8     50 Blount Cou~  73.2  59.8  65.1  45.4  46.3  71.8  66  
+##  1      0 State of T…  70    54.3  65.3  44.2  48.4  71.8  64.8
+##  2     10 Anderson C…  76.1  63.3  73.6  41    45.7  73.7  59.2
+##  3     11 Clinton Ci…  NA    NA    NA    NA    58.3  NA    NA  
+##  4     12 Oak Ridge …  76.9  72    83.5  80.9  56.1  86.7  74.6
+##  5     20 Bedford Co…  64.3  42.4  62.1  32.5  44.1  72.3  63.1
+##  6     30 Benton Cou…  73.7  58.4  77.1  33.1  46    75.4  60.8
+##  7     40 Bledsoe Co…  64.8  73.9  73    19.5  35.4  63.6  53.3
+##  8     50 Blount Cou…  73.2  59.8  65.1  45.4  46.3  71.8  66  
 ##  9     51 Alcoa City   82.2  76.8  88    66    50.2  85.5  79.6
-## 10     52 Maryville ~  83.8  77.3  92.1  80.4  69.6  89.9  82.7
-## # ... with 136 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
+## 10     52 Maryville …  83.8  77.3  92.1  80.4  69.6  89.9  82.7
+## # … with 136 more rows, and 18 more variables: eng_3 &lt;dbl&gt;,
 ## #   math &lt;dbl&gt;, science &lt;dbl&gt;, enrollment &lt;dbl&gt;, black &lt;dbl&gt;,
 ## #   hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;, swd &lt;dbl&gt;, ed &lt;dbl&gt;,
 ## #   expenditures &lt;dbl&gt;, act_composite &lt;dbl&gt;, chronic_abs &lt;dbl&gt;,
@@ -3120,17 +3139,17 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <pre><code>## # A tibble: 146 x 30
 ##    system system_name alg_1 alg_2   bio  chem   ela eng_1 eng_2
 ##     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1     10 Anderson C~  76.1  63.3  73.6  41    45.7  73.7  59.2
-##  2     11 Clinton Ci~  NA    NA    NA    NA    58.3  NA    NA  
-##  3     12 Oak Ridge ~  76.9  72    83.5  80.9  56.1  86.7  74.6
-##  4     20 Bedford Co~  64.3  42.4  62.1  32.5  44.1  72.3  63.1
-##  5     30 Benton Cou~  73.7  58.4  77.1  33.1  46    75.4  60.8
-##  6     40 Bledsoe Co~  64.8  73.9  73    19.5  35.4  63.6  53.3
-##  7     50 Blount Cou~  73.2  59.8  65.1  45.4  46.3  71.8  66  
+##  1     10 Anderson C…  76.1  63.3  73.6  41    45.7  73.7  59.2
+##  2     11 Clinton Ci…  NA    NA    NA    NA    58.3  NA    NA  
+##  3     12 Oak Ridge …  76.9  72    83.5  80.9  56.1  86.7  74.6
+##  4     20 Bedford Co…  64.3  42.4  62.1  32.5  44.1  72.3  63.1
+##  5     30 Benton Cou…  73.7  58.4  77.1  33.1  46    75.4  60.8
+##  6     40 Bledsoe Co…  64.8  73.9  73    19.5  35.4  63.6  53.3
+##  7     50 Blount Cou…  73.2  59.8  65.1  45.4  46.3  71.8  66  
 ##  8     51 Alcoa City   82.2  76.8  88    66    50.2  85.5  79.6
-##  9     52 Maryville ~  83.8  77.3  92.1  80.4  69.6  89.9  82.7
-## 10     60 Bradley Co~  NA    59.5  64.1  55.7  52.4  74.4  66.3
-## # ... with 136 more rows, and 21 more variables: eng_3 &lt;dbl&gt;,
+##  9     52 Maryville …  83.8  77.3  92.1  80.4  69.6  89.9  82.7
+## 10     60 Bradley Co…  NA    59.5  64.1  55.7  52.4  74.4  66.3
+## # … with 136 more rows, and 21 more variables: eng_3 &lt;dbl&gt;,
 ## #   math &lt;dbl&gt;, science &lt;dbl&gt;, enrollment &lt;dbl&gt;, black &lt;dbl&gt;,
 ## #   hispanic &lt;dbl&gt;, native &lt;dbl&gt;, el &lt;dbl&gt;, swd &lt;dbl&gt;, ed &lt;dbl&gt;,
 ## #   expenditures &lt;dbl&gt;, act_composite &lt;dbl&gt;, chronic_abs &lt;dbl&gt;,
@@ -3228,7 +3247,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 First TN                       5     5
 ##  9 Mid Cumberland                 1     3
 ## 10 Mid Cumberland                 2     2
-## # ... with 24 more rows</code></pre>
+## # … with 24 more rows</code></pre>
 </section>
 <section id="dplyr-and-tidyr-1" class="slide level2">
 <h2><code>dplyr</code> and <code>tidyr</code></h2>
@@ -3281,7 +3300,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8     10 Anderson County eng_3    38.2
 ##  9     10 Anderson County math     54  
 ## 10     10 Anderson County science  64.5
-## # ... with 3,470 more rows</code></pre>
+## # … with 3,470 more rows</code></pre>
 </section>
 <section id="reshaping-data-frames-3" class="slide level2">
 <h2>Reshaping data frames</h2>
@@ -3290,7 +3309,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <a class="sourceLine" id="cb97-2" title="2">             <span class="dt">names_to =</span> <span class="st">&#39;outcome&#39;</span>, <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span>)</a></code></pre></div>
 <ul>
 <li class="fragment">The first argument to <code>pivot_longer()</code> is a data frame.</li>
-<li class="fragment">The second is the columns you want to convert to a column.</li>
+<li class="fragment">The second is the columns you want to make long.</li>
 <li class="fragment">The third is the name of a new variable which will take the values of your column names.</li>
 <li class="fragment">The fourth is the name of a new variable which will take the values of the data in your columns.</li>
 </ul>
@@ -3313,7 +3332,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8     10 Anderson County eng_3    38.2 East TN
 ##  9     10 Anderson County math     54   East TN
 ## 10     10 Anderson County science  64.5 East TN
-## # ... with 3,470 more rows</code></pre>
+## # … with 3,470 more rows</code></pre>
 </section>
 <section id="reshaping-data-frames-5" class="slide level2">
 <h2>Reshaping data frames</h2>
@@ -3331,7 +3350,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8     10 Anderson County eng_3    38.2 East TN
 ##  9     10 Anderson County math     54   East TN
 ## 10     10 Anderson County science  64.5 East TN
-## # ... with 3,470 more rows</code></pre>
+## # … with 3,470 more rows</code></pre>
 <div class="fragment">
 <p>Suppose I want to reshape this data frame wide by district.</p>
 </div>
@@ -3351,16 +3370,16 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <a class="sourceLine" id="cb102-2" title="2">            <span class="dt">values_from =</span> <span class="st">&#39;value&#39;</span>)</a></code></pre></div>
 <ul>
 <li class="fragment">The first argument to <code>pivot_wider()</code> is a data frame.</li>
-<li class="fragment">The second is the columns you want to convert your data frame wide by. The values of that column will become column headers.</li>
+<li class="fragment">The second is the columns you want to convert your data frame wide by. The values of that column will become column names</li>
 <li class="fragment">The third is the values that will populate the cells in your new columns.</li>
-<li class="fragment">You can specify a character vector with multiple columns for both <code>names_from</code> and <code>values_from</code>. The new columns will have the name names from the value columns combined with the names from <code>names_from</code>, separated by a ’_’ by default.</li>
+<li class="fragment">You can specify a character vector with multiple columns for both <code>names_from</code> and <code>values_from</code>. The new columns will have the names from the value columns combined with the names from <code>names_from</code>, separated by a ’_’ by default.</li>
 </ul>
 </section>
 <section id="reshaping-data-frames-8" class="slide level2">
 <h2>Reshaping data frames</h2>
 <p><code>pivot_wider()</code> converts a data frame from long to wide:</p>
 <pre><code>## # A tibble: 24 x 146
-##    outcome `Anderson Count~ `Clinton City` `Oak Ridge City`
+##    outcome `Anderson Count… `Clinton City` `Oak Ridge City`
 ##    &lt;chr&gt;              &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;
 ##  1 alg_1               76.1           NA               76.9
 ##  2 alg_2               63.3           NA               72  
@@ -3372,7 +3391,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8 eng_3               38.2           NA               53.8
 ##  9 math                54             68.9             55.3
 ## 10 science             64.5           69.6             70.8
-## # ... with 14 more rows, and 142 more variables: `Bedford
+## # … with 14 more rows, and 142 more variables: `Bedford
 ## #   County` &lt;dbl&gt;, `Benton County` &lt;dbl&gt;, `Bledsoe
 ## #   County` &lt;dbl&gt;, `Blount County` &lt;dbl&gt;, `Alcoa City` &lt;dbl&gt;,
 ## #   `Maryville City` &lt;dbl&gt;, `Bradley County` &lt;dbl&gt;, `Cleveland
@@ -3416,7 +3435,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ## #   `Obion County` &lt;dbl&gt;, `Union City` &lt;dbl&gt;, `Overton
 ## #   County` &lt;dbl&gt;, `Perry County` &lt;dbl&gt;, `Pickett County` &lt;dbl&gt;,
 ## #   `Polk County` &lt;dbl&gt;, `Putnam County` &lt;dbl&gt;, `Rhea
-## #   County` &lt;dbl&gt;, ...</code></pre>
+## #   County` &lt;dbl&gt;, …</code></pre>
 </section>
 <section id="exercise-11" class="slide level2">
 <h2>Exercise 11</h2>
@@ -3438,7 +3457,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ##  8     12 TVAAS Literacy      3
 ##  9     12 TVAAS Numeracy      1
 ## 10     20 TVAAS Composite     3
-## # ... with 425 more rows</code></pre>
+## # … with 425 more rows</code></pre>
 </section>
 <section id="resources" class="slide level2">
 <h2>Resources</h2>
