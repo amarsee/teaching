@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
-  <meta name="author" content="  Alexander Poon   alex.poon@tn.gov     Andrew Marsee   andrew.marsee@tn.gov" />
-  <meta name="dcterms.date" content="2020-11-08" />
+  <meta name="author" content="  Alexander Poon     Andrew Marsee   andrew.marsee@tn.gov" />
+  <meta name="dcterms.date" content="2020-11-11" />
   <title>Data Wrangling in the tidyverse</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1853,8 +1853,8 @@ document.getElementsByTagName('head')[0].appendChild(style);
 
 <section>
     <h1 class="title">Data Wrangling in the <code>tidyverse</code></h1>
-    <h2 class="author"><br> Alexander Poon <br> <a href="mailto:alex.poon@tn.gov">alex.poon@tn.gov</a> <br> <br> Andrew Marsee <br> <a href="mailto:andrew.marsee@tn.gov">andrew.marsee@tn.gov</a></h2>
-    <h3 class="date">November 08, 2020</h3>
+    <h2 class="author"><br> Alexander Poon <br> <br> Andrew Marsee <br> <a href="mailto:andrew.marsee@tn.gov">andrew.marsee@tn.gov</a></h2>
+    <h3 class="date">November 11, 2020</h3>
 </section>
 
 <section id="table-of-contents" class="slide level2">
@@ -3305,8 +3305,12 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section id="reshaping-data-frames-3" class="slide level2">
 <h2>Reshaping data frames</h2>
 <p><code>pivot_longer()</code> converts a data frame from wide to long:</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" title="1"><span class="kw">pivot_longer</span>(districts, alg_<span class="dv">1</span><span class="op">:</span>dropout, </a>
-<a class="sourceLine" id="cb97-2" title="2">             <span class="dt">names_to =</span> <span class="st">&#39;outcome&#39;</span>, <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" title="1"><span class="kw">pivot_longer</span>(</a>
+<a class="sourceLine" id="cb97-2" title="2">    districts, <span class="co"># Data frame</span></a>
+<a class="sourceLine" id="cb97-3" title="3">    alg_<span class="dv">1</span><span class="op">:</span>dropout, <span class="co"># Columns to pivot</span></a>
+<a class="sourceLine" id="cb97-4" title="4">    <span class="dt">names_to =</span> <span class="st">&#39;outcome&#39;</span>, <span class="co"># Name of column containing column names</span></a>
+<a class="sourceLine" id="cb97-5" title="5">    <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span> <span class="co"># Values from column</span></a>
+<a class="sourceLine" id="cb97-6" title="6">)</a></code></pre></div>
 <ul>
 <li class="fragment">The first argument to <code>pivot_longer()</code> is a data frame.</li>
 <li class="fragment">The second is the columns you want to make long.</li>
@@ -3317,8 +3321,12 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section id="reshaping-data-frames-4" class="slide level2">
 <h2>Reshaping data frames</h2>
 <p><code>pivot_longer()</code> converts a data frame from wide to long:</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" title="1"><span class="kw">pivot_longer</span>(districts, alg_<span class="dv">1</span><span class="op">:</span>dropout, </a>
-<a class="sourceLine" id="cb98-2" title="2">             <span class="dt">names_to =</span> outcome, <span class="dt">values_to =</span> valuet)</a></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" title="1"><span class="kw">pivot_longer</span>(</a>
+<a class="sourceLine" id="cb98-2" title="2">    districts, </a>
+<a class="sourceLine" id="cb98-3" title="3">    alg_<span class="dv">1</span><span class="op">:</span>dropout, </a>
+<a class="sourceLine" id="cb98-4" title="4">    <span class="dt">names_to =</span> outcome, </a>
+<a class="sourceLine" id="cb98-5" title="5">    <span class="dt">values_to =</span> valuet</a>
+<a class="sourceLine" id="cb98-6" title="6">)</a></code></pre></div>
 <pre><code>## # A tibble: 3,480 x 5
 ##    system system_name     outcome value region 
 ##     &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;  
@@ -3359,20 +3367,26 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h2>Reshaping data frames</h2>
 <p>First, I’ll save the long version of this data frame as an R object.</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" title="1">districts_long &lt;-<span class="st"> </span>districts <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb101-2" title="2"><span class="st">    </span><span class="kw">pivot_longer</span>(alg_<span class="dv">1</span><span class="op">:</span>dropout, <span class="dt">names_to =</span>  <span class="st">&#39;outcome&#39;</span>, </a>
-<a class="sourceLine" id="cb101-3" title="3">                 <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb101-4" title="4"><span class="st">    </span><span class="kw">select</span>(system_name, outcome, value)</a></code></pre></div>
+<a class="sourceLine" id="cb101-2" title="2"><span class="st">    </span><span class="kw">pivot_longer</span>(</a>
+<a class="sourceLine" id="cb101-3" title="3">        alg_<span class="dv">1</span><span class="op">:</span>dropout, </a>
+<a class="sourceLine" id="cb101-4" title="4">        <span class="dt">names_to =</span>  <span class="st">&#39;outcome&#39;</span>, </a>
+<a class="sourceLine" id="cb101-5" title="5">        <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span></a>
+<a class="sourceLine" id="cb101-6" title="6">    ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb101-7" title="7"><span class="st">    </span><span class="kw">select</span>(system_name, outcome, value)</a></code></pre></div>
 </section>
 <section id="reshaping-data-frames-7" class="slide level2">
 <h2>Reshaping data frames</h2>
 <p><code>pivot_wider()</code> converts a data frame from long to wide:</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" title="1"><span class="kw">pivot_wider</span>(districts_long, <span class="dt">names_from =</span> <span class="st">&#39;system_name&#39;</span>, </a>
-<a class="sourceLine" id="cb102-2" title="2">            <span class="dt">values_from =</span> <span class="st">&#39;value&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" title="1"><span class="kw">pivot_wider</span>(</a>
+<a class="sourceLine" id="cb102-2" title="2">    districts_long, </a>
+<a class="sourceLine" id="cb102-3" title="3">    <span class="dt">names_from =</span> <span class="st">&#39;system_name&#39;</span>, </a>
+<a class="sourceLine" id="cb102-4" title="4">    <span class="dt">values_from =</span> <span class="st">&#39;value&#39;</span></a>
+<a class="sourceLine" id="cb102-5" title="5">)</a></code></pre></div>
 <ul>
 <li class="fragment">The first argument to <code>pivot_wider()</code> is a data frame.</li>
-<li class="fragment">The second is the columns you want to convert your data frame wide by. The values of that column will become column names</li>
-<li class="fragment">The third is the values that will populate the cells in your new columns.</li>
-<li class="fragment">You can specify a character vector with multiple columns for both <code>names_from</code> and <code>values_from</code>. The new columns will have the names from the value columns combined with the names from <code>names_from</code>, separated by a ’_’ by default.</li>
+<li class="fragment">The second is the column(s) you want to convert your data frame wide by. The values of that column will become column names</li>
+<li class="fragment">The third is the column(s) of values that will populate the cells in your new columns.</li>
+<li class="fragment">You can specify a character vector with multiple column names for both <code>names_from</code> and <code>values_from</code>. The new columns will have the names from the value columns combined with the names from <code>names_from</code>, separated by a ’_’ by default.</li>
 </ul>
 </section>
 <section id="reshaping-data-frames-8" class="slide level2">
@@ -3441,9 +3455,12 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h2>Exercise 11</h2>
 <p>Reshape the <code>tvaas</code> data frame long by subject, then arrange by system.</p>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" title="1">tvaas <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb104-2" title="2"><span class="st">    </span><span class="kw">pivot_longer</span>(<span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span><span class="op">:</span><span class="st">`</span><span class="dt">TVAAS Numeracy</span><span class="st">`</span>, </a>
-<a class="sourceLine" id="cb104-3" title="3">                 <span class="dt">names_to =</span> <span class="st">&#39;subject&#39;</span>, <span class="dt">values_to =</span> <span class="st">&#39;score&#39;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb104-4" title="4"><span class="st">    </span><span class="kw">arrange</span>(system)</a></code></pre></div>
+<a class="sourceLine" id="cb104-2" title="2"><span class="st">    </span><span class="kw">pivot_longer</span>(</a>
+<a class="sourceLine" id="cb104-3" title="3">        <span class="st">`</span><span class="dt">TVAAS Composite</span><span class="st">`</span><span class="op">:</span><span class="st">`</span><span class="dt">TVAAS Numeracy</span><span class="st">`</span>, </a>
+<a class="sourceLine" id="cb104-4" title="4">        <span class="dt">names_to =</span> <span class="st">&#39;subject&#39;</span>, </a>
+<a class="sourceLine" id="cb104-5" title="5">        <span class="dt">values_to =</span> <span class="st">&#39;score&#39;</span></a>
+<a class="sourceLine" id="cb104-6" title="6">    ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb104-7" title="7"><span class="st">    </span><span class="kw">arrange</span>(system)</a></code></pre></div>
 <pre><code>## # A tibble: 435 x 3
 ##    system subject         score
 ##     &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;

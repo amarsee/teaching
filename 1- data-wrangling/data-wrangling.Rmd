@@ -1273,9 +1273,11 @@ This creates a new variable with `"alg_1"`, `"alg_2"`, ..., `"dropout"`, and a n
 
 ``` {r, echo = FALSE}
 districts %>%
-    pivot_longer(alg_1:dropout, 
-                 names_to =  'outcome', 
-                 values_to = 'value') %>%
+    pivot_longer(
+        alg_1:dropout, 
+        names_to =  'outcome', 
+        values_to = 'value'
+    ) %>%
     select(system, system_name, outcome, value)
 ```
 
@@ -1284,8 +1286,12 @@ districts %>%
 `pivot_longer()` converts a data frame from wide to long:
 
 ``` {r, eval = FALSE}
-pivot_longer(districts, alg_1:dropout, 
-             names_to = 'outcome', values_to = 'value')
+pivot_longer(
+    districts, # Data frame
+    alg_1:dropout, # Columns to pivot
+    names_to = 'outcome', # Name of column containing column names
+    values_to = 'value' # Values from column
+)
 ```
 
 > * The first argument to `pivot_longer()` is a data frame.
@@ -1299,14 +1305,21 @@ pivot_longer(districts, alg_1:dropout,
 `pivot_longer()` converts a data frame from wide to long:
 
 ``` {r, eval = FALSE}
-pivot_longer(districts, alg_1:dropout, 
-             names_to = outcome, values_to = valuet)
+pivot_longer(
+    districts, 
+    alg_1:dropout, 
+    names_to = outcome, 
+    values_to = valuet
+)
 ```
 
 ``` {r, echo = FALSE}
 districts %>%
-    pivot_longer(alg_1:dropout, names_to =  'outcome', 
-                 values_to = 'value') %>%
+    pivot_longer(
+        alg_1:dropout, 
+        names_to  = 'outcome', 
+        values_to = 'value'
+    ) %>%
     select(system, system_name, outcome, value, region)
 ```
 
@@ -1316,8 +1329,11 @@ districts %>%
 
 ``` {r, echo = FALSE}
 districts %>%
-    pivot_longer(alg_1:dropout, names_to =  'outcome', 
-                 values_to = 'value') %>%
+    pivot_longer(
+        alg_1:dropout, 
+        names_to =  'outcome', 
+        values_to = 'value'
+    ) %>%
     select(system, system_name, outcome, value, region)
 ```
 
@@ -1331,8 +1347,11 @@ First, I'll save the long version of this data frame as an R object.
 
 ``` {r}
 districts_long <- districts %>%
-    pivot_longer(alg_1:dropout, names_to =  'outcome', 
-                 values_to = 'value') %>%
+    pivot_longer(
+        alg_1:dropout, 
+        names_to =  'outcome', 
+        values_to = 'value'
+    ) %>%
     select(system_name, outcome, value)
 ```
 
@@ -1341,22 +1360,28 @@ districts_long <- districts %>%
 `pivot_wider()` converts a data frame from long to wide:
 
 ``` {r, eval = FALSE}
-pivot_wider(districts_long, names_from = 'system_name', 
-            values_from = 'value')
+pivot_wider(
+    districts_long, 
+    names_from = 'system_name', 
+    values_from = 'value'
+)
 ```
 
 > * The first argument to `pivot_wider()` is a data frame.
-> * The second is the columns you want to convert your data frame wide by. The values of that column will become column names
-> * The third is the values that will populate the cells in your new columns.
-> * You can specify a character vector with multiple columns for both `names_from` and `values_from`. The new columns will have the names from the value columns combined with the names from `names_from`, separated by a '_' by default.
+> * The second is the column(s) you want to convert your data frame wide by. The values of that column will become column names
+> * The third is the column(s) of values that will populate the cells in your new columns.
+> * You can specify a character vector with multiple column names for both `names_from` and `values_from`. The new columns will have the names from the value columns combined with the names from `names_from`, separated by a '_' by default.
 
 ## Reshaping data frames
 
 `pivot_wider()` converts a data frame from long to wide:
 
 ``` {r, echo = FALSE}
-pivot_wider(districts_long, names_from = 'system_name', 
-            values_from = 'value')
+pivot_wider(
+    districts_long, 
+    names_from = 'system_name', 
+    values_from = 'value'
+)
 ```
 
 ## Exercise 11
@@ -1365,8 +1390,11 @@ Reshape the `tvaas` data frame long by subject, then arrange by system.
 
 ``` {r}
 tvaas %>%
-    pivot_longer(`TVAAS Composite`:`TVAAS Numeracy`, 
-                 names_to = 'subject', values_to = 'score') %>%
+    pivot_longer(
+        `TVAAS Composite`:`TVAAS Numeracy`, 
+        names_to = 'subject', 
+        values_to = 'score'
+    ) %>%
     arrange(system)
 ```
 
