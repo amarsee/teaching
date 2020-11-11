@@ -1295,9 +1295,9 @@ pivot_longer(
 ```
 
 > * The first argument to `pivot_longer()` is a data frame.
-> * The second is the columns you want to make long.
-> * The third is the name of a new variable which will take the values of your column names.
-> * The fourth is the name of a new variable which will take the values of the data in your columns.
+> * The second is the columns to make long.
+> * The third is the name of a new variable which will take the values of the column names.
+> * The fourth is the name of a new variable which will take the values of the data in the columns.
 
 
 ## Reshaping data frames
@@ -1361,15 +1361,15 @@ districts_long <- districts %>%
 
 ``` {r, eval = FALSE}
 pivot_wider(
-    districts_long, 
-    names_from = 'system_name', 
-    values_from = 'value'
+    districts_long, # Data frame
+    names_from = 'system_name', # Column(s) to pivot and form column names
+    values_from = 'value' # Column(s) to pivot and provide values
 )
 ```
 
 > * The first argument to `pivot_wider()` is a data frame.
-> * The second is the column(s) you want to convert your data frame wide by. The values of that column will become column names
-> * The third is the column(s) of values that will populate the cells in your new columns.
+> * The second is the column(s) to convert the data frame wide by. The values of that column will become column names
+> * The third is the column(s) of values that will populate the cells in the new columns.
 > * You can specify a character vector with multiple column names for both `names_from` and `values_from`. The new columns will have the names from the value columns combined with the names from `names_from`, separated by a '_' by default.
 
 ## Reshaping data frames

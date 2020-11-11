@@ -3313,9 +3313,9 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <a class="sourceLine" id="cb97-6" title="6">)</a></code></pre></div>
 <ul>
 <li class="fragment">The first argument to <code>pivot_longer()</code> is a data frame.</li>
-<li class="fragment">The second is the columns you want to make long.</li>
-<li class="fragment">The third is the name of a new variable which will take the values of your column names.</li>
-<li class="fragment">The fourth is the name of a new variable which will take the values of the data in your columns.</li>
+<li class="fragment">The second is the columns to make long.</li>
+<li class="fragment">The third is the name of a new variable which will take the values of the column names.</li>
+<li class="fragment">The fourth is the name of a new variable which will take the values of the data in the columns.</li>
 </ul>
 </section>
 <section id="reshaping-data-frames-4" class="slide level2">
@@ -3378,14 +3378,14 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h2>Reshaping data frames</h2>
 <p><code>pivot_wider()</code> converts a data frame from long to wide:</p>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" title="1"><span class="kw">pivot_wider</span>(</a>
-<a class="sourceLine" id="cb102-2" title="2">    districts_long, </a>
-<a class="sourceLine" id="cb102-3" title="3">    <span class="dt">names_from =</span> <span class="st">&#39;system_name&#39;</span>, </a>
-<a class="sourceLine" id="cb102-4" title="4">    <span class="dt">values_from =</span> <span class="st">&#39;value&#39;</span></a>
+<a class="sourceLine" id="cb102-2" title="2">    districts_long, <span class="co"># Data frame</span></a>
+<a class="sourceLine" id="cb102-3" title="3">    <span class="dt">names_from =</span> <span class="st">&#39;system_name&#39;</span>, <span class="co"># Column(s) to pivot and form column names</span></a>
+<a class="sourceLine" id="cb102-4" title="4">    <span class="dt">values_from =</span> <span class="st">&#39;value&#39;</span> <span class="co"># Column(s) to pivot and provide values</span></a>
 <a class="sourceLine" id="cb102-5" title="5">)</a></code></pre></div>
 <ul>
 <li class="fragment">The first argument to <code>pivot_wider()</code> is a data frame.</li>
-<li class="fragment">The second is the column(s) you want to convert your data frame wide by. The values of that column will become column names</li>
-<li class="fragment">The third is the column(s) of values that will populate the cells in your new columns.</li>
+<li class="fragment">The second is the column(s) to convert the data frame wide by. The values of that column will become column names</li>
+<li class="fragment">The third is the column(s) of values that will populate the cells in the new columns.</li>
 <li class="fragment">You can specify a character vector with multiple column names for both <code>names_from</code> and <code>values_from</code>. The new columns will have the names from the value columns combined with the names from <code>names_from</code>, separated by a ’_’ by default.</li>
 </ul>
 </section>
