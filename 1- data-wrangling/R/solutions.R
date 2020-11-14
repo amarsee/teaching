@@ -137,11 +137,18 @@ districts %>%
     group_by(region, `TVAAS Composite`) %>%
     count() %>%
     ungroup() %>%
-    spread(`TVAAS Composite`, n)
+    pivot_wider(
+        names_from = "TVAAS Composite",
+        values_from = "n"
+    )
 
 ## Exercise 11
 # Reshape the tvaas data frame long by subject.
 
 tvaas %>%
-    gather(subject, score, `TVAAS Composite`:`TVAAS Numeracy`) %>%
+    pivot_longer(
+        `TVAAS Composite`:`TVAAS Numeracy`,
+        names_to = "subject",
+        values_to = "score"
+    ) %>%
     arrange(system)
