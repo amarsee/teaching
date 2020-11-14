@@ -77,7 +77,6 @@ For each of 145 school districts and the State, the `districts` data contains:
 * Discipline (suspension, expulsion) rates
 * High school graduation, dropout rates
 * Average ACT composite scores
-* Student demograpics
 * A region in Tennessee
 
 for the 2014-15 school year.
@@ -1308,8 +1307,8 @@ pivot_longer(
 pivot_longer(
     districts, 
     alg_1:dropout, 
-    names_to = outcome, 
-    values_to = valuet
+    names_to = 'outcome', 
+    values_to = 'value'
 )
 ```
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="  Alexander Poon     Andrew Marsee   andrew.marsee@tn.gov" />
-  <meta name="dcterms.date" content="2020-11-11" />
+  <meta name="dcterms.date" content="2020-11-14" />
   <title>Data Wrangling in the tidyverse</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1854,7 +1854,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section>
     <h1 class="title">Data Wrangling in the <code>tidyverse</code></h1>
     <h2 class="author"><br> Alexander Poon <br> <br> Andrew Marsee <br> <a href="mailto:andrew.marsee@tn.gov">andrew.marsee@tn.gov</a></h2>
-    <h3 class="date">November 11, 2020</h3>
+    <h3 class="date">November 14, 2020</h3>
 </section>
 
 <section id="table-of-contents" class="slide level2">
@@ -1911,7 +1911,6 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li>Discipline (suspension, expulsion) rates</li>
 <li>High school graduation, dropout rates</li>
 <li>Average ACT composite scores</li>
-<li>Student demograpics</li>
 <li>A region in Tennessee</li>
 </ul>
 <p>for the 2014-15 school year.</p>
@@ -3324,8 +3323,8 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" title="1"><span class="kw">pivot_longer</span>(</a>
 <a class="sourceLine" id="cb98-2" title="2">    districts, </a>
 <a class="sourceLine" id="cb98-3" title="3">    alg_<span class="dv">1</span><span class="op">:</span>dropout, </a>
-<a class="sourceLine" id="cb98-4" title="4">    <span class="dt">names_to =</span> outcome, </a>
-<a class="sourceLine" id="cb98-5" title="5">    <span class="dt">values_to =</span> valuet</a>
+<a class="sourceLine" id="cb98-4" title="4">    <span class="dt">names_to =</span> <span class="st">&#39;outcome&#39;</span>, </a>
+<a class="sourceLine" id="cb98-5" title="5">    <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span></a>
 <a class="sourceLine" id="cb98-6" title="6">)</a></code></pre></div>
 <pre><code>## # A tibble: 3,480 x 5
 ##    system system_name     outcome value region 
